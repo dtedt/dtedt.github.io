@@ -3,8 +3,8 @@
 # # # # # # # #
 
 # Basic
-name:               "Kiko"
-description:        "a clean, lightweight and minimalistic blog theme for jekyll"
+name:               "The Weblog of Ted Tarnovski"
+description:        "posting here now"
 
 # jekyll-seo-tag, see: http://www.rubydoc.info/gems/jekyll-seo-tag/1.2.0
 url:                "//kiko.gfjaru.com"
@@ -28,9 +28,9 @@ nav:
   - name:           "About"
     remote:         false
     localpath:      "about"
-  - name:           "Download"
-    remote:         true
-    href:           "//github.com/gfjaru/Kiko/releases"
+  - name:           "O4.games"
+    remote:         false
+    localpath:           "games"
 
 # Sass
 sass:
