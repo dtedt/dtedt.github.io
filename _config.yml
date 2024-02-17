@@ -31,6 +31,9 @@ nav:
   - name:           "O4.games"
     remote:         false
     localpath:           "games"
+  - name:          "Letterboxd"
+    remote:        false
+    href:          "https://letterboxd.com/dtedt/"
 
 # Sass
 sass:
