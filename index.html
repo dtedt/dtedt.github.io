@@ -20,21 +20,14 @@ layout: default
   <h2>No post found</h2>
 {% else %}
 {% for post in site.posts %}
-  <article>
-    <h2>
-      <a href="{{ post.url }}">
-        {{ post.title }}
-      </a>
-    </h2>
-    <time datetime="{{ post.date | date: "%Y-%m-%d" }}">{{ post.date | date_to_long_string }}</time>
-    {{ post.content }}
-  </article>
+
   <div class="list-item">
     <h2 class="list-post-title">
       <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
     </h2>
     <div class="list-post-date">
       <time>{{ post.date | date_to_string }}</time>
+      {{ post.content }}
     </div>
   </div>
 {% endfor %}
