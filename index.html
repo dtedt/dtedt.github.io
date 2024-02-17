@@ -16,14 +16,6 @@ layout: default
   </nav>
 </header>
 <div class="content list">
-  <ul>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-      <p>{{ post.excerpt }}</p>
-    </li>
-  {% endfor %}
-</ul>
 {% if site.posts.size == 0 %}
   <h2>No post found</h2>
 {% else %}
