@@ -3,8 +3,8 @@
 # # # # # # # #
 
 # Basic
-name:               "The Weblog of Ted Tarnovski"
-description:        "posting here now"
+name:               "Ted Tarnovski"
+description:        "A weblog"
 
 # jekyll-seo-tag, see: http://www.rubydoc.info/gems/jekyll-seo-tag/1.2.0
 url:                "//kiko.gfjaru.com"
