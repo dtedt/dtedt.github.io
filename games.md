@@ -2,5 +2,5 @@ Here are some demonstrations of my works-in-progress.
 
 For commercially available games, see [Outpost4](http://www.outpost4.net)
 
-- [Mars (v2)](/mars.html)
+- [Marina (v2)](/mars.html)
 - [The Silent Engines (v1)](/silent.html)
