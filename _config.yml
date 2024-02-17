@@ -32,7 +32,7 @@ nav:
     remote:         false
     localpath:           "games"
   - name:          "Letterboxd"
-    remote:        false
+    remote:        true
     href:          "//letterboxd.com/dtedt/"
 
 # Sass
