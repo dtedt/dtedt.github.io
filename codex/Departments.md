@@ -13,6 +13,7 @@ The Geology Department on LEVEL03 is seemingly devoted to the study of the Marti
 On Day 3, a material breach leads to all entrances to LEVEL03 being hermetically sealed, preventing entry. If Marina enters Level03 on Day 2 she will have the opportunity to save the entire base from certain destruction by entering the subterranean lava caverns and collecting a special mineral sample in the Lava Tubes which Doctor Zak can process into an inoculation against Mars Poisoning.
 
 **Information Science Dept.**
+
 The Information Science department on Level04 is where all non-research data (surveillance, identification, work orders, resource management) is collated and processed. The department is supposedly directed by Dr Yin, though she is mysteriously not attentive to her duties there. 
 The absence of leadership is felt in the ad-hoc social environment on Level04, where computer scientists and masked Others coexist in disorganized harmony despite their inability to communicate with one another. A data analyst named Alex is the only remaining member of the IS department continuing to take her job seriously after chaos reigns over the base. This is also where Gene surreptitiously runs his cryptocurrency operation, which is the true cause of the power failure that occurs at the end of Day 1.
 
