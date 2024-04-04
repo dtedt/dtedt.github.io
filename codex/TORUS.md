@@ -1,7 +1,16 @@
 #lore 
 
-The Torus is a personal data bracelet shaped like a torus (donut) which is worn on the wrist and connects to a personal tablet for interface. The TORUS uses special biorhythmic sensors to track Marina's biometric data and upload it to the base's TORUS network, where all data is collected and collated by the Information Science Team. The Torus Tablet contains a menu enabling exploration of Marina's inventory, a live map of Ares-622, information gleaned from Marina's past encounters, Marina's health status and more. Furthermore, the TORUS can be used to run open source applications shared amongst the colonists. Applications have a wide range of uses, from conducting interviews to hacking digital interfaces.
+The TORUS is a personal data bracelet shaped like a torus (donut) which is worn on the wrist and connects to a personal tablet for interface. The TORUS uses special biorhythmic sensors to track Marina's biometric data and upload it to the base's TORUS network, where all data is collected and collated by the [Information Science Team](InfoDept.md). The Torus Tablet contains a menu enabling exploration of Marina's [inventory](Inventory.md), a [live map](LiveMap.md) of Ares-622, information gleaned from Marina's past encounters, Marina's health status and more. Furthermore, the TORUS can be used to run open source applications shared amongst the colonists. Applications have a wide range of uses, from conducting interviews to hacking digital interfaces.
 
+## TORUS Applications
+
+- Genecoin
+
+- Chain (The Causal Chain)
+
+- Freewily
+
+- 
 ## Inspiration for the Torus menu:
 ![[Pasted image 20230708200913.png]]
 In Thirteen Sentinels, dialogue is carried out using a word cloud, allowing the player to click a category in order to question an NPC about it. This creates new content with each character each time a new topic is discovered.
