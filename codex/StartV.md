@@ -1,6 +1,6 @@
 #lore
 
-**START V** is a monumental inoternational treaty which banned several technologies from commercial use, including artificial intelligence and space travel. Despite being a controversial and widely despised compromise, it is widely agreed to have deterred a third World War.
+**START V** is a monumental international treaty which banned several technologies from commercial use, including artificial intelligence and space travel. Despite being a controversial and widely despised compromise, it is widely agreed to have deterred a third World War.
 
 ## EARTH IN 2045
 
