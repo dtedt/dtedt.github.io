@@ -29,7 +29,7 @@ The TORUS is a personal data bracelet shaped like a torus (donut) which is worn 
   Ares-622's mental wellness app, inspired by CBT self-help apps like Calm. Journal Marina's feelings everyday by selecting words from a list that describe your move. Feels kind of pointless, but regular use of Clearly has been shown in case studies to alleviate social anxiety.
   
 ## Inspiration for the Torus menu(s):
-[example]](https://lparchive.org/13-Sentinels-Aegis-Rim/Update%2043/45-039.jpg)
+[example](https://lparchive.org/13-Sentinels-Aegis-Rim/Update%2043/45-039.jpg)
 In Thirteen Sentinels, dialogue is carried out using a word cloud, allowing the player to click a category in order to question an NPC about it. This creates new content with each character each time a new topic is discovered.
 
 ![[Pasted image 20230708201001.png]]
