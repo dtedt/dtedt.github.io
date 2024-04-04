@@ -2,18 +2,22 @@
 **Departments**:
 
 **Biology Dept.**
+
 	The Biology Department has multiple functions: the development of agriculture in the Greenhouse to supplement the base’s food and medical supplies, the refinement of chemicals used for various purposes throughout the base and the study of biological changes undergone by the colonists on Mars. Biology’s Chief Science Officer is Doctor Alma Lucretzia. 
 Unbeknownst to the colonists, there are two additional projects managed on LEVEL02: Cloning research and a search for microscopic lifeforms living in the planet’s sediment deposits.
 
 **Geology Dept.**
+
 	The Geology Department on LEVEL03 is seemingly devoted to the study of the Martian environment and its hazardous minerals, but it is also secretly the seat of CHI’s illegal mining operation. Doctor Zakariah is its Chief Science Officer and his first priority is to study the caustic micro-dust of Mars and engineer ways of protecting the colony from the possibility of direct contact with it. 
 On Day 3, a material breach leads to all entrances to LEVEL03 being hermetically sealed, preventing entry. If Marina enters Level03 on Day 2 she will have the opportunity to save the entire base from certain destruction by entering the subterranean lava caverns and collecting a special mineral sample in the Lava Tubes which Doctor Zak can process into an inoculation against Mars Poisoning.
 
 **Information Science Dept.**
+
 	The Information Science department on Level04 is where all non-research data (surveillance, identification, work orders, resource management) is collated and processed. The department is supposedly directed by Dr Yin, though she is mysteriously not attentive to her duties there. 
 	The absence of leadership is felt in the ad-hoc social environment on Level04, where computer scientists and masked Others coexist in disorganized harmony despite their inability to communicate with one another. A data analyst named Alex is the only remaining member of the IS department continuing to take her job seriously after chaos reigns over the base. This is also where Gene surreptitiously runs his cryptocurrency operation, which is the true cause of the power failure that occurs at the end of Day 1.
 
 **Wellness Dept.**
+
 	The Wellness Department includes three wings: Mental Wellness (directed by Dr Su), Medical Wellness (directed by Dr Bhat) and Physical Wellness (directed by Marina). It is mainly based on Level01, but there are also wellness centers on each level for first aid and therapy appointments. The TORUS system automatically collects and analyzes data from the colonists’ vital signs and makes automated judgments regarding prescription regimens, fitness plans, dietary restrictions and more.
 	Although Wellness may appear at first to be little more than a glorified “Nurse’s Office” to colonists, it is secretly the core research team of Ares-622. The colonists of Ares-622 are unwittingly considered test subjects by CHI and the data collected by the Wellness Department is in fact the meat of the project, as this test data will inform CHI’s future colonial endeavors on Mars and other planets. 
  
