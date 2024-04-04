@@ -1,7 +1,7 @@
 
 **Departments**:
 
-/88Biology Dept.**
+**Biology Dept.**
 	The Biology Department has multiple functions: the development of agriculture in the Greenhouse to supplement the base’s food and medical supplies, the refinement of chemicals used for various purposes throughout the base and the study of biological changes undergone by the colonists on Mars. Biology’s Chief Science Officer is Doctor Alma Lucretzia. 
 Unbeknownst to the colonists, there are two additional projects managed on LEVEL02: Cloning research and a search for microscopic lifeforms living in the planet’s sediment deposits.
 
