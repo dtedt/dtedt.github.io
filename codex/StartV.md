@@ -1,6 +1,6 @@
 #lore
 
-**START V** is a monumental international treaty which banned several technologies from commercial use, including artificial intelligence and space travel. Despite being a controversial and widely despised compromise, it is widely agreed to have deterred a third World War.
+**START V** is a monumental international treaty which banned several technologies from commercial use, including [artificial intelligence](AI.md) and space travel. Despite being a controversial and widely despised compromise, it is widely agreed to have deterred a third World War.
 
 ## EARTH IN 2045
 
@@ -20,4 +20,4 @@ Invasive Neurological Scanning (“mind-reading” or otherwise trafficking thou
 Space Transit and Trafficking (limited to provisional licensing)
 Off-World Mining
 
-These fields of scientific research and development are prohibited to all but a tightly organized confederation of licensed state think tanks known as LOGOS, which rarely publicizes its findings. Private enterprises, such as Cardoso Heavy Industries, are strictly prohibited from engaging in the aforementioned forms of research. Violating START V is punishable as an act of international terrorism. In the past, corporations in violation of START V have been liquidated, with even low-level employees classified as enemy combatants.
+These fields of scientific research and development are prohibited to all but a tightly organized confederation of licensed state think tanks known as LOGOS, which rarely publicizes its findings. Private enterprises, such as [Cardoso Heavy Industries](CHI.md), are strictly prohibited from engaging in the aforementioned forms of research. Violating START V is punishable as an act of international terrorism. In the past, corporations in violation of START V have been liquidated, with even low-level employees classified as enemy combatants.
