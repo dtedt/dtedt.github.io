@@ -38,23 +38,32 @@ Executive Department
 ## Secret Projects/Conspiracies
 
 Cloning Laboratory
+
 Dr Yin’s absence from her duties on Level04 is due to her feverish work in a secret laboratory between Level02 and Level03. She is working night and day to perfect a method of full-body human fabrication (not to be confused with reproductive cloning), under secret orders from CHI leadership. The Cloning Lab is adorned with various occult objects which suggest that Dr Yin’s obsession and experiments are not entirely rational, however there is eerie evidence of some modest success in replicating a human being.
 
 Illegal Off-world Mining
-	A fleet of unmanned aerial drones scan the terrain for ore deposits while an army of subterranean mining mechs dig tunnels, collect resources and package payloads in anticipation of the completion of CHI’s space elevator for transport. Marina may encounter such a mech on Level03 and commandeer it to complete her mission. There may even be a subterranean route to Outpost4…
+
+A fleet of unmanned aerial drones scan the terrain for ore deposits while an army of subterranean mining mechs dig tunnels, collect resources and package payloads in anticipation of the completion of CHI’s space elevator for transport. Marina may encounter such a mech on Level03 and commandeer it to complete her mission. There may even be a subterranean route to Outpost4…
 
 Logos Pathogenesis
-	The emergence of the `masked Others` is an inevitable, inexplicable side-effect of human activity on Mars and the true objective of the Wellness Department is to observe it. The data collected by the TORUS system is intended to inform a diagnosis of the mysterious phenomena, designated `Logos Pathogenesis` in internal CHI memos. Ares-622 is the 22nd in a series of failed colonies, with all prior attempts ending in madness and death for the colonists. Due to the secretive nature of CHI’s recruiting and colonial activity on Mars, the disappearance of these colonists has thus far been a well-kept secret on Earth.
+
+The emergence of the `masked Others` is an inevitable, inexplicable side-effect of human activity on Mars and the true objective of the Wellness Department is to observe it. The data collected by the TORUS system is intended to inform a diagnosis of the mysterious phenomena, designated `Logos Pathogenesis` in internal CHI memos. Ares-622 is the 22nd in a series of failed colonies, with all prior attempts ending in madness and death for the colonists. Due to the secretive nature of CHI’s recruiting and colonial activity on Mars, the disappearance of these colonists has thus far been a well-kept secret on Earth.
 	
 Proposed Explanations for Logos Pathogenesis:
+
 Mass Psychosis: The Wellness Department regards what is happening as a mental condition that must be treated with bedrest. The implementation of prescription drugs is explored.
+
 Mind Control: Rumors circulate that the high-tech Domino mask worn by the others is causing brainwave interference that influences behavior.
+
 The Spirit Of Mars: Some believe that the planet Mars itself has a will of its own. They believe that a planet’s electromagnetic fields influence living things and the Others are simply the first to undergo metamorphosis from Earthen Humanity into an evolved Martian.
+
 Brain Parasite: Another rumor posits that an invisible alien parasite is infecting colonists one by one.
+
 Patient Zero?: Marina’s quiet demeanor and seeming unwillingness to speak (which predates her arrival on Mars) has similarities to the symptoms of the Others. This makes some colonists suspect that she has something to do with what is happening, some even believing she carries some sort of contagion.
 
 ???
-	The true long-term goals of CHI’s venture into off-world colonies is mysterious. CHI’s mining operations are the real source of value, and the establishment of human colonies is a huge cost for CHI, with no apparent profit on the horizon. It is rumored that the design and implementation of Ares colonies on Mars is directed by a mythic group of benefactors known only as Telos.
+
+The true long-term goals of CHI’s venture into off-world colonies is mysterious. CHI’s mining operations are the real source of value, and the establishment of human colonies is a huge cost for CHI, with no apparent profit on the horizon. It is rumored that the design and implementation of Ares colonies on Mars is directed by a mythic group of benefactors known only as Telos.
 
 
 
