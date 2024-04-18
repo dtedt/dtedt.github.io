@@ -5,4 +5,4 @@
 Marina is a quiet, reserved character who has come to Ares-622 to serve as it's Physical Wellness Coordinator. During her first week there, [a disaster](LogosPathogenesis.md) occurs. She must then decide whether to escape from Mars and return to Earth, or to stay on Mars and help build a thriving post-colonial society against all odds. Using her [TORUS device](TORUS.md)
 
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
