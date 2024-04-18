@@ -24,7 +24,7 @@ Last Updated: 04/18/2024
 
 ## Lore
 - [Ares-622](Ares-622.md)
-  - [Departments](Departments.md)
+- [Departments](Departments.md)
 - [The START V Treaty](StartV.md)
 - [Cardona Heavy Industries](CHI.md)
 - [Logos Pathogenesis](LogosPathogenesis.md)
