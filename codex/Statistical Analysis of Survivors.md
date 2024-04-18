@@ -17,4 +17,4 @@ This effectively means that all Ares colonists possess traits from the first lis
 Marina, who was included on the roster unofficially by Executive Avery, was not subjected to a Psych Eval and likely possesses traits from the second list. She is also diagnosed with Selective Mutism, a psychological affliction which would have likely disqualified her from official recruitment
 
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
