@@ -4,4 +4,4 @@
 On Day 1, Chief Masaki exhibits signs of mutism and ultimately dons the mask on Day 2, becoming [an Other](LogosPathogenesis.md). This creates a crisis of leadership within Security. Officer Kent ultimately assumes control and implements a zero tolerance policy for [mask-wearing](Domino.md), resulting in the arrest and confinement of countless masked Others on Level01.
 
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
