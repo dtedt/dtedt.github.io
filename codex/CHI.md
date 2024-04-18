@@ -16,7 +16,7 @@ The following rumors circulate on Ares-622 among NPCs and online TORUS message b
 
  - The CS department is conducting Artificial Intelligence experiments in contravention of START V (true)
 
- - There is a secret Neurology laboratory conducting research into fMRI brain-computer interface (mind-reading techniques) in contravention of START V (false)
+ - There is a secret Neurology laboratory conducting research into fMRI brain-computer interface (mind-reading techniques) in contravention of START V (unconfirmed)
 
  - The Biology department is conducting cloning experiments in contravention of START V (true)
  - The Geology Department is conducting weather control experiments in contravention of START V (false)
