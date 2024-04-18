@@ -28,3 +28,5 @@ Proposed Explanations for Logos Pathogenesis:
 ## spoilers
 **The emergence of the `masked Others` is an inevitable, inexplicable side-effect of human activity on Mars and the true objective of the Wellness Department is to observe it. The data collected by the TORUS system is intended to inform a diagnosis of the mysterious phenomena, designated `Logos Pathogenesis` in internal CHI memos. Ares-622 is the 22nd in a series of failed colonies, with all prior attempts ending in madness and death for the colonists. Due to the secretive nature of CHI’s recruiting and colonial activity on Mars, the disappearance of these colonists has thus far been a well-kept secret on Earth.**
 
+
+*[Return to Index](index.md)*
