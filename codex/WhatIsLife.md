@@ -7,4 +7,4 @@ The following is excerpted from the Abstract of [The Case for Extant Life on Mar
 I was first apprised of this event and it's philosophical significance by [this youtube video](https://www.youtube.com/watch?v=oSXbpJFTnyM)
 
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
