@@ -47,4 +47,4 @@ In Nier: Automata the Skills menu allows you to re-configure the skill chips of 
 ![[Pasted image 20230708201120.png]]
 In Majora's Mask, the 'Bombers Journal' is used to track the daily activities of quest-relevant NPCs and their desires.
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
