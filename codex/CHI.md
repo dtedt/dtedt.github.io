@@ -35,4 +35,4 @@ The following rumors circulate on Ares-622 among NPCs and online TORUS message b
 
  - The Galactic Association of Astrologers have unanimously declared that the date and location of Ares-622 spell doom for its inhabitants (true)
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
