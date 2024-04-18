@@ -14,4 +14,4 @@ On Day 3, a material breach leads to all entrances to LEVEL03 being hermetically
 A fleet of unmanned aerial drones scan the surface terrain for ore deposits while an army of subterranean mining mechs dig tunnels, collect resources and package payloads in anticipation of the completion of CHI’s space elevator for transport. Marina may encounter such a mech on Level03 and commandeer it to complete her mission. There may even be a subterranean route to Outpost4…
 
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
