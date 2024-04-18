@@ -7,4 +7,4 @@ In order to help Arnold move past his paranoid preoccupation, you must present h
 
 Arnold will deny the possibility of being on Mars no matter what you show him, his paranoid delusion is airtight. However, the quest can be completed by showing Arnold the love letter addressed to him, found on his desk on Level04. Upon reading this Arnold will admit that, while he remains certain that there is a conspiracy against him, it's possible that maybe he shouldn't be sitting alone in his room 24/7. Arnold announces that he will take a shower and go for a walk. Progress!
 
-[Return to Index](index.md)
+[Return to Index](index2.md)
