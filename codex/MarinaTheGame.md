@@ -5,7 +5,6 @@ After enduring personal tragedy on Earth and [an accident on the Moon](Luna.md),
 
 In the midst of all this chaos, Marina must face up to her past, take control of her life and make [a big decision](Endings.md). Will she escape from Mars? Or will she stay and help build a new kind of society? 
 
-## Characters
-```query
-tag:Character
-```
+
+
+*[Return to Index](index.md)*
