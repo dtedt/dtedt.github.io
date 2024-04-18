@@ -23,4 +23,4 @@ Off-World Mining
 These fields of scientific research and development are prohibited to all but a tightly organized confederation of licensed state think tanks known as LOGOS, which rarely publicizes its findings. Private enterprises, such as [Cardoso Heavy Industries](CHI.md), are strictly prohibited from engaging in the aforementioned forms of research. Violating START V is punishable as an act of international terrorism. In the past, corporations in violation of START V have been liquidated, with even low-level employees classified as enemy combatants.
 
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
