@@ -8,3 +8,5 @@ Dr. Alma Lucretzia is the Chief Science Officer of the Biology Department, locat
 
 ## spoilers
 Dr. Alma bears a striking resemblance to [Dr. Su](DrSu), her sister. It is also implied that Dr. Alma used to go by "Dr. Lu" until recently she began insisting people call her Dr. Alma. 
+
+*[Return to Index](index.md)*
