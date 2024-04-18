@@ -127,3 +127,6 @@ Other ending ideas:
 ## No One Will Ever Love You
 
 Marina slyly and ruthlessly sprints to the launchpad in record time and leaves Mars without Gene in his rocket.
+
+
+*[Return to Index](index.md)*
