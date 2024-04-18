@@ -129,4 +129,4 @@ Other ending ideas:
 Marina slyly and ruthlessly sprints to the launchpad in record time and leaves Mars without Gene in his rocket.
 
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
