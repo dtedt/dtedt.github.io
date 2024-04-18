@@ -5,4 +5,4 @@ Dr. Petra Guanyin (a.k.a. Dr. Yin) is a  serving as the Director of the Informat
 ## spoilers
 Dr. Yin can actually be found on [LevelXX](<LevelXX>) in the [Secret Cloning Lab](<CloneLab>)
 
-*[Return to Index](index.md)*
+*[Return to Index](index2.md)*
