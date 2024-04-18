@@ -39,7 +39,7 @@ Last Updated: 04/18/2024
 ## Story
 - [Luna](Luna.md)
 - [Level01](Level01.md)
-- [Level02]Level02.md)
+- [Level02](Level02.md)
 - [Level03](Level03.md)
 - [Level04](Level04.md)
 - [Quests](Quests.md)
@@ -49,7 +49,7 @@ Last Updated: 04/18/2024
 - [What Is Life?](WhatIsLife.md)
 - [Security Dept.](SecurityDept.md)
 - [Statistical Analysis of Survivors](Statistical Analysis of Survivors.md)
-- [Clone LAboratory](CloneLab.md)
+- [Clone Laboratory](CloneLab.md)
 - [Level00](Level00.md)
 - [Level??](Level??.md)
 - [LevelXX](LevelXX.md)
