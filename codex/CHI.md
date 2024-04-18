@@ -34,3 +34,5 @@ The following rumors circulate on Ares-622 among NPCs and online TORUS message b
  - A colonist on Ares-622 has come into possession of an ancient alien artifact (true)
 
  - The Galactic Association of Astrologers have unanimously declared that the date and location of Ares-622 spell doom for its inhabitants (true)
+
+*[Return to Index](index.md)*
