@@ -26,7 +26,7 @@ The TORUS is a personal data bracelet shaped like a torus (donut) which is worn 
 
 *Clearly*
 
-  Ares-622's mental wellness app, inspired by CBT self-help apps like Calm. Journal Marina's feelings everyday by selecting words from a list that describe your move. Feels kind of pointless, but regular use of Clearly has been shown in case studies to alleviate social anxiety.
+  Ares-622's mental wellness app, inspired by CBT self-help apps like Calm. Journal Marina's feelings everyday by selecting words from a list that describe your mood. Feels kind of pointless, but regular use of Clearly has been shown in case studies to alleviate social anxiety and increase dialogue options.
 
 
 ## Namesake
