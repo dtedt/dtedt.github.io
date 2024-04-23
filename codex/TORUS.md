@@ -43,4 +43,6 @@ In *13 Sentinels: Aegis Rim*, dialogue is carried out using a word cloud, allowi
 ![](bombers.webp)
 In Majora's Mask, the 'Bombers Journal' is used to track the daily activities of quest-relevant NPCs and their desires.
 
+![](sh2.bmp)
+In *Silent Hill 2*, handwritten amendments are automatically made to the map to signify dead ends and landmarks which are discovered along the way.
 *[Return to Index](index2.md)*
