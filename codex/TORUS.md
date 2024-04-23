@@ -40,10 +40,7 @@ In *13 Sentinels: Aegis Rim*, dialogue is carried out using a word cloud, allowi
 
 ![](outerwilds.png)In *The Outer Wilds*, a computer log automatically maps information gleaned from your surroundings to an infographic which informs your further exploration.
 
-![[Pasted image 20230708201038.png]]
-In Nier: Automata the Skills menu allows you to re-configure the skill chips of your android in order to personalize 
-
-![[Pasted image 20230708201120.png]]
+![](bombers.webp)
 In Majora's Mask, the 'Bombers Journal' is used to track the daily activities of quest-relevant NPCs and their desires.
 
 *[Return to Index](index2.md)*
