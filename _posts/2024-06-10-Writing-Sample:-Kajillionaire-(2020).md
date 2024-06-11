@@ -1,4 +1,4 @@
- ![](/dted.github.io/_posts/Kajillionaire.jpg)
+ ![](KJ.jpg)
 
 One critique of contemporary mainstream cinema is that movies of the current era cannot or will not depict desire. Superhero blockbusters lack any real emotional depth or deeper motivation. 80s reboots lack the gritty pathos that defined the originals. Even auteur films such as Yorgos Lanthimos’ The Lobster or David Lowery’s Green Knight left me cold due to their shallow depiction of human love and desire. 
 Miranda July is frequently derided by critics as being a quirky New Age performance artist rather than a serious filmmaker. Personally, I think July’s work is phenomenal, offering an incisive critique of contemporary society and the new types of loneliness inflicted upon us at every turn. Admittedly, the upbeat tone of her films really must be approached with trust and sincerity. She has at least this much in common with David Lynch, whose works (Wild At Heart, Fire Walk With Me) were often dismissed on arrival by critics who found them to be at once too sardonic and too naive. 
