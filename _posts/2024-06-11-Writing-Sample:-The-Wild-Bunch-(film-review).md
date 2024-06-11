@@ -1,5 +1,6 @@
-“He gave his word!!”
-”That’s not what counts!! It’s who you give it to!!”
+>“He gave his word!!”
+>
+>”That’s not what counts!! It’s who you give it to!!”
 
 Senseless, gratuitous violence without sentimentality. But sentiments are the enemy of ethics, and this movie is very concerned about ethics.
 
