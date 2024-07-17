@@ -12,9 +12,9 @@ The following personality traits were rejected by the Psych Evaluation:
 - Depression
 - Insecurity
 
-This effectively means that all Ares colonists possess traits from the first list and no one (officially) on the base possesses traits from the second list.
+This officially means that all Ares colonists possess traits from the first list and no one (officially) on the base possesses traits from the second list, though this seems a questionable conclusion.
 
-Marina, who was included on the roster unofficially by Executive Avery, was not subjected to a Psych Eval and likely possesses traits from the second list. She is also diagnosed with Selective Mutism, a psychological affliction which would have likely disqualified her from official recruitment
+Marina, who was included on the roster unofficially by Executive Avery, was not subjected to a Psych Eval and likely possesses traits from the second list. She has also been diagnosed with Selective Mutism, a psychological affliction which would have likely disqualified her from official recruitment
 
 
 *[Return to Index](index2.md)*
