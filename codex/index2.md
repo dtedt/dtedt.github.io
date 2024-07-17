@@ -48,7 +48,7 @@ Last Updated: 04/18/2024
 ## Developing Ideas
 - [What Is Life?](WhatIsLife.md)
 - [Security Dept.](SecurityDept.md)
-- [Statistical Analysis of Survivors](Statistical Analysis of Survivors.md)
+- [Statistical Analysis of Survivors](Statistic.md)
 - [Clone Laboratory](CloneLab.md)
 - [Level00](Level00.md)
 - [Level??](Level??.md)
