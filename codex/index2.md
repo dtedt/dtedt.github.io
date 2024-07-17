@@ -28,7 +28,7 @@ Last Updated: 04/18/2024
 - [The START V Treaty](StartV.md)
 - [Cardona Heavy Industries](CHI.md)
 - [Logos Pathogenesis](LogosPathogenesis.md)
-
+- [TELOS](TELOS.md)
 - [Mars](Mars.md)
 - [Chaos](Chaos.md)
 
