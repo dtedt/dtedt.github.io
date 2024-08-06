@@ -1,6 +1,6 @@
 #lore
 
-What follows is an exploration of each character on the level of unconscious desire. This is meant as a writing exercise and these motivations should not be directly alluded to in-game.
+What follows is an evaluation of each character on the level of unconscious desire. This is meant as a writing exercise and these motivations should not be directly alluded to in-game.
 
 ### Marina
 Marina’s aversion to speech reflects a fear of culpability. Despite being confident in her skills, she defers to others as a way of not being held accountable. She blames herself for her sister’s death and is caught in the denial phase of grief, prolonging her suffering to avoid an inevitable confrontation with herself.
