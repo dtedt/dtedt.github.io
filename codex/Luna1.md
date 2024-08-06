@@ -16,10 +16,14 @@ reaching out desperately. The breaths become more shallow, more desperate._
 # EXT - Dreamscape
 _A BLUE GIRL is walking in the electric orange haze. (There is a prompt to move with WASD
 controls.)_
+
 **GIRL**: Help.
+
 _**MARINA** is standing in the middle of the seascape in athletic gear, tightly holding a beach towel.
 The waves are gathering around her, consuming the background._
+
 GIRL: I can’t remember where.
+
 We see a young girls face in a space helmet, cracked and filled with water. Her eyes are black.
 Cut to seagulls passing over a summer sun. A warning klaxon cries in the distance
 GIRL: Help.
