@@ -6,11 +6,11 @@
 # EXT - Dreamscape
 _An endless blue sea stretches out in all directions, cresting into foam and backslides. The waves
 merge quietly, then crush each other loudly. We see nothing but the waves for a time, abstract
-forms of water loudly merging…
+forms of water loudly merging…_
 
-We can hear woman’s breath, heard through a helmet mic.
+_We can hear woman’s breath, heard through a helmet mic._
 
-The soggy image of a hand, gloved in a tight spacesuit mesh on a blood red background,
+_The soggy image of a hand, gloved in a tight spacesuit mesh on a blood red background,
 reaching out desperately. The breaths become more shallow, more desperate._
 
 # EXT - Dreamscape
