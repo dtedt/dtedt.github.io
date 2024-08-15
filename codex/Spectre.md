@@ -4,7 +4,7 @@
 
 
 ### Quest Details
-This initiative is first proposed by [Frederich](Frederich.md) on [Level01](Level01.md). He posits that support from the following people will be sufficient to get the idea off the ground:
+This initiative is first proposed by [Frederich](Frederich.md) on [Level01](Level01.md) upon discovering that [CHI](CHI.md) is apparently no longer in communication with the base, and thus "no one yet realizes that no one is in charge". He posits that support from the following people will be sufficient to get the idea off the ground:
 - [Ruth](Ruth.md)
 - [Dr. Alma Lucretzia](DrLu.md)
 - [Dr. Zak](DrZak.md)
