@@ -33,7 +33,8 @@ _Requirements: Complete 6 or more sidequests. Alternatively, complete the [Spect
 ### Secret Endings
 These are some cheeky endings that can only be unlocked by completing amazing feats. Only the real Marina fans are likely to discover these.
 #### No One Will Ever Love You
-Marina slyly finds a shortcut to the 4th level and single-mindedly sprints to the launchpad in record time, leaving Mars and Gene behind.
+Marina slyly finds a shortcut to the 4th level and makes it to the launchpad in record time, leaving Mars and Gene behind. Marina records a log of her journey through space to get back to Earth, remarking on how cruel the universe has been to her and her intentions to take revenge on CHI. Without Gene's expertise on the rocket, it is uncertain whether Marina will successfully return to Earth or die in outer space.
+_Requirements: Ignore Gene and Rhea. Complete the secret [Level00](Level00.md) sidequest. Use the Rappel Device to zipline up the elevator shaft from Level 01 to Level 04. Go to Outpost4. Ignore the apparition of your dead sister. Do not restore the power grid. Find rocket fuel in the maintenence locker and leave in Gene's rocket, alone._
 
 ---
 
