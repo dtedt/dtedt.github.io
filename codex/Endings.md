@@ -24,14 +24,14 @@ Long Dark Blues
 
 Marina elects to stay on Mars and decides that her fate is to become one of the Others, to delve into the abyss and finally find inner peace.
 
----
-A Better Tomorrow
+
+- ## A Better Tomorrow
 
 Marina elects to stay on Mars after being persuaded by several colonists on the launchpad. Marina has become a beloved member of the community and finds meaning in building a better world with her compatriots.
 
----
-No One Will Ever Love You
-
+### Secret Endings
+These are some cheeky endings that can only be unlocked by completing amazing feats. Only the real Marina fans are likely to discover these.
+- **No One Will Ever Love You**
 Marina slyly finds a shortcut to the 4th level and single-mindedly sprints to the launchpad in record time, leaving Mars and Gene behind.
 
 ---
