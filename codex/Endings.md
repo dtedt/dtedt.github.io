@@ -20,7 +20,7 @@ Powerful Love
 Marina leaves Mars with Gene and reunites with Rhea on Earth, happily ever after.
 
 ---
-Long Dark Blues
+# Long Dark Blues
 
 Marina elects to stay on Mars and decides that her fate is to become one of the Others, to delve into the abyss and finally find inner peace.
 
