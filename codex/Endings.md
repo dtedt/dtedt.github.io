@@ -9,25 +9,21 @@ There are four primary endings to the game, two involve staying on Mars and two 
 | Freebird | Long Dark Blues |
 | Powerful Love | A Better Tomorrow |
 
+## Main Endings
+### Freebird 
+Marina leaves Mars with Gene and lives out her life freely on Earth, having learned much about herself. She is no longer fear-haunted or lead by guilt. It is implied that Marina and Gene are briefly in a romantic relationship, but it doesn't last. Marina's Spacefaring license is revoked and she has a new career as a Yoga instructor. Marina muses on all this in a letter to her dead sister, emphasizing that she has no regrets, and that she has learned to take life as it comes. She leaves the letter on her sister's grave.
+_Requirements: Meet Gene at Outpost4. Enter his makeshift rocket instead of going back to Ares-622. Do not engage with Rhea's sidequest._
 
-Freebird 
+### Powerful Love
+Marina leaves Mars with Gene in order to reunite with Rhea on Earth, happily ever after.
+_Requirements: Complete Rhea's sidequest, promising that you will return to her on Earth. Meet Gene at Outpost4 and enter his makeshift rocket rather than return to Ares-622. Optionally, tell him you're gay when he hits on you._
 
-Marina leaves Mars with Gene and lives out her life freely on Earth, having learned much about herself
+### Long Dark Blues
+Marina elects to stay on Mars and decides that her fate is to become one of "[the Others](LogosPathogenesis.md)", to delve into the abyss and finally find inner peace. Looking into the mirror, she dons the Domino mask and loses herself forever.\
+_Requirements: Complete less than two sidequests and decline Dr. Su's therapy sessions. Alternatively, complete the [Other Place](OtherPlace.md) sidequest by asserting your intention to join "the Others". Gaze into the mirror in the restroom at Outpost4._
 
----
-Powerful Love
-
-Marina leaves Mars with Gene and reunites with Rhea on Earth, happily ever after.
-
----
-# Long Dark Blues
-
-Marina elects to stay on Mars and decides that her fate is to become one of the Others, to delve into the abyss and finally find inner peace.
-
-
-- ## A Better Tomorrow
-
-Marina elects to stay on Mars after being persuaded by several colonists on the launchpad. Marina has become a beloved member of the community and finds meaning in building a better world with her compatriots.
+### A Better Tomorrow
+Marina elects to stay on Mars after being persuaded by several colonists who express appreciation towards her. Marina has become a beloved member of the community and finds meaning in building a better world with her compatriots.
 
 ### Secret Endings
 These are some cheeky endings that can only be unlocked by completing amazing feats. Only the real Marina fans are likely to discover these.
