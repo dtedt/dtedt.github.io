@@ -30,7 +30,7 @@ Marina elects to stay on Mars after being persuaded by several colonists who exp
 
 _Requirements: Complete 6 or more sidequests. Alternatively, complete the [Spectre Haunting Mars](Spectre.md) sidequest by persuading the subject matter experts to attend a meeting on the founding of a [provisional government](APG.md). Finally, go to Outpost4 to restore the power grid and return to Ares-622 rather than join Gene on his rocket._
 
-### Secret Endings
+## Secret Endings
 These are some cheeky endings that can only be unlocked by completing amazing feats. Only the real Marina fans are likely to discover these.
 #### No One Will Ever Love You
 Marina slyly finds a shortcut to the 4th level and makes it to the launchpad in record time, leaving Mars and Gene behind. Marina records a log of her journey through space to get back to Earth, remarking on how cruel the universe has been to her and her intentions to take revenge on CHI. Without Gene's expertise on the rocket, it is uncertain whether Marina will successfully return to Earth or die in outer space.
