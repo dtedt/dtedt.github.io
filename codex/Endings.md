@@ -28,9 +28,11 @@ _Requirements: Complete less than two sidequests and decline Dr. Su's therapy se
 ### A Better Tomorrow
 Marina elects to stay on Mars after being persuaded by several colonists who express appreciation towards her. Marina has become a beloved member of the community and finds meaning in building a better world with her compatriots.
 
+_Requirements: Complete 6 or more sidequests. Alternatively, complete the [Spectre Haunting Mars](Spectre.md) sidequest by persuading the subject matter experts to attend a meeting on the founding of a [provisional government](APG.md). Finally, go to Outpost4 to restore the power grid and return to Ares-622 rather than join Gene on his rocket._
+
 ### Secret Endings
 These are some cheeky endings that can only be unlocked by completing amazing feats. Only the real Marina fans are likely to discover these.
-- **No One Will Ever Love You**
+#### No One Will Ever Love You
 Marina slyly finds a shortcut to the 4th level and single-mindedly sprints to the launchpad in record time, leaving Mars and Gene behind.
 
 ---
