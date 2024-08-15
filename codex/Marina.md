@@ -1,8 +1,11 @@
 #Character 
 
-**Marina** is the player-character. At first Marina has no apparent desire or motivation, but through the player's actions as Marina, she will traverse the Mars base [Ares-622](Ares-622.md), complete some [Quests](Quests.md) and reach one of several [Endings](Endings.md), ultimately [fulfilling her desire](Retroactivity.md).
+**Marina** is the player-character. 
 
-Marina is a quiet, reserved character who has come to Ares-622 to serve as it's Physical Wellness Coordinator. During her first week there, [a disaster](LogosPathogenesis.md) occurs. She must then decide whether to escape from Mars and return to Earth, or to stay on Mars and help build a thriving post-colonial society against all odds. Using her [TORUS device](TORUS.md)
+Marina is a quiet, reserved person who has come to Ares-622 to serve as it's Physical Wellness Coordinator. During her first week there, [a disaster](LogosPathogenesis.md) occurs. She must decide whether to escape from Mars and return to Earth, or to stay on Mars and help build a thriving post-colonial society against all odds. Using her [TORUS device](TORUS.md)
+
+### Make Friends And Influence People
+At first Marina has no apparent desire or motivation, she is too preoccupied with melancholia to take sides or investigate what's happening around her. Through the player's actions as Marina, however, she will traverse the Mars base [Ares-622](Ares-622.md), complete some [Quests](Quests.md) and reach one of several [Endings](Endings.md), ultimately [fulfilling her desire](Retroactivity.md).
 
 ### Mourning or Melancholia or Something Stranger?
 _Marina: Red_ picks up immediately after Marina is unceremoniously informed of her sister's death (at the end of _Marina: Blue_). Marina, who left Earth to break free of her obligations toward her sister, elects not to return to Earth, leaving no one to arrange a funeral or proper burial rites for her sister. Marina's journey to Mars marks the beginning of a period of despondency, guilt and mourning for Marina.
