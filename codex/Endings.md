@@ -1,5 +1,7 @@
 #spoilers
 
+Only at the end of the game can Marina’s desire be depicted based on an evaluation of the player’s actions. An ending is selected based on the player’s achievements and Marina’s motivations are retroactively posited based on the outcome of her actions. 
+
 There are four primary endings to the game, two involve staying on Mars and two involve leaving.
 
 | Leave | Stay |
