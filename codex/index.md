@@ -8,7 +8,7 @@ Last Updated: 04/18/2024
 [Game Summary](MarinaTheGame.md)
 
 ## Characters
-- [Marina](marina.md)
+- [Marina](Marina.md)
 - [Gene](Gene.md)
 - [Maxine](Maxine.md)
 - [Mysterious Old Man](MrWilhelm.md)
