@@ -4,7 +4,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 
 ## Special Recommendations
 - Ted's recommendations
-  - _The Burnout Society_ by **Byung-Chul Han**
+  - [_The Burnout Society_](burnout.pdf) by **Byung-Chul Han**
 - Kyle's recommendations
 - Spencer's recommendations
 
@@ -18,7 +18,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 
 ### Philosophy
 
-- _The Burnout Society_ by **Byung-Chul Han**
+- [_The Burnout Society_](burnout.pdf) by **Byung-Chul Han**
 - a
 - b
 - c
