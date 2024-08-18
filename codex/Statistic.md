@@ -12,7 +12,7 @@ The following personality traits were rejected by the Psych Evaluation:
 - Depression
 - Anxiety, etc.
 
-This _officially_ means that all Ares colonists possess traits from the first list and none from the second list. In practice, probably no such person exists who bears the strengths of list A without the vulnerabilities of List B. 
+_In theory_ this means that all Ares colonists possess traits from the first list and none from the second list. _In practice_, probably no such person exists who bears the strengths of list A without the vulnerabilities of List B. 
 
 ### Neurodivergence In Space
 It is an implicit assumption among spacefaring laborers that neurodivergent traits, particularly conditions such as ADHD, Bipolar, Autism,  Borderline and Depression, are considered a liability by employers. Therefore it is standard practice for spacefarers to lie on psych evaluations.
