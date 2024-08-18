@@ -1,4 +1,4 @@
-### The Outpost4 ebook Library
+# The Outpost4 ebook Library
 
 Welcome. Please feel free to explore our collection of knowledge pertinent to design, art, philosophy, business, productivity and all things interactive. Use of these materials is restricted to Outpost4 employees and associates. We do not condone piracy and encourage you to purchase these works if they interest you.
 
@@ -10,32 +10,32 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 
 ## Full Catalogue (by category)
 
-# Design
+### Design
 - _Design Is A Job_ by **Mike Monteiro**
 - a
 - b
 - c
 
-# Philosophy
+### Philosophy
 
 - _The Burnout Society_ by **Byung-Chul Han**
 - a
 - b
 - c
 
-# Productivity
+### Productivity
 
 - a
 - b
 - c
 
-# Business
+### Business
 
 - a
 - b
 - c
 
-# Interactivity (Video Games)
+### Interactivity (Video Games)
 
 - a
 - b
