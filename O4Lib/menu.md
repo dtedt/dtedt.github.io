@@ -37,7 +37,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 
 ### Interactivity (Video Games)
 
-- a
+- [_Game Development and Production_](gdp.pdf) by **Erik Bethke**
 - b
 - c
 
