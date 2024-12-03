@@ -9,11 +9,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snowy Fortress Infiltration</title>
+    <link rel="stylesheet" href="styles.css">
+
 
 </head>
 
 <body>
+    <div class="snowfall">
+        <!-- Dynamically generating snowflakes via JavaScript -->
+    </div>
 
+    <div class="game-container">
+        <div class="game-header">
+            <h1>Snowy Fortress Infiltration</h1>
+        </div>
+        <div class="game-content">
+            <p>You're standing at the edge of a snowy fortress, ready to sneak inside...</p>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to generate snowflakes
+        const snowfall = document.querySelector('.snowfall');
+        const numSnowflakes = 50; // Number of snowflakes
+
+        for (let i = 0; i < numSnowflakes; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowfall.appendChild(snowflake);
+        }
+    </script>
     <div class="outerContainer">
         <h3 class="written-in-ink"><a href="https://www.inklestudios.com/ink">WRITTEN IN INK</a></h3>
 
