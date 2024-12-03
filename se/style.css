@@ -1,36 +1,128 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,700|Quattrocento:700');
 
+/* Global Styling */
 body {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: lighter;
-    background: white;
-    overflow: hidden;
-}
-
-body.switched {
-    transition: color 0.6s, background-color 0.6s;
-}
-
-h1,
-h2 {
-    text-align: center;
-    font-family: "Quattrocento", Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #1f1f1f; /* Dark background to create a contrast for text */
+    color: #e0e0e0; /* Light grey text for readability */
     margin: 0;
     padding: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
 }
 
-h1 {
-    font-size: 30pt;
-    margin-bottom: 10px;
+h1, h2 {
+    color: #ffffff; /* White headings for emphasis */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-h2 {
-    font-size: 14pt;
-    font-style: italic;
-    font-family: sans-serif;
-    font-weight: lighter;
-    color: #BBB;
+p {
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+    border-radius: 5px;
 }
+
+a {
+    color: #66ccff; /* Bright blue links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Typewriter Cursor Effect */
+.typing-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 20px;
+    background-color: #66ccff;
+    animation: blink 0.8s infinite step-end;
+}
+
+@keyframes blink {
+    50% {
+        background-color: transparent;
+    }
+}
+
+/* Snowfall Effect */
+@keyframes snow {
+    0% {
+        transform: translateY(-100px);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    left: calc(100% * var(--left));
+    opacity: 0.7;
+    font-size: 24px;
+    color: #ffffff;
+    animation: snow calc(10s + var(--speed)) linear infinite;
+}
+
+.snowflake::after {
+    content: "❄"; /* Snowflake character */
+}
+
+.snowfall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* Styling for the game screen */
+.game-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
+.game-header {
+    background-color: #333333;
+    padding: 15px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.game-content {
+    background-color: #222222;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+/* Snowflake movement */
+.snowflake {
+    animation: snow calc(10s + var(--speed)) linear infinite;
+    transform: translateX(calc(100% * var(--left)));
+}
+
+/* Snowflakes with random speeds */
+.snowfall .snowflake:nth-child(odd) {
+    --speed: 8s;
+    --left: 0.25;
+}
+
+.snowfall .snowflake:nth-child(even) {
+    --speed: 6s;
+    --left: 0.7;
+}
+
 
 .header {
     padding-top: 3em;
