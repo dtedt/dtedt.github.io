@@ -32,7 +32,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 
 ### Business
 
-- a
+- [_Positioning: The Battle For Your Mind_](Positioning_-_Al_Ries.epub) by **Al Ries & Jack Trout**
 - b
 - c
 
