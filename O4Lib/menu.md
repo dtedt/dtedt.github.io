@@ -13,7 +13,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 ### Design
 - _Design Is A Job_ by **Mike Monteiro**
 - [_Just Enough Research_](Just_Enough_Research_-_Erika_Hall.pdf) by **Erika Hall**
-- [_Designing for Emotion_](Designing_for_Emotion_-_Spool_-_A_Book_Apart_(2011).pdf) by **Aarron Walter**
+- [_Designing for Emotion_](for_Emotion.pdf) by **Aarron Walter**
 - b
 - c
 
