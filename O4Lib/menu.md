@@ -12,7 +12,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 
 ### Design
 - _Design Is A Job_ by **Mike Monteiro**
-- [_Just Enougyh Research_](Just_Enough_Research_-_Erika_Hall.pdf) by **Erika Hall**
+- [_Just Enough Research_](Just_Enough_Research_-_Erika_Hall.pdf) by **Erika Hall**
 - [_Designing for Emotion_](Designing_for_Emotion_-_Spool_-_A_Book_Apart_(2011).pdf) by **Aarron Walter**
 - b
 - c
@@ -20,7 +20,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 ### Philosophy
 
 - [_The Burnout Society_](burnout.pdf) by **Byung-Chul Han**
-- a
+- [The Wretched Of The Earth_](Fanon_Frantz_The_Wretched_Of_The_Earth.pdf) by **Frantz Fanon**
 - b
 - c
 
