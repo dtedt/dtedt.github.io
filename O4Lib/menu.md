@@ -13,18 +13,18 @@ _Design Is A Job_ by **Mike Monteiro**
 
 ### Game Design & Interactivity
 
-[_Game Development and Production_](gdp.pdf) by **Erik Bethke**
-[_An Architectural Approach To Game Design_](Arch.pdf) by **Christopher W. Totten**
+* [_Game Development and Production_](gdp.pdf) by **Erik Bethke**
+* [_An Architectural Approach To Game Design_](Arch.pdf) by **Christopher W. Totten**
 
-  ### Business
-[_Positioning: The Battle For Your Mind_](Positioning_-_Al_Ries.epub) by **Al Ries & Jack Trout**
+### Business
+* [_Positioning: The Battle For Your Mind_](Positioning_-_Al_Ries.epub) by **Al Ries & Jack Trout**
 
 ### Philosophy
-[_The Burnout Society_](burnout.pdf) by **Byung-Chul Han**
-[_The Wretched Of The Earth_](Fanon_Frantz_The_Wretched_Of_The_Earth.pdf) by **Frantz Fanon**
+* [_The Burnout Society_](burnout.pdf) by **Byung-Chul Han**
+* [_The Wretched Of The Earth_](Fanon_Frantz_The_Wretched_Of_The_Earth.pdf) by **Frantz Fanon**
 
 ### Productivity
-[_Atomic Habits_](Atomic.pdf) by **James Clear**
+* [_Atomic Habits_](Atomic.pdf) by **James Clear**
 
 
 
