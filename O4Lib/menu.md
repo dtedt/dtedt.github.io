@@ -12,7 +12,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 
 ### Design
 - _Design Is A Job_ by **Mike Monteiro**
-- a
+- [_Designing for Emotion_]() by **Aarron Walter**
 - b
 - c
 
