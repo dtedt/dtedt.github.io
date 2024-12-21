@@ -20,7 +20,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 ### Philosophy
 
 - [_The Burnout Society_](burnout.pdf) by **Byung-Chul Han**
-- [The Wretched Of The Earth_](Fanon_Frantz_The_Wretched_Of_The_Earth.pdf) by **Frantz Fanon**
+- [_The Wretched Of The Earth_](Fanon_Frantz_The_Wretched_Of_The_Earth.pdf) by **Frantz Fanon**
 - b
 - c
 
@@ -39,6 +39,6 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 ### Interactivity (Video Games)
 
 - [_Game Development and Production_](gdp.pdf) by **Erik Bethke**
-- b
+- [_An Architectural Approach To Game Design_]() by **Christopher W. Totten**
 - c
 
