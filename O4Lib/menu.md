@@ -14,7 +14,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 ### Game Design & Interactivity
 
 * [_Game Development and Production_](gdp.pdf) by **Erik Bethke**
-* [_An Architectural Approach To Game Design_](Arch.pdf) by **Christopher W. Totten**
+* [_An Architectural Approach To Level Design_](Arch.pdf) by **Christopher W. Totten**
 
 ### Business
 * [_Positioning: The Battle For Your Mind_](Positioning_-_Al_Ries.epub) by **Al Ries & Jack Trout**
