@@ -7,7 +7,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 ### Design
 * _Design Is A Job_ by **Mike Monteiro**
 * [_Just Enough Research_](Just_Enough_Research_-_Erika_Hall.pdf) by **Erika Hall**
-* [_Designing for Emotion_](for_Emotion.pdf) by **Aarron Walter**
+* _Designing for Emotion_(for_Emotion.pdf) by **Aarron Walter**
 * [_CSS3 for Web Designers_](CSS3.pdf) by **Dan Cederholm**
 * [_Grid Systems in Graphic Design_](Grid.pdf) by **Josef Müller-Brockmann**
 
