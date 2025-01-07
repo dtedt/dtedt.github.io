@@ -10,7 +10,7 @@ Welcome. Please feel free to explore our collection of knowledge pertinent to de
 * _Designing for Emotion_(for_Emotion.pdf) by **Aarron Walter**
 * [_CSS3 for Web Designers_](CSS3.pdf) by **Dan Cederholm**
 * [_Grid Systems in Graphic Design_](Grid.pdf) by **Josef Müller-Brockmann**
-* [Guide to working with clients]() by **HAWRAF**
+* [Guide to working with clients](guide-to-working-with-clients.pdf) by **HAWRAF**
 
 ### Game Design & Interactivity
 
