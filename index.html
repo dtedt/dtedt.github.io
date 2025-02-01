@@ -11,7 +11,14 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-ctx.font = "50px Tilt Prism";
+// Create linear gradient
+const grad=ctx.createLinearGradient(0,0,280,0);
+grad.addColorStop(0, "lightblue");
+grad.addColorStop(1, "darkblue");
+
+// Fill outlined text with gradient
+ctx.font = "50px Alexandria";
+ctx.strokeStyle = grad;
 ctx.strokeText("David Ted Tarnovski",10,80);
 </script>
     <h2>
