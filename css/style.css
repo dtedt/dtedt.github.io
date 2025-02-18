@@ -1,0 +1,141 @@
+/* Color Pallette
+
+ Color Theme Swatches in Hex
+.dtedt1-1-hex { color: #00E0B0; }
+.dtedt1-2-hex { color: #007FE0; }
+.dtedt1-3-hex { color: #00C6E0; }
+.dtedt1-4-hex { color: #00E064; }
+.dtedt1-5-hex { color: #0038E0; }
+.dtedt1-6-hex { color: #4CCFE0; }
+
+
+*/
+
+
+body{
+    background-color: #00E0B0;
+    margin:0;
+}
+
+body h3{
+    text-align: center;
+    color:#007FE0;
+}
+
+ul{
+    list-style:none;
+    color: #99CCDE;
+}
+
+a{
+    text-decoration: none;
+    color: #114b5fff;
+}
+
+#color1{
+    background-color: #00FFCD;
+}
+
+#color2{
+    background-color: #008CFF;
+}
+
+#color3{
+    background-color: #00DCFF;
+}
+
+#color4{
+    background-color: #B8FFD9;
+}
+
+#color5{
+    background-color: #CFDAFF;
+}
+
+#color6{
+    background-color: #9EF2FF;
+}
+
+#main-header{
+    background-color: #0038E0;
+    margin:0;
+    padding:0;
+}
+
+#main-header h1 a{
+    color: #00DCFF;
+    padding-left:8px;
+}
+
+
+.o4 {
+    text-decoration: none;
+    color: #FFC700;
+}
+#main-header h3{
+    color: #fff;
+    text-align: right;
+    padding-right: 8px;
+}
+
+#main-footer{
+    background-color: #000000;
+    color:#fff;
+    text-align: center;
+}
+
+
+#swatch{
+    text-align: center;
+    color:#000000;
+}
+
+#o4{
+    color: #FFC700;
+}
+img{
+    display:block;
+    width:80px;
+    height:auto;
+    margin: 0 auto;
+    text-align: center;
+}
+.ted{
+    font-weight: bold;
+    color:#00E064;
+}
+
+.skill{
+    text-align: center;
+    font-weight: bolder;
+    line-height:140%;
+    font-size: 5vw;
+}
+
+.skill a:hover{
+    background-color: #114b5fff;
+    margin:0;
+    padding:0;
+    color:#FFEDDA;;
+    font-size:130%
+}
+
+
+/* Games */
+
+.games{
+    text-align: center;
+    font-weight: bolder;
+    line-height:140%;
+    font-size:5vw;
+}
+
+.games a:hover{
+    background-color: #114b5fff;
+    margin:0;
+    padding:0;
+    color:#FFEDDA;
+    font-size:130%;
+}
+
+
