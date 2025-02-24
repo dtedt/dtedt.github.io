@@ -1,0 +1,169 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  #phase1 {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  #squadCustomization {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .unitCustomization {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  #randomizeButton, #initiateBattle, #moveButton, #surrenderButton, #tryAgainButton {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #randomizeButton, #initiateBattle {
+    margin-bottom: 20px; /* Add spacing below the buttons */
+  }
+  
+  #randomizeButton {
+    background-color: #ffc107;
+    color: #000;
+  }
+  
+  #randomizeButton:hover {
+    background-color: #e0a800;
+  }
+  
+  #initiateBattle, #tryAgainButton {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  #initiateBattle:hover, #tryAgainButton:hover {
+    background-color: #218838;
+  }
+  
+  #moveButton {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  #moveButton:hover {
+    background-color: #0056b3;
+  }
+  
+  #surrenderButton {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  #surrenderButton:hover {
+    background-color: #a71d2a;
+  }
+  
+  #phase2, #phase3 {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 20px auto;
+  }
+  
+  #map {
+    margin: 20px auto;
+    border-collapse: collapse;
+  }
+  
+  #map td {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #000;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Terrain Colors */
+  .Fields {
+    background-color: #d2b48c; /* Tan */
+  }
+  
+  .Trenches {
+    background-color: #8b4513; /* Brown */
+  }
+  
+  .Trees {
+    background-color: #228b22; /* Green */
+  }
+  
+  .Structures {
+    background-color: #a9a9a9; /* Gray */
+  }
+  
+  /* Unit Colors */
+  .playerUnit {
+    color: #007bff; /* Blue */
+  }
+  
+  .enemyUnit {
+    color: #dc3545; /* Red */
+  }
+  
+  /* Health Bars */
+  #healthBars {
+    margin: 20px auto;
+    max-width: 600px;
+    padding-top: 20px; /* Add some spacing above the health bars */
+  }
+  
+  .healthBar {
+    margin-bottom: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .healthBarInner {
+    height: 10px;
+    background-color: #28a745;
+  }
+  
+  .healthBar span {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
