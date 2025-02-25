@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hallway Navigator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            touch-action: none;
+            font-family: Arial, sans-serif;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-color: #222;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        #instructions {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0 auto;
+            width: 80%;
+            pointer-events: none;
+        }
+        
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        #restart-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <svg id="game-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="instructions">Swipe forward, left, or right to navigate the hallways</div>
+        <div id="game-over">
+            <h2>You've reached the exit!</h2>
+            <p>You completed the maze in <span id="moves-count">0</span> moves.</p>
+            <button id="restart-button">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Game variables
+            const svg = document.getElementById('game-svg');
+            const gameOver = document.getElementById('game-over');
+            const movesCount = document.getElementById('moves-count');
+            const restartButton = document.getElementById('restart-button');
+            
+            let currentPosition = { x: 0, y: 0, direction: 'north' };
+            let totalMoves = 0;
+            
+            // Define maze as a 2D grid
+            // 0 = wall, 1 = path, 2 = exit
+            const maze = [
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 0, 1, 2, 0],
+                [0, 1, 0, 1, 0, 1, 0, 0],
+                [0, 1, 0, 1, 1, 1, 0, 0],
+                [0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 1, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0]
+            ];
+            
+            // Starting position
+            currentPosition = { x: 1, y: 5, direction: 'north' };
+            
+            // Draw the current view
+            function drawView() {
+                // Clear the SVG
+                while (svg.firstChild) {
+                    svg.removeChild(svg.firstChild);
+                }
+                
+                // Get what's in front, left, and right
+                const frontInfo = getPositionInfo(getFrontPosition());
+                const leftInfo = getPositionInfo(getLeftPosition());
+                const rightInfo = getPositionInfo(getRightPosition());
+                
+                // Draw perspective hallway
+                drawHallway();
+                
+                // Draw what's in front
+                if (frontInfo.type === 'wall') {
+                    drawWall();
+                } else if (frontInfo.type === 'exit') {
+                    drawExit();
+                } else {
+                    // Draw openings
+                    if (leftInfo.type !== 'wall') {
+                        drawLeftOpening();
+                    }
+                    if (rightInfo.type !== 'wall') {
+                        drawRightOpening();
+                    }
+                }
+            }
+            
+            function drawHallway() {
+                // Floor
+                const floor = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                floor.setAttribute('points', '300,700 700,700 600,450 400,450');
+                floor.setAttribute('fill', '#555');
+                svg.appendChild(floor);
+                
+                // Left wall
+                const leftWall = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                leftWall.setAttribute('points', '300,300 300,700 400,450 400,300');
+                leftWall.setAttribute('fill', '#333');
+                svg.appendChild(leftWall);
+                
+                // Right wall
+                const rightWall = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                rightWall.setAttribute('points', '700,300 700,700 600,450 600,300');
+                rightWall.setAttribute('fill', '#444');
+                svg.appendChild(rightWall);
+                
+                // Ceiling
+                const ceiling = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                ceiling.setAttribute('points', '300,300 700,300 600,300 400,300');
+                ceiling.setAttribute('fill', '#666');
+                svg.appendChild(ceiling);
+            }
+            
+            function drawWall() {
+                const wall = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                wall.setAttribute('x', '400');
+                wall.setAttribute('y', '300');
+                wall.setAttribute('width', '200');
+                wall.setAttribute('height', '150');
+                wall.setAttribute('fill', '#222');
+                svg.appendChild(wall);
+            }
+            
+            function drawExit() {
+                // Exit door
+                const exitDoor = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                exitDoor.setAttribute('x', '425');
+                exitDoor.setAttribute('y', '325');
+                exitDoor.setAttribute('width', '150');
+                exitDoor.setAttribute('height', '125');
+                exitDoor.setAttribute('fill', '#5cb85c');
+                svg.appendChild(exitDoor);
+                
+                // Exit sign
+                const exitText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                exitText.setAttribute('x', '500');
+                exitText.setAttribute('y', '390');
+                exitText.setAttribute('font-family', 'Arial');
+                exitText.setAttribute('font-size', '24');
+                exitText.setAttribute('fill', 'white');
+                exitText.setAttribute('text-anchor', 'middle');
+                exitText.textContent = 'EXIT';
+                svg.appendChild(exitText);
+            }
+            
+            function drawLeftOpening() {
+                const leftOpening = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                leftOpening.setAttribute('points', '300,400 300,600 350,500 350,400');
+                leftOpening.setAttribute('fill', '#111');
+                svg.appendChild(leftOpening);
+            }
+            
+            function drawRightOpening() {
+                const rightOpening = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                rightOpening.setAttribute('points', '700,400 700,600 650,500 650,400');
+                rightOpening.setAttribute('fill', '#111');
+                svg.appendChild(rightOpening);
+            }
+            
+            // Get position in front of current position
+            function getFrontPosition() {
+                const newPos = {...currentPosition};
+                switch(currentPosition.direction) {
+                    case 'north':
+                        newPos.y -= 1;
+                        break;
+                    case 'east':
+                        newPos.x += 1;
+                        break;
+                    case 'south':
+                        newPos.y += 1;
+                        break;
+                    case 'west':
+                        newPos.x -= 1;
+                        break;
+                }
+                return newPos;
+            }
+            
+            // Get position to the left of current position
+            function getLeftPosition() {
+                const newPos = {...currentPosition};
+                switch(currentPosition.direction) {
+                    case 'north':
+                        newPos.x -= 1;
+                        break;
+                    case 'east':
+                        newPos.y -= 1;
+                        break;
+                    case 'south':
+                        newPos.x += 1;
+                        break;
+                    case 'west':
+                        newPos.y += 1;
+                        break;
+                }
+                return newPos;
+            }
+            
+            // Get position to the right of current position
+            function getRightPosition() {
+                const newPos = {...currentPosition};
+                switch(currentPosition.direction) {
+                    case 'north':
+                        newPos.x += 1;
+                        break;
+                    case 'east':
+                        newPos.y += 1;
+                        break;
+                    case 'south':
+                        newPos.x -= 1;
+                        break;
+                    case 'west':
+                        newPos.y -= 1;
+                        break;
+                }
+                return newPos;
+            }
+            
+            // Get info about a position (wall, path or exit)
+            function getPositionInfo(pos) {
+                // Check if out of bounds
+                if (pos.x < 0 || pos.x >= maze[0].length || pos.y < 0 || pos.y >= maze.length) {
+                    return { type: 'wall' };
+                }
+                
+                // Check what's at the position
+                const cellValue = maze[pos.y][pos.x];
+                if (cellValue === 0) {
+                    return { type: 'wall' };
+                } else if (cellValue === 2) {
+                    return { type: 'exit' };
+                } else {
+                    return { type: 'path' };
+                }
+            }
+            
+            // Move forward
+            function moveForward() {
+                const frontPos = getFrontPosition();
+                const info = getPositionInfo(frontPos);
+                
+                if (info.type !== 'wall') {
+                    currentPosition.x = frontPos.x;
+                    currentPosition.y = frontPos.y;
+                    totalMoves++;
+                    
+                    // Check if reached exit
+                    if (info.type === 'exit') {
+                        endGame();
+                    }
+                }
+                
+                drawView();
+            }
+            
+            // Turn left
+            function turnLeft() {
+                switch(currentPosition.direction) {
+                    case 'north':
+                        currentPosition.direction = 'west';
+                        break;
+                    case 'east':
+                        currentPosition.direction = 'north';
+                        break;
+                    case 'south':
+                        currentPosition.direction = 'east';
+                        break;
+                    case 'west':
+                        currentPosition.direction = 'south';
+                        break;
+                }
+                totalMoves++;
+                drawView();
+            }
+            
+            // Turn right
+            function turnRight() {
+                switch(currentPosition.direction) {
+                    case 'north':
+                        currentPosition.direction = 'east';
+                        break;
+                    case 'east':
+                        currentPosition.direction = 'south';
+                        break;
+                    case 'south':
+                        currentPosition.direction = 'west';
+                        break;
+                    case 'west':
+                        currentPosition.direction = 'north';
+                        break;
+                }
+                totalMoves++;
+                drawView();
+            }
+            
+            // End game
+            function endGame() {
+                movesCount.textContent = totalMoves;
+                gameOver.style.display = 'block';
+            }
+            
+            // Restart game
+            function restartGame() {
+                currentPosition = { x: 1, y: 5, direction: 'north' };
+                totalMoves = 0;
+                gameOver.style.display = 'none';
+                drawView();
+            }
+            
+            // Touch handling
+            let touchStartX = 0;
+            let touchStartY = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                e.preventDefault();
+            }, { passive: false });
+            
+            document.addEventListener('touchend', function(e) {
+                if (gameOver.style.display === 'block') return;
+                
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                const diffX = touchEndX - touchStartX;
+                const diffY = touchEndY - touchStartY;
+                
+                // Determine swipe direction
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    // Horizontal swipe
+                    if (diffX > 50) {
+                        turnRight();
+                    } else if (diffX < -50) {
+                        turnLeft();
+                    }
+                } else {
+                    // Vertical swipe
+                    if (diffY < -50) {
+                        moveForward();
+                    }
+                }
+                
+                e.preventDefault();
+            }, { passive: false });
+            
+            // Key controls (for testing on desktop)
+            document.addEventListener('keydown', function(e) {
+                if (gameOver.style.display === 'block') return;
+                
+                switch(e.key) {
+                    case 'ArrowUp':
+                        moveForward();
+                        break;
+                    case 'ArrowLeft':
+                        turnLeft();
+                        break;
+                    case 'ArrowRight':
+                        turnRight();
+                        break;
+                }
+            });
+            
+            // Restart button
+            restartButton.addEventListener('click', restartGame);
+            
+            // Initialize game
+            drawView();
+        });
+    </script>
+</body>
+</html>
