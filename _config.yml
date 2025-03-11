@@ -7,6 +7,9 @@ baseurl:             'http://dtedt.github.io/'
 paginate:            5
 permalink:           pretty
 
+author: David "Ted" Tarnovski
+
+
 # Gems
 plugins:
   - jekyll-paginate
