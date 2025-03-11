@@ -1,3 +1,6 @@
+---
+layout: no
+---
 ### Luna ACT 1
 
 “There was a star riding through clouds one night, & I said to the star, 'Consume me'.”
