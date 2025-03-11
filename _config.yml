@@ -1,58 +1,18 @@
-# # # # # # # #
-#   K i k o   #
-# # # # # # # #
+# Setup
+title:               DTedT.com
+tagline:             'A Web Blog'
+description:         'This is where I track my technical projects.'
+url:                 http://dtedt.com
+baseurl:             ''
+paginate:            5
+permalink:           pretty
 
-# Basic
-name:               "Ted Tarnovski"
-description:        "A weblog"
 
-# jekyll-seo-tag, see: http://www.rubydoc.info/gems/jekyll-seo-tag/1.2.0
-url:                "//kiko.gfjaru.com"
-author:             "gfjaru"
-twitter:
-  username:         "gfjaru"
-#facebook:
-#  app_id:           1234
-#    publisher:      1234
 
-# URL
-baseurl:            ""
-#baseurl:            "" #For Root Domain
-permalink:          /:year/:month/:day/:title/
+# Gems
+plugins:
+  - jekyll-paginate
 
-# Markdown
-markdown:           kramdown
-
-# Navigation
-nav:
-  - name:           "About"
-    remote:         false
-    localpath:      "about"
-  - name:           "O4.games"
-    remote:         false
-    localpath:           "games"
-  - name:          "Letterboxd"
-    remote:        true
-    href:          "//letterboxd.com/dtedt/"
-
-# Sass
-sass:
-  style:            :compressed
-
-# Scopes
-defaults:
-  -
-    scope:
-      path:         ""
-      type:         "pages"
-    values:
-      layout:       "page"
-  -
-    scope:
-      path:         ""
-      type:         "posts"
-    values:
-      layout:       "post"
-
-gems:
-  - jekyll-seo-tag
+# Custom vars
+version:             1.1.0
+google_analytics_id: #UA-XXXX-Y
