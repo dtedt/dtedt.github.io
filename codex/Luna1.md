@@ -1,5 +1,5 @@
 ---
-layout: no
+layout: none
 ---
 ### Luna ACT 1
 
