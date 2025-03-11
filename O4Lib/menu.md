@@ -1,3 +1,6 @@
+---
+layout: notpage
+---
 # The Outpost4 Library
 
 Welcome. Please feel free to explore our collection of knowledge pertinent to design, art, philosophy, business, productivity and all things interactive. Use of these materials is restricted to Outpost4 employees and associates. We do not condone piracy and encourage you to purchase these works if they interest you.
