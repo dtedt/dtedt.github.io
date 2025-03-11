@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 For commercially-available games, see [Outpost4](http://www.outpost4.net).
 
 Here are some demonstrations of my works-in-progress. 
