@@ -25,7 +25,11 @@
       {% endif %}
     {% endfor %}
   </nav>
-
+     <div>
+{% for node in site.pages %}
+  <p>Title: {{ node.title }}, Layout: {{ node.layout }}, URL: {{ node.url }}, Sidebar: {{ node.sidebar }}</p>
+{% endfor %}
+     </div>
   <div class="sidebar-item">
     <p>
       &copy; {{ site.time | date: '%Y' }}. All rights reserved.
