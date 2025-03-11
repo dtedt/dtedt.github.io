@@ -1,5 +1,5 @@
 ---
-layout: notpage
+layout: no
 ---
 # The Outpost4 Library
 
