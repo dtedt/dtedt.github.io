@@ -2,8 +2,8 @@
 title:               DTedT.com
 tagline:             'A weblog'
 description:         'The professional website of David Ted Tarnovski'
-url:                 http://dtedt.github.io
-baseurl:             'http://dtedt.github.io'
+url:                 https://dtedt.github.io
+baseurl:             'https://dtedt.github.io'
 paginate:            5
 permalink:           pretty
 
