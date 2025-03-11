@@ -7,8 +7,11 @@ baseurl:             'http://dtedt.github.io/'
 paginate:            5
 permalink:           pretty
 
-author: David "Ted" Tarnovski
-
+# About/contact
+author:
+  name:              David "Ted" Tarnovski
+  url:               https://dtedt.com
+  email:             Ted@dtedt.com
 
 # Gems
 plugins:
