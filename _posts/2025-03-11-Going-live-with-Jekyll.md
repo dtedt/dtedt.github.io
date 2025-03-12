@@ -44,7 +44,7 @@ I thought that making my `url: dtedt.github.io` would be appropriate, since that
 Long story longer, I'm now online and I will be posting here in order to document my journey. I intend to become at least conversant in web design and front-end engineering principles by 2026. I still have much more to learn, and my focus right now is on vanilla Javascript and CSS frameworkd (either Bootstrap or Tailwind). I'm glad that I took the time to learn how to deploy Jekyll, as troubleshooting and examining it's documentation has taught me a lot.
 
 ---
-I'm very new to all of this, so feel free to let me know in the comments if anything in this post is inaccurate and I will adjust it as needed. Hopefully if you're reading this my blog post was helpful to you!
+I'm very new to all of this, so feel free to let me know in the comments (once I've set-up commenting...) if anything in this post is inaccurate and I will adjust it as needed. Hopefully if you're reading this my blog post was helpful to you!
 
 P.S. If you ever need to escape quote Liquid within a Jekyll page, you can do it like so:
 ```
