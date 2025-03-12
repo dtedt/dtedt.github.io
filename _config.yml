@@ -2,7 +2,7 @@
 title:               DTedT.com
 tagline:             'The professional website of David Ted Tarnovski'
 description:         'The professional website of David Ted Tarnovski'
-url:                 https://dtedt.github.io
+url:                 https://dtedt.com
 baseurl:             ''
 paginate:            5
 permalink:           pretty
