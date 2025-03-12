@@ -47,9 +47,10 @@ Long story longer, I'm now online and I will be posting here in order to documen
 I'm very new to all of this, so feel free to let me know in the comments (once I've set-up commenting...) if anything in this post is inaccurate and I will adjust it as needed. Hopefully if you're reading this my blog post was helpful to you!
 
 P.S. If you ever need to escape quote Liquid within a Jekyll page, you can do it like so:
-```
 {% raw %}
+```
 {% raw %}
 {% liquid here %}
 {% endraw %}
+```
 {% endraw %}
