@@ -15,7 +15,7 @@ Jekyll is an open-source tool that makes it easy to build and serve a static web
 
 Once I had duplicated all of the necessary folders to my github repo for dtedt.com, I managed to get the HTML to load, but not the CSS. It looked something like this:
 
-[[/images/noCSS.png]]
+![No CSS :(](/images/noCSS.png)
 
 Luckily, it wasn't long until I found an extremely helpful article over at MakingMistakes.com
 
@@ -23,7 +23,7 @@ Luckily, it wasn't long until I found an extremely helpful article over at Makin
 
 Sure enough, I tried Inspecting the page and, sure enough, I was having problems with my links. However, omitting the `baseurl` section of `_config.yml` was not the solution-- my site was still sans-CSS! I started digging into the HTML files to see where I was going wrong. I also checked the console for errors, which is always a good step in web dev troubleshooting
 
-[[console1.png]]
+![Always check the console...](console1.png)
 
 As it turns out, Jekyll relies on a templating language called [Liquid](https://shopify.github.io/liquid/?shpxid=88067a60-4D7E-432A-9F92-6B6E2E784719). What's cool about Liquid is, it enables HTML files to refer to one another and build a single page out of multiple HTML files. That explains why the Jekyll themes have so many HTML files like `head.html` or `sidebar.html` rather than everything residing on `index.html`. It "includes" other HTML files (from the `_Includes` folder) like this:
 
