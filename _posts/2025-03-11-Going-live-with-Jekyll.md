@@ -23,22 +23,22 @@ Luckily, it wasn't long until I found an extremely helpful article over at Makin
 
 Sure enough, I tried Inspecting the page and, sure enough, I was having problems with my links. However, omitting the `baseurl` section of `_config.yml` was not the solution-- my site was still sans-CSS! I started digging into the HTML files to see where I was going wrong. I also checked the console for errors, which is always a good step in web dev troubleshooting
 
-![Always check the console...](console1.png)
+![Always check the console...](/images/console1.png)
 
 As it turns out, Jekyll relies on a templating language called [Liquid](https://shopify.github.io/liquid/?shpxid=88067a60-4D7E-432A-9F92-6B6E2E784719). What's cool about Liquid is, it enables HTML files to refer to one another and build a single page out of multiple HTML files. That explains why the Jekyll themes have so many HTML files like `head.html` or `sidebar.html` rather than everything residing on `index.html`. It "includes" other HTML files (from the `_Includes` folder) like this:
-
-
-
+{ raw }
 `{% include head.html %}`
-
+{ endraw }
 The above line in an html file will "include" the content of head.html at that point in the document. **NOTE: It seems that Jekyll does not run the most recent version of Liquid; If you're using the latest Liquid, `includes` is deprecated. `render` is now the preferred tag.**
 
 Similarly, Jekyll's version of Liquid uses variables and filters to refer to certain key datapoints such as the site url. In my case, the offending stylesheet references were using Liquid to sub in my URL:
+{ raw }
 ```
  <link rel="stylesheet" href="{{ '/public/css/poole.css' | absolute_url }}">
   <link rel="stylesheet" href="{{ '/public/css/syntax.css' | absolute_url }}">
   <link rel="stylesheet" href="{{ '/public/css/lanyon.css' | absolute_url }}">
 ```
+{ endraw }
 I thought that making my `url: dtedt.github.io` would be appropriate, since that is where all of this is hosted, but it seems that was somehow redirecting to an unsecured http://dtedt.com and halting the stylesheet references, which explains why my site was blank. Once I changed the url to my custom domain name, https://dtedt.com, everything worked!
 
 Long story longer, I'm now online and I will be posting here in order to document my journey. I intend to become at least conversant in web design and front-end engineering principles by 2026. I still have much more to learn, and my focus right now is on vanilla Javascript and CSS frameworkd (either Bootstrap or Tailwind). I'm glad that I took the time to learn how to deploy Jekyll, as troubleshooting and examining it's documentation has taught me a lot.
