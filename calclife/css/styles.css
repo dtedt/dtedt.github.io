@@ -1,0 +1,156 @@
+:root {
+
+    --1: #B300FA;
+    
+    --2: #B2FA00;
+    
+    --3: #FA6C00;
+    
+    --4: #00DEFA;
+    
+    --5: #3D747A;
+    
+    --6: #A52DFF;
+    
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        text-decoration: none;
+        color:white
+    }
+    h1 {
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    p {
+        color: white;
+        font-weight: bold;
+    }
+    
+    section {
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border-radius: 10px;
+
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        text-align: center;
+        width: 350px;
+        background-color: var(--1);
+
+
+    }
+    .container {
+        border-radius: 10px;
+        border-color: #00DEFA;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        text-align: center;
+        width: 350px;
+    }
+a {
+    color: #00DEFA;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration:dotted;
+    text-decoration-color: #00DEFA;
+    text-decoration-line: underline;
+    color: #B2FA00;
+}
+.diverse {
+    color:#B2FA00
+}
+.neuro {
+    color:#00DEFA
+}
+
+
+    body {
+        background-color:#A52DFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .grid {
+        display: inline-grid;
+        grid-template-columns: repeat(1, auto);
+        grid-template-rows: repeat(3, auto);    
+    }
+    .A {
+        color: var(--4);
+    }
+
+    .B {
+        color: var(--2);
+    }
+    .Z {
+        color: white;
+    }
+    .timer-display {
+        font-size: 48px;
+        margin: 20px 0;
+        color:#B2FA00;
+        background-color:#00DEFA;
+        border-radius: 88px;;
+    }
+    
+    .timer-status {
+        margin: 15px 0;
+        font-weight:bold;
+        color:#fa00c4;
+       
+    }
+    
+    .controls {
+        margin: 20px 0;
+    }
+    
+    button {
+        background-color:#00DEFA;
+        border: none;
+        border-radius: 4px;
+        color:white;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 5px;
+        padding: 10px 15px;
+        transition: background-color 0.3s;
+    }
+    
+    button:hover {
+        background-color:#B2FA00;
+        color: #B300FA;
+    }
+    
+    button:disabled {
+        background-color: var(--2);
+        cursor: not-allowed;
+    }
+    
+    .settings {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .settings label {
+        cursor: pointer;
+        color: white;
+    }
+    
+    /* Classes for changing timer mode */
+    .work-mode {
+        background-color:#B300FA;
+    }
+    
+    .break-mode {
+        background-color:#A52DFF;
+    }
