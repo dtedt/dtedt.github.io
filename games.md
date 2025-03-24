@@ -9,7 +9,7 @@ These are prototypes of text-based narrative games created using [Inky](), the d
 - [Bartley's World (2024)](/Bartley/index.html)<sup>v.1<sup>
 - [Persistence (2024)](/se/index.html)<sup>v.0.5</sup>
 - [Pluck! (2024)](/Pluck/index.html)<sup>v0.5</sup>
-- [Free Will: A Primer (2025)]()<sup>In Development</sup>
+- [Free Will: A Primer (2025)](#)<sup>In Development</sup>
 
 
 ### Bitsy Prototypes
