@@ -32,13 +32,13 @@ As it turns out, Jekyll relies on a templating language called [Liquid](https://
 The above line in an html file will "include" the content of head.html at that point in the document. **NOTE: It seems that Jekyll does not run the most recent version of Liquid; If you're using the latest Liquid, `includes` is deprecated. `render` is now the preferred tag.**
 
 Similarly, Jekyll's version of Liquid uses variables and filters to refer to certain key datapoints such as the site url. In my case, the offending stylesheet references were using Liquid to sub in my URL:
-{% raw %}
+
 ```
  <link rel="stylesheet" href="{{ '/public/css/poole.css' | absolute_url }}">
   <link rel="stylesheet" href="{{ '/public/css/syntax.css' | absolute_url }}">
   <link rel="stylesheet" href="{{ '/public/css/lanyon.css' | absolute_url }}">
 ```
-{% endraw %}
+
 I thought that making my `url: dtedt.github.io` would be appropriate, since that is where all of this is hosted, but it seems that was somehow redirecting to an unsecured http://dtedt.com and halting the stylesheet references, which explains why my site was blank. Once I changed the url to my custom domain name, https://dtedt.com, everything worked!
 
 Long story longer, I'm now online and I will be posting here in order to document my journey. I intend to become at least conversant in web design and front-end engineering principles by 2026. I still have much more to learn, and my focus right now is on vanilla Javascript and CSS frameworkd (either Bootstrap or Tailwind). I'm glad that I took the time to learn how to deploy Jekyll, as troubleshooting and examining it's documentation has taught me a lot.
