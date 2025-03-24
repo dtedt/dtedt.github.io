@@ -34,7 +34,7 @@
     section {
         font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         border-radius: 10px;
-
+        
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 30px;
         text-align: center;
@@ -45,7 +45,7 @@
     }
     .container {
         border-radius: 10px;
-        border-color: #00DEFA;
+        border-color:white;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 30px;
         text-align: center;
@@ -53,7 +53,7 @@
     }
 a {
     color: #00DEFA;
-    text-decoration: none;
+    text-decoration: dotted;
 }
 a:hover {
     text-decoration:dotted;
@@ -62,7 +62,10 @@ a:hover {
     color: #B2FA00;
 }
 .diverse {
-    color:#B2FA00
+    color:#B2FA00;
+    text-decoration: dotted;
+    text-decoration-line: underline;
+    text-decoration-color: #00DEFA;
 }
 .neuro {
     color:#00DEFA
@@ -90,13 +93,13 @@ a:hover {
         color: var(--2);
     }
     .Z {
-        color: white;
+        color:white;
     }
     .timer-display {
         font-size: 48px;
         margin: 20px 0;
         color:#B2FA00;
-        background-color:#00DEFA;
+        background-color:white;
         border-radius: 88px;;
     }
     
