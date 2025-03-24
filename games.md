@@ -13,7 +13,7 @@ These are prototypes of text-based narrative games created using [Inky](), the d
 
 
 ### Bitsy Prototypes
-My first game demos were created in the [Bitsy Engine](https://bitsy.org/). I recommend it highly for prototyping simple concepts (these only took me a few hours each to build, and sometimes the need to express your idea immediately in a tangible form is more important than using a sophisticated game engine. These are some of the first internal prototypes I created for Outpost4.
+My first game demos were created in the [Bitsy Engine](https://bitsy.org/). I recommend it highly for prototyping simple concepts. These only took me a few hours each to build, and sometimes the need to express your idea immediately in a tangible form is more important than using a sophisticated game engine. These are some of the first internal prototypes I created for Outpost4.
 
 - [Marina (2023)](/mars.html) <sup>v.2</sup>
 - [The Silent Engines (2023)](/silent.html) <sup>v.1</sup>
