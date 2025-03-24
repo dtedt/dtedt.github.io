@@ -28,7 +28,7 @@ Sure enough, I tried Inspecting the page and, sure enough, I was having problems
 As it turns out, Jekyll relies on a templating language called [Liquid](https://shopify.github.io/liquid/?shpxid=88067a60-4D7E-432A-9F92-6B6E2E784719). What's cool about Liquid is, it enables HTML files to refer to one another and build a single page out of multiple HTML files. That explains why the Jekyll themes have so many HTML files like `head.html` or `sidebar.html` rather than everything residing on `index.html`. It "includes" other HTML files (from the `_Includes` folder) like this:
 ```
 
-`{% include head.html %}`
+{% include head.html %}
 
 ```
 The above line in an html file will "include" the content of head.html at that point in the document. **NOTE: It seems that Jekyll does not run the most recent version of Liquid; If you're using the latest Liquid, `includes` is deprecated. `render` is now the preferred tag.**
@@ -46,7 +46,7 @@ I thought that making my `url: dtedt.github.io` would be appropriate, since that
 Long story longer, I'm now online and I will be posting here in order to document my journey. I intend to become at least conversant in web design and front-end engineering principles by 2026. I still have much more to learn, and my focus right now is on vanilla Javascript and CSS frameworkd (either Bootstrap or Tailwind). I'm glad that I took the time to learn how to deploy Jekyll, as troubleshooting and examining it's documentation has taught me a lot.
 
 ---
-I'm very new to all of this, so feel free to let me know in the comments (once I've set-up commenting...) if anything in this post is inaccurate and I will adjust it as needed. Hopefully if you're reading this my blog post was helpful to you!
+I'm very new to all of this, so feel free to email me if anything in this post is inaccurate, I would love to hear from you. Hopefully if you're reading this my blog post was helpful to you!
 
 P.S. If you ever need to escape quote Liquid within a Jekyll page, you can do it like so:
 
