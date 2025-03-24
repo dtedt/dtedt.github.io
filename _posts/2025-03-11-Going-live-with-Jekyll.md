@@ -27,9 +27,9 @@ Sure enough, I tried Inspecting the page and, sure enough, I was having problems
 
 As it turns out, Jekyll relies on a templating language called [Liquid](https://shopify.github.io/liquid/?shpxid=88067a60-4D7E-432A-9F92-6B6E2E784719). What's cool about Liquid is, it enables HTML files to refer to one another and build a single page out of multiple HTML files. That explains why the Jekyll themes have so many HTML files like `head.html` or `sidebar.html` rather than everything residing on `index.html`. It "includes" other HTML files (from the `_Includes` folder) like this:
 ```
-{% raw %}
+
 `{% include head.html %}`
-{% endraw %}
+
 ```
 The above line in an html file will "include" the content of head.html at that point in the document. **NOTE: It seems that Jekyll does not run the most recent version of Liquid; If you're using the latest Liquid, `includes` is deprecated. `render` is now the preferred tag.**
 
