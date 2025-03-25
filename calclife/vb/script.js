@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalIndex = 0;
 
     // Initialize responsive layout
-    checkCardDensity();
-    window.addEventListener('resize', checkCardDensity);
+    updateLayout();
+    window.addEventListener('resize', updateLayout);
 
     // Drag handle events
     dragHandles.forEach(handle => {
@@ -127,12 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update layout
-        setTimeout(() => {
-            checkCardDensity();
-            document.querySelectorAll('.status-container').forEach(container => {
-                container.scrollTop = container.scrollHeight;
-            });
-        }, 10);
+        setTimeout(updateLayout, 10);
 
         // Clean up
         cleanup();
@@ -201,29 +196,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function checkCardDensity() {
-        const containerHeight = window.innerHeight - 100;
-        
-        document.querySelectorAll('.status-container').forEach(container => {
-            const column = container.closest('.status-column');
-            const cards = container.querySelectorAll('.task-card');
-            const cardHeight = 60; // Normal card height
-            const compactHeight = 30; // Compact card height
+    function updateLayout() {
+        // Update empty states
+        document.querySelectorAll('.status-column').forEach(column => {
+            const container = column.querySelector('.status-container');
+            const isEmpty = container.children.length === 0;
             
-            // Calculate required height
-            const requiredHeight = cards.length * cardHeight;
-            const availableHeight = containerHeight;
+            column.classList.toggle('empty', isEmpty);
             
-            // Toggle compact mode based on available space
-            if (requiredHeight > availableHeight * 0.8) {
-                column.classList.add('compact');
-                // Adjust grid columns based on card count
-                const optimalColumns = Math.min(Math.max(Math.floor(container.clientWidth / 100), 1), 3);
-                container.style.gridTemplateColumns = `repeat(${optimalColumns}, minmax(90px, 1fr))`;
-            } else {
-                column.classList.remove('compact');
-                container.style.gridTemplateColumns = '1fr';
-            }
+            // Force compact mode for columns with 3+ tasks
+            const shouldCompact = container.children.length >= 3;
+            column.classList.toggle('compact', shouldCompact);
         });
         
         // Adjust board columns based on available space
