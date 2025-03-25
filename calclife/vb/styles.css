@@ -76,6 +76,11 @@ body {
   font-size: 11px;
   padding: 6px;
   line-height: 1.3;
+  cursor: grab;
+}
+
+.task-card.dragging {
+  cursor: grabbing;
 }
 
 .task-title {
@@ -86,7 +91,11 @@ body {
 .task-description {
   color: #666;
   font-size: 10px;
-  display: -webkit-box;
+  display: none; /* Hidden by default */
+}
+
+.task-card.expanded .task-description {
+  display: -webkit-box; /* Show when expanded */
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
