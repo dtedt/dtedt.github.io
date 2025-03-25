@@ -7,16 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let dragStartY = 0;
     let initialX = 0;
     let initialY = 0;
+    let originalContainer = null;
+    let originalIndex = 0;
 
-    // Add event listeners to drag handles
     dragHandles.forEach(handle => {
         const card = handle.parentElement;
 
-        // Touch events for mobile
         handle.addEventListener('touchstart', handleDragStart);
         card.addEventListener('touchstart', handleDragStart);
 
-        // Mouse events for desktop
         handle.addEventListener('mousedown', handleDragStart);
         card.addEventListener('mousedown', handleDragStart);
     });
@@ -24,11 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleDragStart(e) {
         e.preventDefault();
         
-        // Get the card element
         draggedItem = e.target.closest('.task-card');
         if (!draggedItem) return;
 
-        // Get initial position
         if (e.type === 'touchstart') {
             dragStartX = e.touches[0].clientX;
             dragStartY = e.touches[0].clientY;
@@ -40,9 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = draggedItem.getBoundingClientRect();
         initialX = rect.left;
         initialY = rect.top;
+        originalContainer = draggedItem.parentElement;
+        originalIndex = Array.from(originalContainer.children).indexOf(draggedItem);
 
-        // Set dragging styles
         draggedItem.classList.add('dragging');
+        draggedItem.style.height = 'auto';
+        draggedItem.style.minHeight = '80px';
+        draggedItem.querySelector('.task-description').style.display = 'block';
         draggedItem.style.position = 'fixed';
         draggedItem.style.width = `${rect.width}px`;
         draggedItem.style.left = `${rect.left}px`;
@@ -50,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         draggedItem.style.zIndex = '1000';
         draggedItem.style.pointerEvents = 'none';
 
-        // Add move and end listeners
         document.addEventListener('touchmove', handleDragMove);
         document.addEventListener('touchend', handleDragEnd);
         document.addEventListener('mousemove', handleDragMove);
@@ -70,11 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
             clientY = e.clientY;
         }
 
-        // Calculate new position
         const deltaX = clientX - dragStartX;
         const deltaY = clientY - dragStartY;
 
-        // Update position
         draggedItem.style.left = `${initialX + deltaX}px`;
         draggedItem.style.top = `${initialY + deltaY}px`;
     }
@@ -83,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!draggedItem) return;
         e.preventDefault();
 
-        // Get drop position
         let clientX, clientY;
         if (e.type === 'touchend') {
             clientX = e.changedTouches[0].clientX;
@@ -93,20 +90,20 @@ document.addEventListener('DOMContentLoaded', () => {
             clientY = e.clientY;
         }
 
-        // Find drop target
-        const dropTarget = document.elementFromPoint(clientX, clientY);
-        const dropContainer = findDropContainer(dropTarget);
-
-        // Reset styles before moving back to DOM
         draggedItem.style.position = '';
         draggedItem.style.width = '';
         draggedItem.style.left = '';
         draggedItem.style.top = '';
         draggedItem.style.zIndex = '';
         draggedItem.style.pointerEvents = '';
+        draggedItem.style.height = '';
+        draggedItem.style.minHeight = '';
+        draggedItem.querySelector('.task-description').style.display = 'none';
         draggedItem.classList.remove('dragging');
 
-        // Move to new container if valid
+        const dropTarget = document.elementFromPoint(clientX, clientY);
+        const dropContainer = findDropContainer(dropTarget);
+
         if (dropContainer) {
             const afterElement = getDragAfterElement(dropContainer, clientY);
             if (afterElement) {
@@ -114,9 +111,16 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 dropContainer.appendChild(draggedItem);
             }
+        } else {
+            originalContainer.insertBefore(draggedItem, originalContainer.children[originalIndex]);
         }
 
-        // Clean up
+        setTimeout(() => {
+            document.querySelectorAll('.status-column').forEach(col => {
+                col.style.flex = col.querySelector('.status-container:not(:empty)') ? '2 1 auto' : '0 1 auto';
+            });
+        }, 10);
+
         draggedItem = null;
         document.removeEventListener('touchmove', handleDragMove);
         document.removeEventListener('touchend', handleDragEnd);
