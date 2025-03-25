@@ -1,166 +1,141 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.task-card');
     const containers = document.querySelectorAll('.status-container');
     const dragHandles = document.querySelectorAll('.drag-handle');
 
-    let draggedCard = null;
-    let startX, startY;
-    let touchStartTime;
-    let initialRect;
+    let draggedItem = null;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let initialX = 0;
+    let initialY = 0;
 
-    // Add touch event listeners to drag handles
+    // Add event listeners to drag handles
     dragHandles.forEach(handle => {
         const card = handle.parentElement;
-        
-        // For touch devices
-        handle.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            touchStartTime = Date.now();
-            draggedCard = card;
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            initialRect = card.getBoundingClientRect();
-            card.classList.add('dragging');
-        });
 
-        // For mouse devices
-        handle.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            draggedCard = card;
-            startX = e.clientX;
-            startY = e.clientY;
-            initialRect = card.getBoundingClientRect();
-            card.classList.add('dragging');
-            
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-        });
+        // Touch events for mobile
+        handle.addEventListener('touchstart', handleDragStart);
+        card.addEventListener('touchstart', handleDragStart);
+
+        // Mouse events for desktop
+        handle.addEventListener('mousedown', handleDragStart);
+        card.addEventListener('mousedown', handleDragStart);
     });
 
-    // Touch move handler
-    document.addEventListener('touchmove', (e) => {
-        if (!draggedCard) return;
+    function handleDragStart(e) {
         e.preventDefault();
         
-        const touch = e.touches[0];
-        const x = touch.clientX;
-        const y = touch.clientY;
-        
-        // Only start dragging after a small delay to distinguish from tap
-        if (Date.now() - touchStartTime > 100) {
-            updateCardPosition(x, y);
+        // Get the card element
+        draggedItem = e.target.closest('.task-card');
+        if (!draggedItem) return;
+
+        // Get initial position
+        if (e.type === 'touchstart') {
+            dragStartX = e.touches[0].clientX;
+            dragStartY = e.touches[0].clientY;
+        } else {
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
         }
-    }, { passive: false });
 
-    // Touch end handler
-    document.addEventListener('touchend', (e) => {
-        if (!draggedCard) return;
-        
-        const touch = e.changedTouches[0];
-        handleDrop(touch.clientX, touch.clientY);
-        cleanup();
-    });
+        const rect = draggedItem.getBoundingClientRect();
+        initialX = rect.left;
+        initialY = rect.top;
 
-    // Mouse move handler
-    function onMouseMove(e) {
-        if (!draggedCard) return;
-        updateCardPosition(e.clientX, e.clientY);
+        // Set dragging styles
+        draggedItem.classList.add('dragging');
+        draggedItem.style.position = 'fixed';
+        draggedItem.style.width = `${rect.width}px`;
+        draggedItem.style.left = `${rect.left}px`;
+        draggedItem.style.top = `${rect.top}px`;
+        draggedItem.style.zIndex = '1000';
+        draggedItem.style.pointerEvents = 'none';
+
+        // Add move and end listeners
+        document.addEventListener('touchmove', handleDragMove);
+        document.addEventListener('touchend', handleDragEnd);
+        document.addEventListener('mousemove', handleDragMove);
+        document.addEventListener('mouseup', handleDragEnd);
     }
 
-    // Mouse up handler
-    function onMouseUp(e) {
-        if (!draggedCard) return;
-        handleDrop(e.clientX, e.clientY);
-        cleanup();
-        
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    }
+    function handleDragMove(e) {
+        if (!draggedItem) return;
+        e.preventDefault();
 
-    // Update card position during drag
-    function updateCardPosition(x, y) {
-        const dx = x - startX;
-        const dy = y - startY;
-        
-        // Move card to body if not already done
-        if (!draggedCard.isMovedToBody) {
-            document.body.appendChild(draggedCard);
-            draggedCard.style.position = 'fixed';
-            draggedCard.style.width = `${initialRect.width}px`;
-            draggedCard.style.height = `${initialRect.height}px`;
-            draggedCard.style.left = `${initialRect.left}px`;
-            draggedCard.style.top = `${initialRect.top}px`;
-            draggedCard.style.margin = '0';
-            draggedCard.style.zIndex = '1000';
-            draggedCard.isMovedToBody = true;
+        let clientX, clientY;
+        if (e.type === 'touchmove') {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
         }
-        
+
+        // Calculate new position
+        const deltaX = clientX - dragStartX;
+        const deltaY = clientY - dragStartY;
+
         // Update position
-        draggedCard.style.left = `${initialRect.left + dx}px`;
-        draggedCard.style.top = `${initialRect.top + dy}px`;
+        draggedItem.style.left = `${initialX + deltaX}px`;
+        draggedItem.style.top = `${initialY + deltaY}px`;
     }
 
-    // Handle drop logic
-    function handleDrop(x, y) {
-        // Reset styles first
-        draggedCard.style.position = '';
-        draggedCard.style.width = '';
-        draggedCard.style.height = '';
-        draggedCard.style.left = '';
-        draggedCard.style.top = '';
-        draggedCard.style.margin = '';
-        draggedCard.style.zIndex = '';
-        draggedCard.style.transform = '';
-        
-        const dropTarget = document.elementFromPoint(x, y);
-        const container = findContainer(dropTarget);
-        
-        if (container) {
-            // Move card back to its container
-            const afterElement = getDragAfterElement(container, y);
-            if (draggedCard.isMovedToBody) {
-                if (afterElement) {
-                    container.insertBefore(draggedCard, afterElement);
-                } else {
-                    container.appendChild(draggedCard);
-                }
-                draggedCard.isMovedToBody = false;
+    function handleDragEnd(e) {
+        if (!draggedItem) return;
+        e.preventDefault();
+
+        // Get drop position
+        let clientX, clientY;
+        if (e.type === 'touchend') {
+            clientX = e.changedTouches[0].clientX;
+            clientY = e.changedTouches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+
+        // Find drop target
+        const dropTarget = document.elementFromPoint(clientX, clientY);
+        const dropContainer = findDropContainer(dropTarget);
+
+        // Reset styles before moving back to DOM
+        draggedItem.style.position = '';
+        draggedItem.style.width = '';
+        draggedItem.style.left = '';
+        draggedItem.style.top = '';
+        draggedItem.style.zIndex = '';
+        draggedItem.style.pointerEvents = '';
+        draggedItem.classList.remove('dragging');
+
+        // Move to new container if valid
+        if (dropContainer) {
+            const afterElement = getDragAfterElement(dropContainer, clientY);
+            if (afterElement) {
+                dropContainer.insertBefore(draggedItem, afterElement);
+            } else {
+                dropContainer.appendChild(draggedItem);
             }
         }
+
+        // Clean up
+        draggedItem = null;
+        document.removeEventListener('touchmove', handleDragMove);
+        document.removeEventListener('touchend', handleDragEnd);
+        document.removeEventListener('mousemove', handleDragMove);
+        document.removeEventListener('mouseup', handleDragEnd);
     }
 
-    // Clean up after drag
-    function cleanup() {
-        if (draggedCard) {
-            // Reset all styles
-            draggedCard.style.position = '';
-            draggedCard.style.width = '';
-            draggedCard.style.height = '';
-            draggedCard.style.left = '';
-            draggedCard.style.top = '';
-            draggedCard.style.margin = '';
-            draggedCard.style.zIndex = '';
-            draggedCard.style.transform = '';
-            draggedCard.style.transition = '';
-            
-            draggedCard.classList.remove('dragging');
-            draggedCard.isMovedToBody = false;
-            draggedCard = null;
-        }
-    }
-
-    // Helper functions
-    function findContainer(element) {
+    function findDropContainer(element) {
         while (element && !element.classList.contains('status-container')) {
             element = element.parentElement;
+            if (!element || element === document.body) return null;
         }
         return element;
     }
 
     function getDragAfterElement(container, y) {
-        const draggableElements = [...container.querySelectorAll('.task-card:not(.dragging)')];
+        const cards = [...container.querySelectorAll('.task-card:not(.dragging)')];
         
-        return draggableElements.reduce((closest, child) => {
+        return cards.reduce((closest, child) => {
             const box = child.getBoundingClientRect();
             const offset = y - box.top - box.height / 2;
             
