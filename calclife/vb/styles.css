@@ -19,7 +19,23 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
+/* styles.css */
+/* ... (keep previous styles) ... */
 
+.task-description {
+  display: none; /* Always hidden by default */
+  color: #666;
+  font-size: 10px;
+}
+
+.task-card.expanded .task-description {
+  display: block; /* Only show when expanded */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ... (rest of your CSS) ... */
 body {
   height: 100vh;
   width: 100vw;
