@@ -31,27 +31,19 @@ body {
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     min-height: 50px;
-    transition: all 0.2s ease;
-}
-
-.status-column.empty {
-    min-height: 40px;
-    flex: 0.5;
 }
 
 .status-header {
     text-align: center;
-    padding: 8px;
+    padding: 12px;
     font-weight: bold;
     font-size: 14px;
     background: white;
     border-radius: 8px 8px 0 0;
+    cursor: pointer;
     position: relative;
-    z-index: 2;
-    transition: all 0.2s ease;
 }
 
-/* Drop target highlight */
 .status-header.drop-target {
     background: rgba(200, 230, 255, 0.7);
     box-shadow: inset 0 0 0 2px #4a90e2;
@@ -61,8 +53,8 @@ body {
     display: grid;
     gap: 8px;
     padding: 8px;
-    grid-template-columns: 1fr;
     min-height: 50px;
+    grid-template-columns: 1fr;
 }
 
 .status-container.compact {
@@ -75,15 +67,12 @@ body {
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     position: relative;
     overflow: hidden;
-    touch-action: none;
-    will-change: transform;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .task-card.dragging {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    z-index: 1000;
+    opacity: 0.8;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-/* Rest of your CSS remains the same... */
+/* Rest of your CSS styles... */
