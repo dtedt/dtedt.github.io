@@ -1,48 +1,33 @@
 /* Add these updates to your existing styles.css */
 
+.kanban-board {
+    /* Add position and z-index to establish stacking context */
+    position: relative;
+    z-index: 1;
+}
+
+.status-column {
+    position: relative;
+    z-index: 2; /* Columns above the board */
+}
+
 .task-card {
-    background: white;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    position: relative; /* Add this for z-index to work properly */
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-    z-index: 1; /* Default z-index */
+    /* ... existing styles ... */
+    z-index: 3; /* Cards above columns */
+    transition: transform 0.1s ease, box-shadow 0.1s ease, z-index 0.1s ease;
 }
 
 .task-card.dragging {
-    transform: rotate(2deg) scale(1.02);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    opacity: 0.95;
-    z-index: 1000; /* Bring to front when dragging */
-    transition: none; /* Remove transition during drag for smoother movement */
+    /* ... existing styles ... */
+    z-index: 1000; /* Way above everything else */
+    transform: rotate(2deg) scale(1.02) translateZ(0); /* Force hardware acceleration */
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.2),
+        0 0 0 1px rgba(0,0,0,0.1); /* Added border-like shadow for better visibility */
 }
 
-.drag-handle {
-    padding: 12px 15px;
-    color: #ddd;
-    cursor: grab;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto; /* Push to right */
-    flex-shrink: 0; /* Prevent shrinking */
-}
-
-.drag-handle i {
-    pointer-events: none; /* Prevent icon from interfering with drag */
-}
-
-.task-content {
-    flex: 1;
-    padding: 12px;
-    min-width: 0;
-    padding-right: 8px; /* Add some space between content and handle */
-}
-
-/* Add this to prevent other cards from jumping during drag */
-.status-container {
-    transition: height 0.2s ease;
+/* Add this to prevent any parent from creating new stacking contexts */
+.status-container, .status-header {
+    position: static;
+    z-index: auto;
 }
