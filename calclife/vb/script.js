@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const containers = document.querySelectorAll('.status-container');
     const dragHandles = document.querySelectorAll('.drag-handle');
+    const board = document.querySelector('.kanban-board');
 
     let draggedItem = null;
     let dragStartX = 0;
@@ -10,6 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalContainer = null;
     let originalIndex = 0;
 
+    // Initialize responsive layout
+    checkCardDensity();
+    window.addEventListener('resize', checkCardDensity);
+
+    // Drag handle events
     dragHandles.forEach(handle => {
         const card = handle.parentElement;
 
@@ -26,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         draggedItem = e.target.closest('.task-card');
         if (!draggedItem) return;
 
+        // Store initial positions
         if (e.type === 'touchstart') {
             dragStartX = e.touches[0].clientX;
             dragStartY = e.touches[0].clientY;
@@ -40,10 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
         originalContainer = draggedItem.parentElement;
         originalIndex = Array.from(originalContainer.children).indexOf(draggedItem);
 
+        // Expand card for dragging
         draggedItem.classList.add('dragging');
         draggedItem.style.height = 'auto';
         draggedItem.style.minHeight = '80px';
-        draggedItem.querySelector('.task-description').style.display = 'block';
+        draggedItem.querySelector('.task-description').style.display = '-webkit-box';
         draggedItem.style.position = 'fixed';
         draggedItem.style.width = `${rect.width}px`;
         draggedItem.style.left = `${rect.left}px`;
@@ -51,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         draggedItem.style.zIndex = '1000';
         draggedItem.style.pointerEvents = 'none';
 
+        // Add event listeners
         document.addEventListener('touchmove', handleDragMove);
         document.addEventListener('touchend', handleDragEnd);
         document.addEventListener('mousemove', handleDragMove);
@@ -61,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!draggedItem) return;
         e.preventDefault();
 
+        // Get current position
         let clientX, clientY;
         if (e.type === 'touchmove') {
             clientX = e.touches[0].clientX;
@@ -70,17 +80,23 @@ document.addEventListener('DOMContentLoaded', () => {
             clientY = e.clientY;
         }
 
+        // Calculate movement
         const deltaX = clientX - dragStartX;
         const deltaY = clientY - dragStartY;
 
+        // Update position
         draggedItem.style.left = `${initialX + deltaX}px`;
         draggedItem.style.top = `${initialY + deltaY}px`;
+
+        // Check if we need to auto-scroll
+        checkAutoScroll(clientY);
     }
 
     function handleDragEnd(e) {
         if (!draggedItem) return;
         e.preventDefault();
 
+        // Get drop position
         let clientX, clientY;
         if (e.type === 'touchend') {
             clientX = e.changedTouches[0].clientX;
@@ -90,20 +106,14 @@ document.addEventListener('DOMContentLoaded', () => {
             clientY = e.clientY;
         }
 
-        draggedItem.style.position = '';
-        draggedItem.style.width = '';
-        draggedItem.style.left = '';
-        draggedItem.style.top = '';
-        draggedItem.style.zIndex = '';
-        draggedItem.style.pointerEvents = '';
-        draggedItem.style.height = '';
-        draggedItem.style.minHeight = '';
-        draggedItem.querySelector('.task-description').style.display = 'none';
-        draggedItem.classList.remove('dragging');
+        // Reset card styles
+        resetCardStyles();
 
+        // Find drop target
         const dropTarget = document.elementFromPoint(clientX, clientY);
         const dropContainer = findDropContainer(dropTarget);
 
+        // Move card to new position
         if (dropContainer) {
             const afterElement = getDragAfterElement(dropContainer, clientY);
             if (afterElement) {
@@ -112,15 +122,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropContainer.appendChild(draggedItem);
             }
         } else {
+            // Return to original position if drop is invalid
             originalContainer.insertBefore(draggedItem, originalContainer.children[originalIndex]);
         }
 
+        // Update layout
         setTimeout(() => {
-            document.querySelectorAll('.status-column').forEach(col => {
-                col.style.flex = col.querySelector('.status-container:not(:empty)') ? '2 1 auto' : '0 1 auto';
+            checkCardDensity();
+            document.querySelectorAll('.status-container').forEach(container => {
+                container.scrollTop = container.scrollHeight;
             });
         }, 10);
 
+        // Clean up
+        cleanup();
+    }
+
+    function resetCardStyles() {
+        draggedItem.style.position = '';
+        draggedItem.style.width = '';
+        draggedItem.style.left = '';
+        draggedItem.style.top = '';
+        draggedItem.style.zIndex = '';
+        draggedItem.style.pointerEvents = '';
+        draggedItem.style.height = '';
+        draggedItem.style.minHeight = '';
+        draggedItem.querySelector('.task-description').style.display = '';
+        draggedItem.classList.remove('dragging');
+    }
+
+    function cleanup() {
+        if (!draggedItem) return;
+        
         draggedItem = null;
         document.removeEventListener('touchmove', handleDragMove);
         document.removeEventListener('touchend', handleDragEnd);
@@ -149,5 +182,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 return closest;
             }
         }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    function checkAutoScroll(y) {
+        const scrollThreshold = 50;
+        const scrollSpeed = 10;
+        
+        containers.forEach(container => {
+            const rect = container.getBoundingClientRect();
+            // Check if near top
+            if (y < rect.top + scrollThreshold) {
+                container.scrollTop -= scrollSpeed;
+            }
+            // Check if near bottom
+            else if (y > rect.bottom - scrollThreshold) {
+                container.scrollTop += scrollSpeed;
+            }
+        });
+    }
+
+    function checkCardDensity() {
+        const containerHeight = window.innerHeight - 100;
+        
+        document.querySelectorAll('.status-container').forEach(container => {
+            const column = container.closest('.status-column');
+            const cards = container.querySelectorAll('.task-card');
+            const cardHeight = 60; // Normal card height
+            const compactHeight = 30; // Compact card height
+            
+            // Calculate required height
+            const requiredHeight = cards.length * cardHeight;
+            const availableHeight = containerHeight;
+            
+            // Toggle compact mode based on available space
+            if (requiredHeight > availableHeight * 0.8) {
+                column.classList.add('compact');
+                // Adjust grid columns based on card count
+                const optimalColumns = Math.min(Math.max(Math.floor(container.clientWidth / 100), 1), 3);
+                container.style.gridTemplateColumns = `repeat(${optimalColumns}, minmax(90px, 1fr))`;
+            } else {
+                column.classList.remove('compact');
+                container.style.gridTemplateColumns = '1fr';
+            }
+        });
+        
+        // Adjust board columns based on available space
+        const boardWidth = board.clientWidth;
+        const minColumnWidth = 200;
+        const maxColumns = Math.min(Math.floor(boardWidth / minColumnWidth), 4);
+        board.style.gridTemplateColumns = `repeat(${maxColumns}, minmax(${minColumnWidth}px, 1fr))`;
     }
 });
