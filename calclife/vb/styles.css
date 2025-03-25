@@ -26,8 +26,6 @@ body {
     gap: 10px;
     height: calc(100vh - 20px);
     width: 100%;
-    position: relative;
-    z-index: 1;
 }
 
 .status-header {
@@ -38,16 +36,12 @@ body {
     background: white;
     border-radius: 8px 8px 0 0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    position: static;
-    z-index: auto;
 }
 
 .status-column {
     display: flex;
     flex-direction: column;
     height: 100%;
-    position: relative;
-    z-index: 2;
 }
 
 .status-container {
@@ -57,9 +51,6 @@ body {
     padding: 8px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    position: static;
-    z-index: auto;
-    transition: height 0.2s ease;
 }
 
 .task-card {
@@ -70,16 +61,15 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, z-index 0.1s ease;
-    z-index: 3;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    touch-action: none;
 }
 
 .task-card.dragging {
-    transform: rotate(2deg) scale(1.02) translateZ(0);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1);
-    opacity: 0.95;
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    opacity: 0.9;
     z-index: 1000;
-    transition: none;
 }
 
 .task-content {
@@ -115,6 +105,7 @@ body {
     justify-content: center;
     margin-left: auto;
     flex-shrink: 0;
+    touch-action: none;
 }
 
 .drag-handle i {
