@@ -6,7 +6,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let dragStartY = 0;
     let offsetX = 0;
     let offsetY = 0;
+// script.js
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (keep previous variable declarations and init code) ...
 
+    function startDrag(e) {
+        e.preventDefault();
+        draggedItem = e.currentTarget;
+        draggedItem.classList.add('expanded', 'dragging'); // Add expanded class
+        
+        // ... (rest of startDrag implementation) ...
+    }
+
+    function endDrag(e) {
+        if (!draggedItem) return;
+        
+        // ... (existing endDrag code) ...
+        
+        draggedItem.classList.remove('dragging', 'expanded'); // Remove expanded class
+        
+        // ... (rest of endDrag implementation) ...
+    }
+
+    // ... (rest of your JavaScript) ...
+});
     // Initialize drag and drop
     initDragAndDrop();
     updateLayout();
