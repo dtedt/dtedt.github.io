@@ -1,214 +1,103 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const board = document.querySelector('.kanban-board');
-    let draggedItem = null;
-    let isTap = false;
-    let tapTimer = null;
-    const tapDelay = 200;
-    let dropIndicator = null;
-    let initialX = 0, initialY = 0;
+    const areas = {
+        todo: document.querySelector('.todo .grid-container'),
+        now: document.querySelector('.now .grid-container'),
+        progress: document.querySelector('.progress .grid-container'),
+        done: document.querySelector('.done .grid-container')
+    };
 
-    // Initialize the board
-    function init() {
-        createDropIndicator();
-        setupEventListeners();
-        updateLayout();
+    // Initialize grid cells (8x3 per area)
+    Object.values(areas).forEach(area => {
+        for (let i = 0; i < 24; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            cell.dataset.position = i;
+            area.appendChild(cell);
+        }
+    });
+
+    // Create sample tasks
+    createTask('Design', areas.todo, 0);
+    createTask('Code', areas.now, 1);
+    createTask('Test', areas.progress, 2);
+    createTask('Deploy', areas.done, 3);
+
+    function createTask(content, area, position) {
+        const cell = area.children[position];
+        const task = document.createElement('div');
+        task.className = 'task';
+        task.textContent = content;
+        task.draggable = true;
+        cell.appendChild(task);
+        
+        task.addEventListener('mousedown', startDrag);
+        task.addEventListener('touchstart', startDrag, { passive: false });
     }
 
-    // Create visual drop indicator
-    function createDropIndicator() {
-        dropIndicator = document.createElement('div');
-        dropIndicator.className = 'drop-indicator';
-        document.body.appendChild(dropIndicator);
-        dropIndicator.style.display = 'none';
-    }
+    let draggedTask = null;
+    let startX = 0;
+    let startY = 0;
 
-    // Set up all event listeners
-    function setupEventListeners() {
-        // Task card interactions
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.addEventListener('mousedown', startDrag);
-            card.addEventListener('touchstart', startDrag, { passive: false });
-        });
-
-        // Document-wide drag events
-        document.addEventListener('mousemove', dragMove);
-        document.addEventListener('touchmove', dragMove, { passive: false });
-        document.addEventListener('mouseup', endDrag);
-        document.addEventListener('touchend', endDrag);
-
-        // Click outside to collapse cards
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.task-card.expanded')) {
-                document.querySelectorAll('.task-card.expanded').forEach(card => {
-                    card.classList.remove('expanded');
-                });
-            }
-        });
-    }
-
-    // Start drag operation
     function startDrag(e) {
         e.preventDefault();
-        draggedItem = e.currentTarget;
-        isTap = true;
+        draggedTask = e.currentTarget;
         
-        // Set tap timer
-        tapTimer = setTimeout(() => {
-            if (isTap) {
-                draggedItem.classList.add('expanded');
-            }
-        }, tapDelay);
-
-        // Get initial position
-        const isTouch = e.type === 'touchstart';
-        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+        const rect = draggedTask.getBoundingClientRect();
+        startX = (e.clientX || e.touches[0].clientX) - rect.left;
+        startY = (e.clientY || e.touches[0].clientY) - rect.top;
         
-        initialX = clientX;
-        initialY = clientY;
+        draggedTask.classList.add('dragging');
+        draggedTask.style.position = 'fixed';
+        draggedTask.style.width = `${rect.width}px`;
+        draggedTask.style.left = `${rect.left}px`;
+        draggedTask.style.top = `${rect.top}px`;
+        draggedTask.style.zIndex = '1000';
         
-        // Set up dragging styles
-        const rect = draggedItem.getBoundingClientRect();
-        draggedItem._offsetX = clientX - rect.left;
-        draggedItem._offsetY = clientY - rect.top;
-        
-        draggedItem.classList.add('dragging');
-        draggedItem.style.position = 'fixed';
-        draggedItem.style.width = `${rect.width}px`;
-        draggedItem.style.left = `${rect.left}px`;
-        draggedItem.style.top = `${rect.top}px`;
-        draggedItem.style.zIndex = '1000';
-        draggedItem.style.pointerEvents = 'none';
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag, { passive: false });
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
     }
 
-    // Handle drag movement
-    function dragMove(e) {
-        if (!draggedItem) return;
+    function drag(e) {
+        if (!draggedTask) return;
         e.preventDefault();
         
-        // Check if this is a drag (not tap)
-        const isTouch = e.type === 'touchmove';
-        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+        const x = (e.clientX || e.touches[0].clientX) - startX;
+        const y = (e.clientY || e.touches[0].clientY) - startY;
         
-        if (isTap && (Math.abs(clientX - initialX) > 5 || Math.abs(clientY - initialY) > 5)) {
-            isTap = false;
-            clearTimeout(tapTimer);
-            draggedItem.classList.add('expanded');
-        }
-        
-        // Update position
-        draggedItem.style.left = `${clientX - draggedItem._offsetX}px`;
-        draggedItem.style.top = `${clientY - draggedItem._offsetY}px`;
-        
-        // Update drop target
-        updateDropTarget(clientX, clientY);
+        draggedTask.style.left = `${x}px`;
+        draggedTask.style.top = `${y}px`;
     }
 
-    // Update visual drop target
-    function updateDropTarget(x, y) {
-        dropIndicator.style.display = 'none';
-        
-        // Find all elements at pointer position
-        const elements = document.elementsFromPoint(x, y);
-        let dropColumn = null;
-        
-        // Find the nearest status column
-        for (const element of elements) {
-            if (element.classList.contains('status-column')) {
-                dropColumn = element;
-                break;
-            }
-            const column = element.closest('.status-column');
-            if (column) {
-                dropColumn = column;
-                break;
-            }
-        }
-        
-        // Show drop indicator if valid target found
-        if (dropColumn && dropColumn !== draggedItem.closest('.status-column')) {
-            const rect = dropColumn.getBoundingClientRect();
-            dropIndicator.style.display = 'block';
-            dropIndicator.style.left = `${rect.left}px`;
-            dropIndicator.style.top = `${rect.top}px`;
-            dropIndicator.style.width = `${rect.width}px`;
-            dropIndicator.style.height = `${rect.height}px`;
-            dropColumn._isDropTarget = true;
-        }
-    }
-
-    // End drag operation
     function endDrag(e) {
-        if (!draggedItem) return;
+        if (!draggedTask) return;
         
-        clearTimeout(tapTimer);
+        const x = (e.clientX || e.changedTouches[0].clientX);
+        const y = (e.clientY || e.changedTouches[0].clientY);
         
-        // Handle tap (toggle description)
-        if (isTap) {
-            draggedItem.classList.toggle('expanded');
-        } 
-        // Handle drop
-        else {
-            const isTouch = e.type === 'touchend';
-            const clientX = isTouch ? e.changedTouches[0].clientX : e.clientX;
-            const clientY = isTouch ? e.changedTouches[0].clientY : e.clientY;
-            
-            // Find drop target
-            const elements = document.elementsFromPoint(clientX, clientY);
-            let dropColumn = null;
-            
-            for (const element of elements) {
-                if (element.classList.contains('status-column')) {
-                    dropColumn = element;
-                    break;
-                }
-                const column = element.closest('.status-column');
-                if (column) {
-                    dropColumn = column;
-                    break;
-                }
-            }
-            
-            // Move to new column if valid
-            if (dropColumn) {
-                const container = dropColumn.querySelector('.status-container');
-                container.appendChild(draggedItem);
-                updateLayout();
-            }
+        // Find drop target
+        const element = document.elementFromPoint(x, y);
+        const targetCell = element?.closest('.grid-cell');
+        
+        if (targetCell && targetCell !== draggedTask.parentElement) {
+            // Move task to new cell
+            targetCell.appendChild(draggedTask);
         }
+        
+        // Reset styles
+        draggedTask.classList.remove('dragging');
+        draggedTask.style.position = '';
+        draggedTask.style.left = '';
+        draggedTask.style.top = '';
+        draggedTask.style.zIndex = '';
+        draggedTask.style.width = '';
         
         // Clean up
-        dropIndicator.style.display = 'none';
-        resetDraggedItem();
-        draggedItem = null;
-        isTap = false;
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('touchmove', drag);
+        document.removeEventListener('mouseup', endDrag);
+        document.removeEventListener('touchend', endDrag);
+        draggedTask = null;
     }
-
-    // Reset dragged item styles
-    function resetDraggedItem() {
-        if (!draggedItem) return;
-        
-        draggedItem.classList.remove('dragging');
-        draggedItem.style.position = '';
-        draggedItem.style.left = '';
-        draggedItem.style.top = '';
-        draggedItem.style.zIndex = '';
-        draggedItem.style.width = '';
-        draggedItem.style.pointerEvents = '';
-    }
-
-    // Update column layouts
-    function updateLayout() {
-        document.querySelectorAll('.status-column').forEach(column => {
-            const container = column.querySelector('.status-container');
-            const taskCount = container.children.length;
-            
-            column.classList.toggle('empty', taskCount === 0);
-            container.classList.toggle('compact', taskCount > 3);
-        });
-    }
-
-    // Initialize the board
-    init();
 });
