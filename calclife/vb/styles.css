@@ -21,11 +21,12 @@ body {
 
 .kanban-board {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-template-rows: auto 1fr;
     gap: 10px;
     height: calc(100vh - 20px);
     width: 100%;
+    align-items: start;
 }
 
 .status-header {
@@ -41,79 +42,98 @@ body {
 .status-column {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
+    min-height: 50px;
+    transition: all 0.3s ease;
 }
 
 .status-container {
     flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-auto-rows: min-content;
+    gap: 8px;
     background: #f0f0f0;
     border-radius: 0 0 8px 8px;
     padding: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    min-height: 40px;
+    align-content: start;
 }
 
 .task-card {
     background: white;
     border-radius: 6px;
-    margin-bottom: 8px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     display: flex;
-    align-items: center;
+    flex-direction: column;
     position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
+    height: 40px;
+    overflow: hidden;
     touch-action: none;
 }
 
 .task-card.dragging {
-    transform: scale(1.02);
+    height: auto;
+    min-height: 80px;
+    transform: none;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    opacity: 0.9;
     z-index: 1000;
 }
 
 .task-content {
+    padding: 8px;
     flex: 1;
-    padding: 12px;
     min-width: 0;
-    padding-right: 8px;
 }
 
 .task-title {
     font-weight: 500;
-    font-size: 14px;
-    margin-bottom: 4px;
+    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .task-description {
-    font-size: 12px;
+    font-size: 11px;
     color: #666;
-    white-space: nowrap;
+    display: none;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: 4px;
+}
+
+.task-card.dragging .task-description {
+    display: block;
 }
 
 .drag-handle {
-    padding: 12px 15px;
-    color: #ddd;
-    cursor: grab;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
-    flex-shrink: 0;
+    color: #ddd;
+    cursor: grab;
     touch-action: none;
-}
-
-.drag-handle i {
-    pointer-events: none;
 }
 
 .drag-handle:active {
     cursor: grabbing;
+}
+
+.status-column:empty,
+.status-column:has(.status-container:empty) {
+    min-height: 40px;
+}
+
+.status-column:has(.status-container:not(:empty))) {
+    flex: 2 1 auto;
 }
 
 .todo .status-header { background: #e3f2fd; color: #1976d2; }
@@ -124,21 +144,14 @@ body {
 @media (max-width: 600px) {
     .kanban-board {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto 1fr;
-    }
-    
-    .status-column {
-        height: auto;
-        min-height: 120px;
+        grid-auto-rows: min-content;
     }
     
     .status-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
     
-    .task-card {
-        flex: 1 1 100%;
+    .status-column {
+        min-height: 60px;
     }
 }
