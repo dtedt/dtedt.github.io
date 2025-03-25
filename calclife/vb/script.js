@@ -1,3 +1,4 @@
+// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const board = document.querySelector('.kanban-board');
     let draggedItem = null;
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function startDrag(e) {
         e.preventDefault();
         draggedItem = e.currentTarget;
+        draggedItem.classList.add('expanded'); // Show description when dragging
         
         const isTouch = e.type === 'touchstart';
         const clientX = isTouch ? e.touches[0].clientX : e.clientX;
@@ -38,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         offsetX = clientX - rect.left;
         offsetY = clientY - rect.top;
         
-        // Minimal style changes for performance
         draggedItem.classList.add('dragging');
         draggedItem.style.position = 'fixed';
         draggedItem.style.width = `${rect.width}px`;
@@ -47,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         draggedItem.style.zIndex = '1000';
         draggedItem.style.pointerEvents = 'none';
         
-        // Use passive events where possible
         if (isTouch) {
             document.addEventListener('touchmove', handleDragMove, { passive: false });
             document.addEventListener('touchend', endDrag);
@@ -65,21 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const clientX = isTouch ? e.touches[0].clientX : e.clientX;
         const clientY = isTouch ? e.touches[0].clientY : e.clientY;
         
-        // Update position directly without transforms
         draggedItem.style.left = `${clientX - offsetX}px`;
         draggedItem.style.top = `${clientY - offsetY}px`;
         
-        // Highlight potential drop targets
         highlightDropTarget(clientX, clientY);
     }
 
     function highlightDropTarget(x, y) {
-        // Clear previous target
         document.querySelectorAll('.status-header').forEach(header => {
             header.classList.remove('drop-target');
         });
         
-        // Find and highlight new target
         const element = document.elementFromPoint(x, y);
         const header = element?.closest('.status-header');
         if (header) {
@@ -118,13 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const clientX = isTouch ? e.changedTouches[0].clientX : e.clientX;
         const clientY = isTouch ? e.changedTouches[0].clientY : e.clientY;
         
-        // Clear drop target highlighting
         document.querySelectorAll('.status-header').forEach(header => {
             header.classList.remove('drop-target');
         });
         
-        // Reset styles
-        draggedItem.classList.remove('dragging');
+        draggedItem.classList.remove('dragging', 'expanded'); // Remove expanded class when done
         draggedItem.style.position = '';
         draggedItem.style.left = '';
         draggedItem.style.top = '';
@@ -132,20 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
         draggedItem.style.width = '';
         draggedItem.style.pointerEvents = '';
         
-        // Find drop container
         const element = document.elementFromPoint(clientX, clientY);
         const dropHeader = element?.closest('.status-header');
         const dropContainer = dropHeader 
             ? dropHeader.closest('.status-column').querySelector('.status-container')
             : element?.closest('.status-container');
         
-        // Move to new container if valid
         if (dropContainer) {
             dropContainer.appendChild(draggedItem);
             updateLayout();
         }
         
-        // Clean up event listeners
         document.removeEventListener('mousemove', handleDragMove);
         document.removeEventListener('touchmove', handleDragMove);
         document.removeEventListener('mouseup', endDrag);
