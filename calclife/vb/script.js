@@ -1,47 +1,24 @@
-// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const board = document.querySelector('.kanban-board');
     let draggedItem = null;
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let offsetX = 0;
-    let offsetY = 0;
-// script.js
-document.addEventListener('DOMContentLoaded', () => {
-    // ... (keep previous variable declarations and init code) ...
+    let isTap = false;
+    let tapTimer = null;
+    const tapDelay = 200; // ms to consider as tap vs drag
 
-    function startDrag(e) {
-        e.preventDefault();
-        draggedItem = e.currentTarget;
-        draggedItem.classList.add('expanded', 'dragging'); // Add expanded class
-        
-        // ... (rest of startDrag implementation) ...
-    }
-
-    function endDrag(e) {
-        if (!draggedItem) return;
-        
-        // ... (existing endDrag code) ...
-        
-        draggedItem.classList.remove('dragging', 'expanded'); // Remove expanded class
-        
-        // ... (rest of endDrag implementation) ...
-    }
-
-    // ... (rest of your JavaScript) ...
-});
-    // Initialize drag and drop
     initDragAndDrop();
     updateLayout();
 
     function initDragAndDrop() {
-        // Add event listeners to all task cards
         document.querySelectorAll('.task-card').forEach(card => {
-            card.addEventListener('mousedown', startDrag);
-            card.addEventListener('touchstart', startDrag, { passive: false });
+            card.addEventListener('mousedown', handlePointerStart);
+            card.addEventListener('touchstart', handlePointerStart, { passive: false });
         });
 
-        // Add drop target listeners to headers
+        document.addEventListener('mousemove', handlePointerMove);
+        document.addEventListener('touchmove', handlePointerMove, { passive: false });
+        document.addEventListener('mouseup', handlePointerEnd);
+        document.addEventListener('touchend', handlePointerEnd);
+
         document.querySelectorAll('.status-header').forEach(header => {
             header.addEventListener('dragover', handleDragOver);
             header.addEventListener('dragenter', handleDragEnter);
@@ -50,18 +27,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function startDrag(e) {
+    function handlePointerStart(e) {
         e.preventDefault();
         draggedItem = e.currentTarget;
-        draggedItem.classList.add('expanded'); // Show description when dragging
+        isTap = true;
         
+        // Start timer to distinguish between tap and drag
+        tapTimer = setTimeout(() => {
+            if (isTap) {
+                draggedItem.classList.add('expanded');
+            }
+        }, tapDelay);
+
         const isTouch = e.type === 'touchstart';
         const clientX = isTouch ? e.touches[0].clientX : e.clientX;
         const clientY = isTouch ? e.touches[0].clientY : e.clientY;
         
         const rect = draggedItem.getBoundingClientRect();
-        offsetX = clientX - rect.left;
-        offsetY = clientY - rect.top;
+        draggedItem._offsetX = clientX - rect.left;
+        draggedItem._offsetY = clientY - rect.top;
         
         draggedItem.classList.add('dragging');
         draggedItem.style.position = 'fixed';
@@ -70,28 +54,68 @@ document.addEventListener('DOMContentLoaded', () => {
         draggedItem.style.top = `${rect.top}px`;
         draggedItem.style.zIndex = '1000';
         draggedItem.style.pointerEvents = 'none';
-        
-        if (isTouch) {
-            document.addEventListener('touchmove', handleDragMove, { passive: false });
-            document.addEventListener('touchend', endDrag);
-        } else {
-            document.addEventListener('mousemove', handleDragMove);
-            document.addEventListener('mouseup', endDrag);
-        }
     }
 
-    function handleDragMove(e) {
+    function handlePointerMove(e) {
         if (!draggedItem) return;
         e.preventDefault();
+        
+        // If we moved enough, it's a drag not a tap
+        if (isTap && (Math.abs(e.movementX) > 5 || Math.abs(e.movementY) > 5) {
+            isTap = false;
+            clearTimeout(tapTimer);
+            draggedItem.classList.add('expanded');
+        }
         
         const isTouch = e.type === 'touchmove';
         const clientX = isTouch ? e.touches[0].clientX : e.clientX;
         const clientY = isTouch ? e.touches[0].clientY : e.clientY;
         
-        draggedItem.style.left = `${clientX - offsetX}px`;
-        draggedItem.style.top = `${clientY - offsetY}px`;
+        draggedItem.style.left = `${clientX - draggedItem._offsetX}px`;
+        draggedItem.style.top = `${clientY - draggedItem._offsetY}px`;
         
         highlightDropTarget(clientX, clientY);
+    }
+
+    function handlePointerEnd(e) {
+        if (!draggedItem) return;
+        
+        clearTimeout(tapTimer);
+        
+        if (isTap) {
+            // It was a tap - toggle description
+            draggedItem.classList.toggle('expanded');
+        }
+        
+        const isTouch = e.type === 'touchend';
+        const clientX = isTouch ? e.changedTouches[0].clientX : e.clientX;
+        const clientY = isTouch ? e.changedTouches[0].clientY : e.clientY;
+        
+        document.querySelectorAll('.status-header').forEach(header => {
+            header.classList.remove('drop-target');
+        });
+        
+        draggedItem.classList.remove('dragging');
+        draggedItem.style.position = '';
+        draggedItem.style.left = '';
+        draggedItem.style.top = '';
+        draggedItem.style.zIndex = '';
+        draggedItem.style.width = '';
+        draggedItem.style.pointerEvents = '';
+        
+        const element = document.elementFromPoint(clientX, clientY);
+        const dropHeader = element?.closest('.status-header');
+        const dropContainer = dropHeader 
+            ? dropHeader.closest('.status-column').querySelector('.status-container')
+            : element?.closest('.status-container');
+        
+        if (dropContainer) {
+            dropContainer.appendChild(draggedItem);
+            updateLayout();
+        }
+        
+        draggedItem = null;
+        isTap = false;
     }
 
     function highlightDropTarget(x, y) {
@@ -130,43 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function endDrag(e) {
-        if (!draggedItem) return;
-        
-        const isTouch = e.type === 'touchend';
-        const clientX = isTouch ? e.changedTouches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.changedTouches[0].clientY : e.clientY;
-        
-        document.querySelectorAll('.status-header').forEach(header => {
-            header.classList.remove('drop-target');
-        });
-        
-        draggedItem.classList.remove('dragging', 'expanded'); // Remove expanded class when done
-        draggedItem.style.position = '';
-        draggedItem.style.left = '';
-        draggedItem.style.top = '';
-        draggedItem.style.zIndex = '';
-        draggedItem.style.width = '';
-        draggedItem.style.pointerEvents = '';
-        
-        const element = document.elementFromPoint(clientX, clientY);
-        const dropHeader = element?.closest('.status-header');
-        const dropContainer = dropHeader 
-            ? dropHeader.closest('.status-column').querySelector('.status-container')
-            : element?.closest('.status-container');
-        
-        if (dropContainer) {
-            dropContainer.appendChild(draggedItem);
-            updateLayout();
-        }
-        
-        document.removeEventListener('mousemove', handleDragMove);
-        document.removeEventListener('touchmove', handleDragMove);
-        document.removeEventListener('mouseup', endDrag);
-        document.removeEventListener('touchend', endDrag);
-        draggedItem = null;
-    }
-
     function updateLayout() {
         document.querySelectorAll('.status-column').forEach(column => {
             const container = column.querySelector('.status-container');
@@ -176,4 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
             container.classList.toggle('compact', taskCount > 3);
         });
     }
+
+    // Close expanded cards when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.task-card.expanded')) {
+            document.querySelectorAll('.task-card.expanded').forEach(card => {
+                card.classList.remove('expanded');
+            });
+        }
+    });
 });
