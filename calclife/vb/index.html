@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobile Kanban Board</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,13 +12,19 @@
         <div class="status-column todo">
             <div class="status-header">To Do</div>
             <div class="status-container" id="todo">
-                <div class="task-card" draggable="true" data-id="1">
-                    <div class="task-title">Design homepage</div>
-                    <div class="task-description">Create wireframes for new homepage layout</div>
+                <div class="task-card" data-id="1">
+                    <div class="task-content">
+                        <div class="task-title">Design homepage</div>
+                        <div class="task-description">Create wireframes for new homepage layout</div>
+                    </div>
+                    <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
                 </div>
-                <div class="task-card" draggable="true" data-id="2">
-                    <div class="task-title">Research competitors</div>
-                    <div class="task-description">Analyze 3 main competitors' features</div>
+                <div class="task-card" data-id="2">
+                    <div class="task-content">
+                        <div class="task-title">Research competitors</div>
+                        <div class="task-description">Analyze 3 main competitors' features</div>
+                    </div>
+                    <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
                 </div>
             </div>
         </div>
@@ -25,9 +32,12 @@
         <div class="status-column now">
             <div class="status-header">Now</div>
             <div class="status-container" id="now">
-                <div class="task-card" draggable="true" data-id="3">
-                    <div class="task-title">Implement auth</div>
-                    <div class="task-description">Set up user authentication system</div>
+                <div class="task-card" data-id="3">
+                    <div class="task-content">
+                        <div class="task-title">Implement auth</div>
+                        <div class="task-description">Set up user authentication system</div>
+                    </div>
+                    <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
                 </div>
             </div>
         </div>
@@ -35,32 +45,7 @@
         <div class="status-column progress">
             <div class="status-header">In Progress</div>
             <div class="status-container" id="progress">
-                <div class="task-card" draggable="true" data-id="4">
-                    <div class="task-title">API endpoints</div>
-                    <div class="task-description">Create product API endpoints</div>
-                </div>
-                <div class="task-card" draggable="true" data-id="5">
-                    <div class="task-title">Database schema</div>
-                    <div class="task-description">Design initial database structure</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="status-column done">
-            <div class="status-header">Done</div>
-            <div class="status-container" id="done">
-                <div class="task-card" draggable="true" data-id="6">
-                    <div class="task-title">Project setup</div>
-                    <div class="task-description">Initialize project repository</div>
-                </div>
-                <div class="task-card" draggable="true" data-id="7">
-                    <div class="task-title">Requirements</div>
-                    <div class="task-description">Gather initial requirements</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                <div class="task-card" data-id="4">
+                    <div class="task-content">
+                        <div class="task-title">API endpoints</div>
+                        <div class="task-description">Create product API endpoints</div>
