@@ -3,15 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let draggedItem = null;
     let isTap = false;
     let tapTimer = null;
-    const tapDelay = 200; // ms to consider as tap vs drag
-
-    initDragAndDrop();
-    updateLayout();
-document.addEventListener('DOMContentLoaded', () => {
-    const board = document.querySelector('.kanban-board');
-    let draggedItem = null;
-    let isTap = false;
-    let tapTimer = null;
     const tapDelay = 200;
     let dropIndicator = null;
 
@@ -36,13 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('touchmove', handlePointerMove, { passive: false });
         document.addEventListener('mouseup', handlePointerEnd);
         document.addEventListener('touchend', handlePointerEnd);
-
-        document.querySelectorAll('.status-header').forEach(header => {
-            header.addEventListener('dragover', handleDragOver);
-            header.addEventListener('dragenter', handleDragEnter);
-            header.addEventListener('dragleave', handleDragLeave);
-            header.addEventListener('drop', handleHeaderDrop);
-        });
 
         // Initialize drop indicator
         createDropIndicator();
@@ -98,34 +82,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateDropTarget(x, y) {
         // Hide all drop targets first
-        document.querySelectorAll('.status-header').forEach(header => {
-            header.classList.remove('drop-target');
-        });
         dropIndicator.style.display = 'none';
 
-        // Find the best drop target
+        // Find all elements at pointer position
         const elements = document.elementsFromPoint(x, y);
-        let bestTarget = null;
-        
+        let dropColumn = null;
+
+        // Find the nearest status column
         for (const element of elements) {
-            if (element.classList.contains('status-header')) {
-                bestTarget = element;
+            if (element.classList.contains('status-column')) {
+                dropColumn = element;
                 break;
             }
-            if (element.classList.contains('status-container')) {
-                const header = element.closest('.status-column')?.querySelector('.status-header');
-                if (header) {
-                    bestTarget = header;
-                    break;
-                }
+            const column = element.closest('.status-column');
+            if (column) {
+                dropColumn = column;
+                break;
             }
         }
 
-        if (bestTarget) {
-            bestTarget.classList.add('drop-target');
-            
-            // Position drop indicator
-            const rect = bestTarget.getBoundingClientRect();
+        if (dropColumn) {
+            // Position drop indicator on the column
+            const rect = dropColumn.getBoundingClientRect();
             dropIndicator.style.display = 'block';
             dropIndicator.style.left = `${rect.left}px`;
             dropIndicator.style.top = `${rect.top}px`;
@@ -152,20 +130,18 @@ document.addEventListener('DOMContentLoaded', () => {
         let dropContainer = null;
         
         for (const element of elements) {
-            if (element.classList.contains('status-header')) {
-                dropContainer = element.closest('.status-column')?.querySelector('.status-container');
+            if (element.classList.contains('status-column')) {
+                dropContainer = element.querySelector('.status-container');
                 break;
             }
-            if (element.classList.contains('status-container')) {
-                dropContainer = element;
+            const column = element.closest('.status-column');
+            if (column) {
+                dropContainer = column.querySelector('.status-container');
                 break;
             }
         }
 
         // Clean up
-        document.querySelectorAll('.status-header').forEach(header => {
-            header.classList.remove('drop-target');
-        });
         dropIndicator.style.display = 'none';
         
         draggedItem.classList.remove('dragging');
@@ -183,154 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         draggedItem = null;
         isTap = false;
-    }
-
-    // ... (rest of the functions remain the same) ...
-});
-    function initDragAndDrop() {
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.addEventListener('mousedown', handlePointerStart);
-            card.addEventListener('touchstart', handlePointerStart, { passive: false });
-        });
-
-        document.addEventListener('mousemove', handlePointerMove);
-        document.addEventListener('touchmove', handlePointerMove, { passive: false });
-        document.addEventListener('mouseup', handlePointerEnd);
-        document.addEventListener('touchend', handlePointerEnd);
-
-        document.querySelectorAll('.status-header').forEach(header => {
-            header.addEventListener('dragover', handleDragOver);
-            header.addEventListener('dragenter', handleDragEnter);
-            header.addEventListener('dragleave', handleDragLeave);
-            header.addEventListener('drop', handleHeaderDrop);
-        });
-    }
-
-    function handlePointerStart(e) {
-        e.preventDefault();
-        draggedItem = e.currentTarget;
-        isTap = true;
-        
-        // Start timer to distinguish between tap and drag
-        tapTimer = setTimeout(() => {
-            if (isTap) {
-                draggedItem.classList.add('expanded');
-            }
-        }, tapDelay);
-
-        const isTouch = e.type === 'touchstart';
-        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
-        
-        const rect = draggedItem.getBoundingClientRect();
-        draggedItem._offsetX = clientX - rect.left;
-        draggedItem._offsetY = clientY - rect.top;
-        
-        draggedItem.classList.add('dragging');
-        draggedItem.style.position = 'fixed';
-        draggedItem.style.width = `${rect.width}px`;
-        draggedItem.style.left = `${rect.left}px`;
-        draggedItem.style.top = `${rect.top}px`;
-        draggedItem.style.zIndex = '1000';
-        draggedItem.style.pointerEvents = 'none';
-    }
-
-    function handlePointerMove(e) {
-        if (!draggedItem) return;
-        e.preventDefault();
-        
-        // If we moved enough, it's a drag not a tap
-        if (isTap && (Math.abs(e.movementX) > 5 || Math.abs(e.movementY) > 5) {
-            isTap = false;
-            clearTimeout(tapTimer);
-            draggedItem.classList.add('expanded');
-        }
-        
-        const isTouch = e.type === 'touchmove';
-        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
-        
-        draggedItem.style.left = `${clientX - draggedItem._offsetX}px`;
-        draggedItem.style.top = `${clientY - draggedItem._offsetY}px`;
-        
-        highlightDropTarget(clientX, clientY);
-    }
-
-    function handlePointerEnd(e) {
-        if (!draggedItem) return;
-        
-        clearTimeout(tapTimer);
-        
-        if (isTap) {
-            // It was a tap - toggle description
-            draggedItem.classList.toggle('expanded');
-        }
-        
-        const isTouch = e.type === 'touchend';
-        const clientX = isTouch ? e.changedTouches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.changedTouches[0].clientY : e.clientY;
-        
-        document.querySelectorAll('.status-header').forEach(header => {
-            header.classList.remove('drop-target');
-        });
-        
-        draggedItem.classList.remove('dragging');
-        draggedItem.style.position = '';
-        draggedItem.style.left = '';
-        draggedItem.style.top = '';
-        draggedItem.style.zIndex = '';
-        draggedItem.style.width = '';
-        draggedItem.style.pointerEvents = '';
-        
-        const element = document.elementFromPoint(clientX, clientY);
-        const dropHeader = element?.closest('.status-header');
-        const dropContainer = dropHeader 
-            ? dropHeader.closest('.status-column').querySelector('.status-container')
-            : element?.closest('.status-container');
-        
-        if (dropContainer) {
-            dropContainer.appendChild(draggedItem);
-            updateLayout();
-        }
-        
-        draggedItem = null;
-        isTap = false;
-    }
-
-    function highlightDropTarget(x, y) {
-        document.querySelectorAll('.status-header').forEach(header => {
-            header.classList.remove('drop-target');
-        });
-        
-        const element = document.elementFromPoint(x, y);
-        const header = element?.closest('.status-header');
-        if (header) {
-            header.classList.add('drop-target');
-        }
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault();
-    }
-
-    function handleDragEnter(e) {
-        e.preventDefault();
-        e.currentTarget.classList.add('drop-target');
-    }
-
-    function handleDragLeave(e) {
-        e.currentTarget.classList.remove('drop-target');
-    }
-
-    function handleHeaderDrop(e) {
-        e.preventDefault();
-        e.currentTarget.classList.remove('drop-target');
-        
-        if (draggedItem) {
-            const container = e.currentTarget.closest('.status-column').querySelector('.status-container');
-            container.appendChild(draggedItem);
-            updateLayout();
-        }
     }
 
     function updateLayout() {
