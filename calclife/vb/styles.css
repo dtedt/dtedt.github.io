@@ -4,10 +4,8 @@
     padding: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
 }
 
 body {
@@ -16,7 +14,6 @@ body {
     overflow: hidden;
     background: #f5f5f5;
     padding: 10px;
-    touch-action: none;
 }
 
 .kanban-board {
@@ -24,9 +21,24 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-auto-rows: min-content;
     gap: 10px;
-    height: calc(100vh - 20px);
+    height: 100%;
     width: 100%;
     align-items: start;
+}
+
+/* Base category styles */
+.status-column {
+    background: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    min-height: 50px;
+    transition: all 0.2s ease;
+}
+
+/* Empty category */
+.status-column.empty {
+    min-height: 40px;
+    flex: 0.5;
 }
 
 .status-header {
@@ -36,129 +48,85 @@ body {
     font-size: 14px;
     background: white;
     border-radius: 8px 8px 0 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 2;
 }
 
-.status-column {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    min-height: 50px;
-    transition: all 0.3s ease;
-    background: #f0f0f0;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.status-container {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+    grid-template-columns: 1fr;
 }
 
-/* Empty state */
-.status-column.empty {
-    flex: 0.5;
-    min-height: 30px;
+/* Large cards (for columns with ≤3 tasks) */
+.status-container:not(.compact) .task-card {
+    height: 80px;
+    padding: 12px;
 }
 
-.status-column.empty .status-container {
+/* Small cards (for columns with >3 tasks) */
+.status-container.compact {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+
+.status-container.compact .task-card {
+    height: 80px;
+    width: 80px;
+    padding: 8px;
+    aspect-ratio: 1;
+}
+
+.status-container.compact .task-description,
+.status-container.compact .drag-handle {
     display: none;
 }
 
-.status-container {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: min-content;
-    gap: 6px;
-    padding: 8px;
-    min-height: 40px;
-    align-content: start;
-    overflow-y: auto;
-    max-height: calc(100vh - 100px);
-}
-
-/* Compact state (3+ tasks) */
-.status-column.compact .status-container {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-}
-
-.status-column.compact .task-card {
-    height: 30px !important;
-    min-height: 30px !important;
-    margin-bottom: 4px;
-}
-
-.status-column.compact .task-content {
-    padding: 4px 6px !important;
-}
-
-.status-column.compact .task-title {
-    font-size: 10px !important;
-    margin-bottom: 0 !important;
-}
-
-.status-column.compact .task-description,
-.status-column.compact .drag-handle {
-    display: none !important;
+.status-container.compact .task-title {
+    font-size: 11px;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .task-card {
     background: white;
-    border-radius: 4px;
+    border-radius: 6px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
     position: relative;
-    transition: all 0.3s ease;
-    height: 60px;
     overflow: hidden;
     touch-action: none;
 }
 
-.task-card.dragging {
-    height: auto;
-    min-height: 80px;
-    transform: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 1000;
-}
-
-.task-content {
-    padding: 8px;
-    flex: 1;
-    min-width: 0;
-}
-
 .task-title {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 13px;
+    margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 4px;
 }
 
 .task-description {
-    font-size: 10px;
+    font-size: 11px;
     color: #666;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .drag-handle {
     position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ddd;
+    right: 8px;
+    top: 8px;
+    width: 16px;
+    height: 16px;
+    background: #eee;
+    border-radius: 3px;
     cursor: grab;
-    touch-action: none;
 }
 
 .drag-handle:active {
@@ -171,23 +139,13 @@ body {
 .progress .status-header { background: #e8f5e9; color: #388e3c; }
 .done .status-header { background: #f3e5f5; color: #8e24aa; }
 
-/* Responsive layout */
-@media (max-width: 800px) {
-    .kanban-board {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-    
-    .status-column.compact .status-container {
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    }
-}
-
+/* Mobile layout */
 @media (max-width: 600px) {
     .kanban-board {
         grid-template-columns: 1fr;
     }
     
-    .status-column.compact .status-container {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    .status-container.compact {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     }
 }
