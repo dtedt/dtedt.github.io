@@ -1,218 +1,154 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const containers = document.querySelectorAll('.status-container');
-    const dragHandles = document.querySelectorAll('.drag-handle');
     const board = document.querySelector('.kanban-board');
-
-    let draggedItem = null;
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let initialX = 0;
-    let initialY = 0;
-    let originalContainer = null;
-    let originalIndex = 0;
-
-    // Initialize responsive layout
+    const columns = document.querySelectorAll('.status-column');
+    
+    // Initialize drag functionality
+    initDragAndDrop();
+    
+    // Set up initial layout
     updateLayout();
     window.addEventListener('resize', updateLayout);
-
-    // Drag handle events
-    dragHandles.forEach(handle => {
-        const card = handle.parentElement;
-
-        handle.addEventListener('touchstart', handleDragStart);
-        card.addEventListener('touchstart', handleDragStart);
-
-        handle.addEventListener('mousedown', handleDragStart);
-        card.addEventListener('mousedown', handleDragStart);
-    });
-
-    function handleDragStart(e) {
-        e.preventDefault();
+    
+    function initDragAndDrop() {
+        let draggedItem = null;
         
-        draggedItem = e.target.closest('.task-card');
-        if (!draggedItem) return;
-
-        // Store initial positions
-        if (e.type === 'touchstart') {
-            dragStartX = e.touches[0].clientX;
-            dragStartY = e.touches[0].clientY;
-        } else {
-            dragStartX = e.clientX;
-            dragStartY = e.clientY;
+        document.querySelectorAll('.task-card').forEach(card => {
+            card.addEventListener('mousedown', startDrag);
+            card.addEventListener('touchstart', startDrag, { passive: false });
+        });
+        
+        function startDrag(e) {
+            e.preventDefault();
+            draggedItem = e.currentTarget;
+            
+            // Set up drag styles
+            draggedItem.style.position = 'fixed';
+            draggedItem.style.zIndex = '1000';
+            draggedItem.style.width = `${draggedItem.offsetWidth}px`;
+            draggedItem.style.pointerEvents = 'none';
+            draggedItem.style.transform = 'scale(1.05)';
+            
+            // Set initial position
+            const rect = draggedItem.getBoundingClientRect();
+            draggedItem.startX = e.clientX || e.touches[0].clientX;
+            draggedItem.startY = e.clientY || e.touches[0].clientY;
+            draggedItem.offsetX = draggedItem.startX - rect.left;
+            draggedItem.offsetY = draggedItem.startY - rect.top;
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
         }
-
-        const rect = draggedItem.getBoundingClientRect();
-        initialX = rect.left;
-        initialY = rect.top;
-        originalContainer = draggedItem.parentElement;
-        originalIndex = Array.from(originalContainer.children).indexOf(draggedItem);
-
-        // Expand card for dragging
-        draggedItem.classList.add('dragging');
-        draggedItem.style.height = 'auto';
-        draggedItem.style.minHeight = '80px';
-        draggedItem.querySelector('.task-description').style.display = '-webkit-box';
-        draggedItem.style.position = 'fixed';
-        draggedItem.style.width = `${rect.width}px`;
-        draggedItem.style.left = `${rect.left}px`;
-        draggedItem.style.top = `${rect.top}px`;
-        draggedItem.style.zIndex = '1000';
-        draggedItem.style.pointerEvents = 'none';
-
-        // Add event listeners
-        document.addEventListener('touchmove', handleDragMove);
-        document.addEventListener('touchend', handleDragEnd);
-        document.addEventListener('mousemove', handleDragMove);
-        document.addEventListener('mouseup', handleDragEnd);
-    }
-
-    function handleDragMove(e) {
-        if (!draggedItem) return;
-        e.preventDefault();
-
-        // Get current position
-        let clientX, clientY;
-        if (e.type === 'touchmove') {
-            clientX = e.touches[0].clientX;
-            clientY = e.touches[0].clientY;
-        } else {
-            clientX = e.clientX;
-            clientY = e.clientY;
+        
+        function drag(e) {
+            if (!draggedItem) return;
+            e.preventDefault();
+            
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            
+            draggedItem.style.left = `${clientX - draggedItem.offsetX}px`;
+            draggedItem.style.top = `${clientY - draggedItem.offsetY}px`;
         }
-
-        // Calculate movement
-        const deltaX = clientX - dragStartX;
-        const deltaY = clientY - dragStartY;
-
-        // Update position
-        draggedItem.style.left = `${initialX + deltaX}px`;
-        draggedItem.style.top = `${initialY + deltaY}px`;
-
-        // Check if we need to auto-scroll
-        checkAutoScroll(clientY);
-    }
-
-    function handleDragEnd(e) {
-        if (!draggedItem) return;
-        e.preventDefault();
-
-        // Get drop position
-        let clientX, clientY;
-        if (e.type === 'touchend') {
-            clientX = e.changedTouches[0].clientX;
-            clientY = e.changedTouches[0].clientY;
-        } else {
-            clientX = e.clientX;
-            clientY = e.clientY;
-        }
-
-        // Reset card styles
-        resetCardStyles();
-
-        // Find drop target
-        const dropTarget = document.elementFromPoint(clientX, clientY);
-        const dropContainer = findDropContainer(dropTarget);
-
-        // Move card to new position
-        if (dropContainer) {
-            const afterElement = getDragAfterElement(dropContainer, clientY);
-            if (afterElement) {
-                dropContainer.insertBefore(draggedItem, afterElement);
-            } else {
+        
+        function endDrag(e) {
+            if (!draggedItem) return;
+            
+            const clientX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+            const clientY = e.clientY || (e.changedTouches && e.changedTouches[0].clientY);
+            
+            // Find drop target
+            const dropTarget = document.elementFromPoint(clientX, clientY);
+            const dropContainer = findDropContainer(dropTarget);
+            
+            // Reset styles
+            draggedItem.style.position = '';
+            draggedItem.style.left = '';
+            draggedItem.style.top = '';
+            draggedItem.style.zIndex = '';
+            draggedItem.style.width = '';
+            draggedItem.style.pointerEvents = '';
+            draggedItem.style.transform = '';
+            
+            // Move to new container if valid
+            if (dropContainer) {
                 dropContainer.appendChild(draggedItem);
             }
-        } else {
-            // Return to original position if drop is invalid
-            originalContainer.insertBefore(draggedItem, originalContainer.children[originalIndex]);
-        }
-
-        // Update layout
-        setTimeout(updateLayout, 10);
-
-        // Clean up
-        cleanup();
-    }
-
-    function resetCardStyles() {
-        draggedItem.style.position = '';
-        draggedItem.style.width = '';
-        draggedItem.style.left = '';
-        draggedItem.style.top = '';
-        draggedItem.style.zIndex = '';
-        draggedItem.style.pointerEvents = '';
-        draggedItem.style.height = '';
-        draggedItem.style.minHeight = '';
-        draggedItem.querySelector('.task-description').style.display = '';
-        draggedItem.classList.remove('dragging');
-    }
-
-    function cleanup() {
-        if (!draggedItem) return;
-        
-        draggedItem = null;
-        document.removeEventListener('touchmove', handleDragMove);
-        document.removeEventListener('touchend', handleDragEnd);
-        document.removeEventListener('mousemove', handleDragMove);
-        document.removeEventListener('mouseup', handleDragEnd);
-    }
-
-    function findDropContainer(element) {
-        while (element && !element.classList.contains('status-container')) {
-            element = element.parentElement;
-            if (!element || element === document.body) return null;
-        }
-        return element;
-    }
-
-    function getDragAfterElement(container, y) {
-        const cards = [...container.querySelectorAll('.task-card:not(.dragging)')];
-        
-        return cards.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
             
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            } else {
-                return closest;
-            }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-    }
-
-    function checkAutoScroll(y) {
-        const scrollThreshold = 50;
-        const scrollSpeed = 10;
+            // Update layout
+            updateLayout();
+            
+            // Clean up
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('mouseup', endDrag);
+            document.removeEventListener('touchend', endDrag);
+            draggedItem = null;
+        }
         
-        containers.forEach(container => {
-            const rect = container.getBoundingClientRect();
-            // Check if near top
-            if (y < rect.top + scrollThreshold) {
-                container.scrollTop -= scrollSpeed;
+        function findDropContainer(element) {
+            while (element && !element.classList.contains('status-container')) {
+                element = element.parentElement;
             }
-            // Check if near bottom
-            else if (y > rect.bottom - scrollThreshold) {
-                container.scrollTop += scrollSpeed;
-            }
-        });
+            return element;
+        }
     }
-
+    
     function updateLayout() {
-        // Update empty states
-        document.querySelectorAll('.status-column').forEach(column => {
+        // Update each column's state
+        columns.forEach(column => {
             const container = column.querySelector('.status-container');
-            const isEmpty = container.children.length === 0;
+            const taskCount = container.children.length;
             
-            column.classList.toggle('empty', isEmpty);
+            // Update empty state
+            column.classList.toggle('empty', taskCount === 0);
             
-            // Force compact mode for columns with 3+ tasks
-            const shouldCompact = container.children.length >= 3;
-            column.classList.toggle('compact', shouldCompact);
+            // Update compact state
+            container.classList.toggle('compact', taskCount > 3);
         });
         
-        // Adjust board columns based on available space
-        const boardWidth = board.clientWidth;
-        const minColumnWidth = 200;
-        const maxColumns = Math.min(Math.floor(boardWidth / minColumnWidth), 4);
-        board.style.gridTemplateColumns = `repeat(${maxColumns}, minmax(${minColumnWidth}px, 1fr))`;
+        // Check if we need to consolidate columns
+        const visibleColumns = Array.from(columns).filter(col => !col.classList.contains('empty'));
+        
+        if (visibleColumns.length > 3 && window.innerHeight < 600) {
+            // Find two emptiest columns (excluding already empty ones)
+            const sortedColumns = Array.from(columns)
+                .filter(col => !col.classList.contains('empty'))
+                .sort((a, b) => {
+                    return a.querySelector('.status-container').children.length - 
+                           b.querySelector('.status-container').children.length;
+                });
+            
+            if (sortedColumns.length >= 2) {
+                // Create a consolidated row
+                const consolidatedRow = document.createElement('div');
+                consolidatedRow.className = 'consolidated-row';
+                consolidatedRow.style.gridColumn = '1 / -1';
+                consolidatedRow.style.display = 'grid';
+                consolidatedRow.style.gridTemplateColumns = '1fr 1fr';
+                consolidatedRow.style.gap = '10px';
+                
+                // Move the two emptiest columns into the consolidated row
+                sortedColumns[0].style.gridColumn = '';
+                sortedColumns[1].style.gridColumn = '';
+                consolidatedRow.appendChild(sortedColumns[0]);
+                consolidatedRow.appendChild(sortedColumns[1]);
+                board.appendChild(consolidatedRow);
+            }
+        } else {
+            // Remove any existing consolidation
+            document.querySelectorAll('.consolidated-row').forEach(row => {
+                while (row.firstChild) {
+                    board.appendChild(row.firstChild);
+                }
+                row.remove();
+            });
+            
+            // Reset all columns to normal flow
+            columns.forEach(col => {
+                col.style.gridColumn = '';
+            });
+        }
     }
 });
