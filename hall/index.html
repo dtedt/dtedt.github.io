@@ -5,13 +5,30 @@
   <title>Hallway Explorer</title>
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <style>
-    body { margin: 0; overflow: hidden; touch-action: none; }
-    canvas { width: 100%; height: 100%; display: block; }
+    body { 
+      margin: 0; 
+      overflow: hidden; 
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: none;
+    }
+    canvas { 
+      width: 100%; 
+      height: 100%; 
+      display: block; 
+      touch-action: none;
+    }
     #view-label {
-      position: absolute; bottom: 20px; left: 50%; 
-      transform: translateX(-50%); color: white; 
-      font-family: Arial; background: rgba(0,0,0,0.5); 
-      padding: 5px 10px; border-radius: 5px;
+      position: absolute; 
+      bottom: 20px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      color: white; 
+      font-family: Arial; 
+      background: rgba(0,0,0,0.5); 
+      padding: 5px 10px; 
+      border-radius: 5px;
       pointer-events: none;
     }
   </style>
@@ -29,11 +46,16 @@
     // View label
     const viewLabel = document.getElementById("view-label");
 
+    // Lighting
+    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);  
+    light.intensity = 0.8;  
+
+
     // --- Camera System ---
     let activeCamera;
     let isTransitioning = false;
 
-    // First-person camera (original movement)
+    // First-person camera
     const fpsCamera = new BABYLON.UniversalCamera("fpsCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
     fpsCamera.attachControl(canvas, true);
     fpsCamera.applyGravity = false;
@@ -53,7 +75,7 @@
     activeCamera = fpsCamera;
     scene.activeCamera = fpsCamera;
 
-    // --- Materials (Original Style) ---
+    // --- Materials ---
     const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
     floorMat.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
 
@@ -144,31 +166,57 @@
       createDoor(segment.x2, segment.z2, segment.rotation);
     });
 
-    // --- Input Handling ---
-    let touchStartTime = 0;
-    let holdTimeout;
-    const holdThreshold = 500; // 0.5s to trigger
+    // --- Triple-Tap Detection ---
+    let lastTapTime = 0;
+    let tapCount = 0;
+    const tripleTapThreshold = 300; // ms between taps
+
+    canvas.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      const currentTime = Date.now();
+      
+      if (currentTime - lastTapTime < tripleTapThreshold) {
+        tapCount++;
+      } else {
+        tapCount = 1;
+      }
+      lastTapTime = currentTime;
+
+      if (tapCount === 3) {
+        tapCount = 0;
+        toggleCameraView();
+      }
+
+      // Store for swipe detection
+      touchStartX = e.clientX;
+      touchStartY = e.clientY;
+    }, { passive: false });
+
+    // --- Camera Toggle ---
+    function toggleCameraView() {
+      if (isTransitioning) return;
+      
+      if (activeCamera === fpsCamera) {
+        viewLabel.textContent = "Map View";
+        godCamera.target = fpsCamera.position.clone();
+        godCamera.radius = 20;
+        scene.activeCamera = godCamera;
+        activeCamera = godCamera;
+      } else {
+        viewLabel.textContent = "First-Person View";
+        scene.activeCamera = fpsCamera;
+        activeCamera = fpsCamera;
+      }
+    }
+
+    // --- Swipe Controls ---
+    let touchStartX = 0;
+    let touchStartY = 0;
     let isTurning = false;
     const turnSpeed = 300;
 
-    canvas.addEventListener("pointerdown", (e) => {
-      touchStartTime = Date.now();
-      holdTimeout = setTimeout(switchToGodView, holdThreshold);
-      touchStartX = e.clientX;
-      touchStartY = e.clientY;
-    }, { passive: true });
-
     canvas.addEventListener("pointerup", (e) => {
-      clearTimeout(holdTimeout);
-      
-      if (activeCamera === godCamera) {
-        if (Date.now() - touchStartTime < holdThreshold * 1.5) {
-          switchToFPSView();
-        }
-        return;
-      }
-
-      // Original swipe controls
+      if (activeCamera !== fpsCamera) return;
       if (isTurning) return;
       
       const deltaX = e.clientX - touchStartX;
@@ -184,7 +232,7 @@
       }
     }, { passive: true });
 
-    // Movement functions (original grid-based)
+    // Movement functions
     function swipeDown() {
       const forward = fpsCamera.getDirection(BABYLON.Axis.Z).scale(cellSize);
       const newPos = fpsCamera.position.add(forward);
@@ -223,40 +271,6 @@
         else if (onComplete) onComplete();
       };
       animate();
-    }
-
-    // Camera transitions
-    function switchToGodView() {
-      if (isTransitioning || activeCamera === godCamera) return;
-      
-      isTransitioning = true;
-      viewLabel.textContent = "Map View";
-      
-      // Position god camera above player
-      godCamera.target = fpsCamera.position.clone();
-      godCamera.radius = 20;
-      godCamera.alpha = -Math.PI/2;
-      godCamera.beta = Math.PI/2;
-      
-      scene.activeCamera = godCamera;
-      activeCamera = godCamera;
-      isTransitioning = false;
-    }
-
-    function switchToFPSView() {
-      if (isTransitioning || activeCamera === fpsCamera) return;
-      
-      isTransitioning = true;
-      viewLabel.textContent = "First-Person View";
-      
-      BABYLON.Animation.CreateAndStartAnimation(
-        "cameraTransition", godCamera, "radius", 
-        60, 10, godCamera.radius, 2, 0, 1, () => {
-          scene.activeCamera = fpsCamera;
-          activeCamera = fpsCamera;
-          isTransitioning = false;
-        }
-      );
     }
 
     // Run the engine
