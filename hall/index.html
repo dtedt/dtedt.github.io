@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hallway Explorer</title>
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; touch-action: none; }
+    canvas { width: 100%; height: 100%; display: block; }
+    #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-family: Arial; }
+  </style>
+</head>
+<body>
+  <div id="loading">Loading...</div>
+  <canvas id="renderCanvas"></canvas>
+  <script>
+    // Wait for Babylon.js to load
+    window.addEventListener('DOMContentLoaded', function() {
+      // Initialize Babylon.js
+      const canvas = document.getElementById("renderCanvas");
+      const engine = new BABYLON.Engine(canvas, true);
+      const scene = new BABYLON.Scene(engine);
+      scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.15);
+
+      // Remove loading text
+      document.getElementById("loading").style.display = "none";
+
+      // Camera (First-Person)
+      const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 1.6, 0), scene);
+      camera.attachControl(canvas, true);
+      camera.applyGravity = false;
+      camera.ellipsoid = new BABYLON.Vector3(0.5, 1.6, 0.5);
+      camera.minZ = 0.1;
+      camera.speed = 0;
+      camera.angularSensibility = 0; // Disable default mouse look
+
+      // Lighting
+      const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+      light.intensity = 0.8;
+
+      // Materials
+      const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
+      floorMat.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+
+      const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
+      wallMat.diffuseColor = new BABYLON.Color3(0.6, 0.8, 0.9);
+
+      const moldingMat = new BABYLON.StandardMaterial("moldingMat", scene);
+      moldingMat.diffuseColor = new BABYLON.Color3(0.9, 0.9, 0.7);
+
+      const doorMat = new BABYLON.StandardMaterial("doorMat", scene);
+      doorMat.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.1);
+
+      const carpetMat = new BABYLON.StandardMaterial("carpetMat", scene);
+      carpetMat.diffuseColor = new BABYLON.Color3(0.8, 0.1, 0.1);
+
+      // Grid Setup (5x5)
+      const gridSize = 5;
+      const cellSize = 2;
+      const wallHeight = 3;
+
+      // Helper: Create a wall with molding
+      function createWall(x, z, rotationY) {
+        // Main wall
+        const wall = BABYLON.MeshBuilder.CreateBox("wall", { 
+          width: 0.1, 
+          height: wallHeight, 
+          depth: cellSize 
+        }, scene);
+        wall.position = new BABYLON.Vector3(x, wallHeight/2, z);
+        wall.rotation.y = rotationY;
+        wall.material = wallMat;
+
+        // Wall molding (decorative stripe)
+        const molding = BABYLON.MeshBuilder.CreateBox("molding", {
+          width: 0.11,
+          height: 0.1,
+          depth: cellSize * 0.98
+        }, scene);
+        molding.position = new BABYLON.Vector3(x, wallHeight * 0.7, z);
+        molding.rotation.y = rotationY;
+        molding.material = moldingMat;
+        
+        return wall;
+      }
+
+      // Helper: Create a door
+      function createDoor(x, z, rotationY) {
+        const door = BABYLON.MeshBuilder.CreateBox("door", { 
+          width: 0.11, 
+          height: wallHeight-0.5, 
+          depth: 0.8 
+        }, scene);
+        door.position = new BABYLON.Vector3(x, (wallHeight-0.5)/2, z);
+        door.rotation.y = rotationY;
+        door.material = doorMat;
+        return door;
+      }
+
+      // Build the grid
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          // Floor
+          const floor = BABYLON.MeshBuilder.CreateGround("floor", { 
+            width: cellSize, 
+            height: cellSize 
+          }, scene);
+          floor.position = new BABYLON.Vector3(i * cellSize, 0, j * cellSize);
+          floor.material = floorMat;
+
+          // Red carpet path (diagonal)
+          if (i === j) {
+            const carpet = BABYLON.MeshBuilder.CreateGround("carpet", { 
+              width: cellSize*0.7, 
+              height: cellSize*0.7 
+            }, scene);
+            carpet.position = new BABYLON.Vector3(i * cellSize, 0.01, j * cellSize);
+            carpet.material = carpetMat;
+          }
+
+          // Outer walls
+          if (i === 0) createWall(i * cellSize, j * cellSize, 0);
+          if (i === gridSize-1) createWall(i * cellSize, j * cellSize, 0);
+          if (j === 0) createWall(i * cellSize, j * cellSize, Math.PI/2);
+          if (j === gridSize-1) createWall(i * cellSize, j * cellSize, Math.PI/2);
+
+          // Random doors (25% chance)
+          if (Math.random() > 0.75) {
+            if (i !== 0 && i !== gridSize-1) {
+              createDoor(i * cellSize, j * cellSize, Math.PI/2);
+            } else if (j !== 0 && j !== gridSize-1) {
+              createDoor(i * cellSize, j * cellSize, 0);
+            }
+          }
+        }
+      }
+
+      // --- Swipe Controls ---
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let isTurning = false;
+      const turnSpeed = 250; // ms for 90° turn
+
+      // Touch start
+      canvas.addEventListener("pointerdown", (e) => {
+        touchStartX = e.clientX;
+        touchStartY = e.clientY;
+      }, { passive: true });
+
+      // Touch end (swipe detection)
+      canvas.addEventListener("pointerup", (e) => {
+        if (isTurning) return;
+
+        const deltaX = e.clientX - touchStartX;
+        const deltaY = e.clientY - touchStartY;
+        const threshold = 50; // Minimum swipe distance
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          // Horizontal swipe
+          if (deltaX < -threshold) swipeLeft();
+          else if (deltaX > threshold) swipeRight();
+        } else {
+          // Vertical swipe
+          if (deltaY < -threshold) swipeUp();
+          else if (deltaY > threshold) swipeDown();
+        }
+      }, { passive: true });
+
+      // Movement functions
+      function swipeDown() {
+        const forward = camera.getDirection(BABYLON.Axis.Z).scale(cellSize);
+        const newPosition = camera.position.add(forward);
+        
+        // Simple boundary check
+        if (newPosition.x >= 0 && newPosition.x <= (gridSize-1)*cellSize &&
+            newPosition.z >= 0 && newPosition.z <= (gridSize-1)*cellSize) {
+          camera.position = newPosition;
+        }
+      }
+
+      function swipeLeft() {
+        isTurning = true;
+        const targetRotation = camera.rotation.y + Math.PI/2;
+        animateTurn(targetRotation, () => { isTurning = false; });
+      }
+
+      function swipeRight() {
+        isTurning = true;
+        const targetRotation = camera.rotation.y - Math.PI/2;
+        animateTurn(targetRotation, () => { isTurning = false; });
+      }
+
+      function swipeUp() {
+        isTurning = true;
+        const targetRotation = camera.rotation.y + Math.PI;
+        animateTurn(targetRotation, () => { isTurning = false; });
+      }
+
+      // Smooth turn animation
+      function animateTurn(targetRotation, onComplete) {
+        const startRotation = camera.rotation.y;
+        const startTime = Date.now();
+
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / turnSpeed, 1);
+          camera.rotation.y = startRotation + (targetRotation - startRotation) * progress;
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else if (onComplete) {
+            onComplete();
+          }
+        };
+        animate();
+      }
+
+      // Handle resize
+      window.addEventListener("resize", function() {
+        engine.resize();
+      });
+
+      // Run the game loop
+      engine.runRenderLoop(function() {
+        scene.render();
+      });
+    });
+  </script>
+</body>
+</html>
