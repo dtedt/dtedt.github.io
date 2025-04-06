@@ -12,6 +12,7 @@
       transform: translateX(-50%); color: white; 
       font-family: Arial; background: rgba(0,0,0,0.5); 
       padding: 5px 10px; border-radius: 5px;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -32,7 +33,7 @@
     let activeCamera;
     let isTransitioning = false;
 
-    // First-person camera
+    // First-person camera (original movement)
     const fpsCamera = new BABYLON.UniversalCamera("fpsCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
     fpsCamera.attachControl(canvas, true);
     fpsCamera.applyGravity = false;
@@ -41,61 +42,199 @@
     fpsCamera.speed = 0;
     fpsCamera.angularSensibility = 0;
 
-    // God's-eye camera (top-down)
-    const godCamera = new BABYLON.ArcRotateCamera("godCamera", -Math.PI/2, Math.PI/2, 15, 
+    // God's-eye camera
+    const godCamera = new BABYLON.ArcRotateCamera("godCamera", -Math.PI/2, Math.PI/2, 20, 
       new BABYLON.Vector3(0, 0, 0), scene);
-    godCamera.lowerRadiusLimit = 10;
-    godCamera.upperRadiusLimit = 20;
-    godCamera.attachControl(canvas, false);
-    godCamera.inputs.clear(); // Disable default controls
+    godCamera.lowerRadiusLimit = 15;
+    godCamera.upperRadiusLimit = 25;
+    godCamera.inputs.clear();
 
     // Start in first-person
     activeCamera = fpsCamera;
     scene.activeCamera = fpsCamera;
 
-    // --- Environment ---
-    // ... [Keep your existing hallway creation code] ...
-    // Create the cross-shaped hallway as before
-    const hallwayLength = 10;
-    const hallwayWidth = 2;
-    const wallHeight = 3;
+    // --- Materials (Original Style) ---
+    const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
+    floorMat.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
 
-    function createHallwaySegment(centerX, centerZ, length, width, rotationY) {
-      // ... [Your existing hallway segment code] ...
+    const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
+    wallMat.diffuseColor = new BABYLON.Color3(0.6, 0.8, 0.9);
+
+    const moldingMat = new BABYLON.StandardMaterial("moldingMat", scene);
+    moldingMat.diffuseColor = new BABYLON.Color3(0.9, 0.9, 0.7);
+
+    const doorMat = new BABYLON.StandardMaterial("doorMat", scene);
+    doorMat.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.1);
+
+    // --- Cross-Shaped Hallway ---
+    const cellSize = 2;
+    const wallHeight = 3;
+    const segments = [
+      // Horizontal hallway
+      { x1: -5, z1: 0, x2: 5, z2: 0, rotation: 0 },
+      // Vertical hallway
+      { x1: 0, z1: -5, x2: 0, z2: 5, rotation: Math.PI/2 }
+    ];
+
+    function createWall(x, z, rotationY, length) {
+      // Main wall
+      const wall = BABYLON.MeshBuilder.CreateBox("wall", { 
+        width: 0.1, 
+        height: wallHeight, 
+        depth: length 
+      }, scene);
+      wall.position = new BABYLON.Vector3(x, wallHeight/2, z);
+      wall.rotation.y = rotationY;
+      wall.material = wallMat;
+
+      // Molding
+      const molding = BABYLON.MeshBuilder.CreateBox("molding", {
+        width: 0.11,
+        height: 0.1,
+        depth: length * 0.98
+      }, scene);
+      molding.position = new BABYLON.Vector3(x, wallHeight * 0.7, z);
+      molding.rotation.y = rotationY;
+      molding.material = moldingMat;
     }
 
-    createHallwaySegment(0, 0, hallwayLength, hallwayWidth, 0); // Horizontal
-    createHallwaySegment(0, 0, hallwayLength, hallwayWidth, Math.PI/2); // Vertical
+    function createDoor(x, z, rotationY) {
+      const door = BABYLON.MeshBuilder.CreateBox("door", { 
+        width: 0.11, 
+        height: wallHeight-0.5, 
+        depth: 0.8 
+      }, scene);
+      door.position = new BABYLON.Vector3(x, (wallHeight-0.5)/2, z);
+      door.rotation.y = rotationY;
+      door.material = doorMat;
+    }
+
+    // Build hallways
+    segments.forEach(segment => {
+      // Floor
+      const floor = BABYLON.MeshBuilder.CreateGround("floor", { 
+        width: cellSize, 
+        height: Math.abs(segment.x2 - segment.x1 || segment.z2 - segment.z1) 
+      }, scene);
+      floor.position = new BABYLON.Vector3(
+        (segment.x1 + segment.x2)/2, 
+        0, 
+        (segment.z1 + segment.z2)/2
+      );
+      floor.rotation.y = segment.rotation;
+      floor.material = floorMat;
+
+      // Walls
+      const offset = cellSize/2;
+      createWall(
+        segment.x1 + Math.sin(segment.rotation) * offset,
+        segment.z1 + Math.cos(segment.rotation) * offset,
+        segment.rotation,
+        Math.abs(segment.x2 - segment.x1 || segment.z2 - segment.z1)
+      );
+      createWall(
+        segment.x1 - Math.sin(segment.rotation) * offset,
+        segment.z1 - Math.cos(segment.rotation) * offset,
+        segment.rotation,
+        Math.abs(segment.x2 - segment.x1 || segment.z2 - segment.z1)
+      );
+
+      // Doors at ends
+      createDoor(segment.x1, segment.z1, segment.rotation);
+      createDoor(segment.x2, segment.z2, segment.rotation);
+    });
 
     // --- Input Handling ---
     let touchStartTime = 0;
     let holdTimeout;
-    const holdThreshold = 500; // 0.5 seconds to trigger
+    const holdThreshold = 500; // 0.5s to trigger
+    let isTurning = false;
+    const turnSpeed = 300;
 
     canvas.addEventListener("pointerdown", (e) => {
       touchStartTime = Date.now();
       holdTimeout = setTimeout(switchToGodView, holdThreshold);
+      touchStartX = e.clientX;
+      touchStartY = e.clientY;
     }, { passive: true });
 
     canvas.addEventListener("pointerup", (e) => {
       clearTimeout(holdTimeout);
-      if (activeCamera === godCamera && Date.now() - touchStartTime < holdThreshold * 2) {
-        switchToFPSView();
+      
+      if (activeCamera === godCamera) {
+        if (Date.now() - touchStartTime < holdThreshold * 1.5) {
+          switchToFPSView();
+        }
+        return;
+      }
+
+      // Original swipe controls
+      if (isTurning) return;
+      
+      const deltaX = e.clientX - touchStartX;
+      const deltaY = e.clientY - touchStartY;
+      const threshold = 50;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX < -threshold) swipeLeft();
+        else if (deltaX > threshold) swipeRight();
+      } else {
+        if (deltaY < -threshold) swipeUp();
+        else if (deltaY > threshold) swipeDown();
       }
     }, { passive: true });
 
-    canvas.addEventListener("pointercancel", () => clearTimeout(holdTimeout));
+    // Movement functions (original grid-based)
+    function swipeDown() {
+      const forward = fpsCamera.getDirection(BABYLON.Axis.Z).scale(cellSize);
+      const newPos = fpsCamera.position.add(forward);
+      
+      // Boundary check (-5 to 5 on X/Z)
+      if (Math.abs(newPos.x) <= 5 && Math.abs(newPos.z) <= 5) {
+        fpsCamera.position = newPos;
+      }
+    }
 
-    // Camera transition functions
+    function swipeLeft() {
+      isTurning = true;
+      animateTurn(fpsCamera.rotation.y + Math.PI/2, () => isTurning = false);
+    }
+
+    function swipeRight() {
+      isTurning = true;
+      animateTurn(fpsCamera.rotation.y - Math.PI/2, () => isTurning = false);
+    }
+
+    function swipeUp() {
+      isTurning = true;
+      animateTurn(fpsCamera.rotation.y + Math.PI, () => isTurning = false);
+    }
+
+    function animateTurn(targetRotation, onComplete) {
+      const startRotation = fpsCamera.rotation.y;
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / turnSpeed, 1);
+        fpsCamera.rotation.y = startRotation + (targetRotation - startRotation) * progress;
+
+        if (progress < 1) requestAnimationFrame(animate);
+        else if (onComplete) onComplete();
+      };
+      animate();
+    }
+
+    // Camera transitions
     function switchToGodView() {
       if (isTransitioning || activeCamera === godCamera) return;
       
       isTransitioning = true;
-      viewLabel.textContent = "God's-Eye View";
+      viewLabel.textContent = "Map View";
       
-      // Store FPS position
+      // Position god camera above player
       godCamera.target = fpsCamera.position.clone();
-      godCamera.radius = 15;
+      godCamera.radius = 20;
       godCamera.alpha = -Math.PI/2;
       godCamera.beta = Math.PI/2;
       
@@ -110,7 +249,6 @@
       isTransitioning = true;
       viewLabel.textContent = "First-Person View";
       
-      // Smooth transition
       BABYLON.Animation.CreateAndStartAnimation(
         "cameraTransition", godCamera, "radius", 
         60, 10, godCamera.radius, 2, 0, 1, () => {
@@ -119,13 +257,6 @@
           isTransitioning = false;
         }
       );
-    }
-
-    // --- Swipe Controls (FPS only) ---
-    // ... [Your existing swipe control code, but wrap in FPS check] ...
-    function handleSwipe() {
-      if (activeCamera !== fpsCamera) return;
-      // ... [Your existing swipe logic] ...
     }
 
     // Run the engine
