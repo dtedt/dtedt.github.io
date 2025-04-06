@@ -2,108 +2,135 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cross Hallway Explorer</title>
+  <title>Hallway Explorer</title>
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <style>
-    body { 
-      margin: 0; 
-      padding: 0; 
-      overflow: hidden; 
-      touch-action: none; 
-      position: fixed; 
-      width: 100%; 
-      height: 100%;
-    }
-    canvas { 
-      width: 100%; 
-      height: 100%; 
-      display: block; 
-      touch-action: none;
+    body { margin: 0; overflow: hidden; touch-action: none; }
+    canvas { width: 100%; height: 100%; display: block; }
+    #view-label {
+      position: absolute; bottom: 20px; left: 50%; 
+      transform: translateX(-50%); color: white; 
+      font-family: Arial; background: rgba(0,0,0,0.5); 
+      padding: 5px 10px; border-radius: 5px;
     }
   </style>
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
+  <div id="view-label">First-Person View</div>
   <script>
-    // Initialize Babylon.js with responsive setup
+    // Initialize Babylon.js
     const canvas = document.getElementById("renderCanvas");
-    const engine = new BABYLON.Engine(canvas, true, {
-      adaptToDeviceRatio: true // Critical for mobile screens
-    });
+    const engine = new BABYLON.Engine(canvas, true);
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.15);
 
-    // Responsive camera
-    const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 1.6, 0), scene);
-    camera.attachControl(canvas, true);
-    camera.applyGravity = false;
-    camera.ellipsoid = new BABYLON.Vector3(0.5, 1.6, 0.5);
-    camera.minZ = 0.1;
-    camera.fov = 1.2; // Wider field of view for mobile
+    // View label
+    const viewLabel = document.getElementById("view-label");
 
-    // Dynamic aspect ratio handler
-    const updateCamera = () => {
-      const aspectRatio = engine.getAspectRatio(camera);
-      // Adjust FOV for portrait vs landscape
-      camera.fov = aspectRatio > 1 ? 0.8 : 1.2;
-    };
+    // --- Camera System ---
+    let activeCamera;
+    let isTransitioning = false;
 
-    // Lighting
-    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-    light.intensity = 0.8;
+    // First-person camera
+    const fpsCamera = new BABYLON.UniversalCamera("fpsCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
+    fpsCamera.attachControl(canvas, true);
+    fpsCamera.applyGravity = false;
+    fpsCamera.ellipsoid = new BABYLON.Vector3(0.5, 1.6, 0.5);
+    fpsCamera.minZ = 0.1;
+    fpsCamera.speed = 0;
+    fpsCamera.angularSensibility = 0;
 
-    // Materials (same as before)
-    const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
-    floorMat.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    // God's-eye camera (top-down)
+    const godCamera = new BABYLON.ArcRotateCamera("godCamera", -Math.PI/2, Math.PI/2, 15, 
+      new BABYLON.Vector3(0, 0, 0), scene);
+    godCamera.lowerRadiusLimit = 10;
+    godCamera.upperRadiusLimit = 20;
+    godCamera.attachControl(canvas, false);
+    godCamera.inputs.clear(); // Disable default controls
 
-    const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
-    wallMat.diffuseColor = new BABYLON.Color3(0.6, 0.8, 0.9);
+    // Start in first-person
+    activeCamera = fpsCamera;
+    scene.activeCamera = fpsCamera;
 
-    const doorMat = new BABYLON.StandardMaterial("doorMat", scene);
-    doorMat.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.1);
-
-    // Hallway dimensions
+    // --- Environment ---
+    // ... [Keep your existing hallway creation code] ...
+    // Create the cross-shaped hallway as before
     const hallwayLength = 10;
     const hallwayWidth = 2;
     const wallHeight = 3;
 
-    // Create hallways (same as before)
     function createHallwaySegment(centerX, centerZ, length, width, rotationY) {
-      const halfLength = length/2;
-      
-      // Floor
-      const floor = BABYLON.MeshBuilder.CreateGround("floor", { 
-        width: width, 
-        height: length 
-      }, scene);
-      floor.position = new BABYLON.Vector3(centerX, 0, centerZ);
-      floor.rotation.y = rotationY;
-      floor.material = floorMat;
-
-      // Walls and doors (same implementation as previous code)
-      // ... [rest of your hallway creation code] ...
+      // ... [Your existing hallway segment code] ...
     }
 
-    // Create both hallways
     createHallwaySegment(0, 0, hallwayLength, hallwayWidth, 0); // Horizontal
     createHallwaySegment(0, 0, hallwayLength, hallwayWidth, Math.PI/2); // Vertical
 
-    // Swipe controls (same as before)
-    // ... [your existing swipe control code] ...
+    // --- Input Handling ---
+    let touchStartTime = 0;
+    let holdTimeout;
+    const holdThreshold = 500; // 0.5 seconds to trigger
 
-    // Handle resize
-    window.addEventListener("resize", () => {
-      engine.resize();
-      updateCamera();
-    });
+    canvas.addEventListener("pointerdown", (e) => {
+      touchStartTime = Date.now();
+      holdTimeout = setTimeout(switchToGodView, holdThreshold);
+    }, { passive: true });
 
-    // Initial camera setup
-    updateCamera();
+    canvas.addEventListener("pointerup", (e) => {
+      clearTimeout(holdTimeout);
+      if (activeCamera === godCamera && Date.now() - touchStartTime < holdThreshold * 2) {
+        switchToFPSView();
+      }
+    }, { passive: true });
 
-    // Run the game loop
-    engine.runRenderLoop(() => {
-      scene.render();
-    });
+    canvas.addEventListener("pointercancel", () => clearTimeout(holdTimeout));
+
+    // Camera transition functions
+    function switchToGodView() {
+      if (isTransitioning || activeCamera === godCamera) return;
+      
+      isTransitioning = true;
+      viewLabel.textContent = "God's-Eye View";
+      
+      // Store FPS position
+      godCamera.target = fpsCamera.position.clone();
+      godCamera.radius = 15;
+      godCamera.alpha = -Math.PI/2;
+      godCamera.beta = Math.PI/2;
+      
+      scene.activeCamera = godCamera;
+      activeCamera = godCamera;
+      isTransitioning = false;
+    }
+
+    function switchToFPSView() {
+      if (isTransitioning || activeCamera === fpsCamera) return;
+      
+      isTransitioning = true;
+      viewLabel.textContent = "First-Person View";
+      
+      // Smooth transition
+      BABYLON.Animation.CreateAndStartAnimation(
+        "cameraTransition", godCamera, "radius", 
+        60, 10, godCamera.radius, 2, 0, 1, () => {
+          scene.activeCamera = fpsCamera;
+          activeCamera = fpsCamera;
+          isTransitioning = false;
+        }
+      );
+    }
+
+    // --- Swipe Controls (FPS only) ---
+    // ... [Your existing swipe control code, but wrap in FPS check] ...
+    function handleSwipe() {
+      if (activeCamera !== fpsCamera) return;
+      // ... [Your existing swipe logic] ...
+    }
+
+    // Run the engine
+    engine.runRenderLoop(() => scene.render());
+    window.addEventListener("resize", () => engine.resize());
   </script>
 </body>
 </html>
