@@ -61,6 +61,7 @@
     let currentView = "first-person";
     let isDragging = false;
     let lastDragPosition = null;
+    let playerMarker = null; // Will hold our red sphere
 
     // First-person camera
     const fpsCamera = new BABYLON.UniversalCamera("fpsCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
@@ -73,18 +74,40 @@
 
     // God's-eye camera (orbit)
     const godCamera = new BABYLON.ArcRotateCamera("godCamera", 
-      -Math.PI/4, Math.PI/3, 20, 
+      -Math.PI/4, Math.PI/3, 15, 
       new BABYLON.Vector3(0, 0, 0), scene);
-    godCamera.lowerRadiusLimit = 10;
-    godCamera.upperRadiusLimit = 40;
+    godCamera.lowerRadiusLimit = 8;
+    godCamera.upperRadiusLimit = 30;
     godCamera.upperBetaLimit = Math.PI/2;
     godCamera.panningSensibility = 0;
     godCamera.allowUpsideDown = false;
     godCamera.inputs.clear();
 
+    // Create player marker (red sphere)
+    const createPlayerMarker = () => {
+      if (playerMarker) playerMarker.dispose();
+      
+      playerMarker = BABYLON.MeshBuilder.CreateSphere("playerMarker", {
+        diameter: 0.5,
+        segments: 16
+      }, scene);
+      
+      const markerMat = new BABYLON.StandardMaterial("markerMat", scene);
+      markerMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
+      markerMat.emissiveColor = new BABYLON.Color3(0.5, 0, 0);
+      markerMat.specularColor = new BABYLON.Color3(0, 0, 0);
+      
+      playerMarker.material = markerMat;
+      playerMarker.position = fpsCamera.position.clone();
+      playerMarker.position.y = 0.25; // Slightly above floor
+      playerMarker.isPickable = false;
+      playerMarker.renderingGroupId = 2; // Render above other objects
+    };
+
     // Start in first-person
     activeCamera = fpsCamera;
     scene.activeCamera = fpsCamera;
+    createPlayerMarker();
 
     // --- Materials ---
     const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
@@ -103,14 +126,14 @@
     doorMat.diffuseColor = new BABYLON.Color3(0.5, 0.3, 0.2);
     doorMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
 
-    // --- 6-Pace Hallway (12 units) ---
+    // --- 3-Pace Hallway (6 units) ---
     const paceLength = 2;
-    const hallwayLength = 6 * paceLength;
-    const hallwayWidth = 3;
+    const hallwayLength = 3 * paceLength; // 3 paces = 6 units
+    const hallwayWidth = 1; // Narrow 1-unit wide hallways
     const wallHeight = 3;
     const wallThickness = 0.2;
     const allWalls = [];
-    const intersectionSize = 3;
+    const intersectionSize = 2; // Smaller open center
 
     // Create hallway segment
     const createHallwaySegment = (x1, z1, x2, z2, rotationY) => {
@@ -186,8 +209,8 @@
     };
 
     // Create cross-shaped hallway
-    createHallwaySegment(-6, 0, 6, 0, 0); // Horizontal
-    createHallwaySegment(0, -6, 0, 6, Math.PI/2); // Vertical
+    createHallwaySegment(-3, 0, 3, 0, 0); // Horizontal (3 paces)
+    createHallwaySegment(0, -3, 0, 3, Math.PI/2); // Vertical (3 paces)
 
     // --- Collision Detection ---
     scene.collisionsEnabled = true;
@@ -248,8 +271,8 @@
       godCamera.alpha -= deltaX * 0.01;
       godCamera.beta = BABYLON.Scalar.Clamp(
         godCamera.beta + deltaY * 0.01,
-        0.1, // Minimum angle (looking slightly forward)
-        Math.PI/2 // Maximum angle (straight down)
+        0.1, // Minimum angle
+        Math.PI/2 // Maximum angle
       );
       
       lastDragPosition = {
@@ -289,7 +312,7 @@
         // Reset god camera to nice starting angle
         godCamera.alpha = -Math.PI/4;
         godCamera.beta = Math.PI/3;
-        godCamera.radius = 20;
+        godCamera.radius = 15;
         godCamera.target = new BABYLON.Vector3(0, 0, 0);
         
         scene.activeCamera = godCamera;
@@ -299,6 +322,16 @@
         viewLabel.textContent = "First-Person View";
         scene.activeCamera = fpsCamera;
         activeCamera = fpsCamera;
+      }
+      updatePlayerMarker();
+    }
+
+    // Update player marker position
+    function updatePlayerMarker() {
+      if (playerMarker) {
+        playerMarker.position.x = fpsCamera.position.x;
+        playerMarker.position.z = fpsCamera.position.z;
+        playerMarker.isVisible = (currentView === "god-eye");
       }
     }
 
@@ -321,6 +354,7 @@
         return false;
       }
       
+      updatePlayerMarker();
       return true;
     };
 
@@ -331,17 +365,26 @@
 
     const swipeLeft = () => {
       isTurning = true;
-      animateTurn(fpsCamera.rotation.y + Math.PI/2, () => isTurning = false);
+      animateTurn(fpsCamera.rotation.y + Math.PI/2, () => {
+        isTurning = false;
+        updatePlayerMarker();
+      });
     };
 
     const swipeRight = () => {
       isTurning = true;
-      animateTurn(fpsCamera.rotation.y - Math.PI/2, () => isTurning = false);
+      animateTurn(fpsCamera.rotation.y - Math.PI/2, () => {
+        isTurning = false;
+        updatePlayerMarker();
+      });
     };
 
     const swipeUp = () => {
       isTurning = true;
-      animateTurn(fpsCamera.rotation.y + Math.PI, () => isTurning = false);
+      animateTurn(fpsCamera.rotation.y + Math.PI, () => {
+        isTurning = false;
+        updatePlayerMarker();
+      });
     };
 
     const animateTurn = (targetRotation, onComplete) => {
@@ -360,7 +403,10 @@
     };
 
     // Run the engine
-    engine.runRenderLoop(() => scene.render());
+    engine.runRenderLoop(() => {
+      scene.render();
+      updatePlayerMarker(); // Continuous position updates
+    });
     window.addEventListener("resize", () => engine.resize());
   </script>
 </body>
