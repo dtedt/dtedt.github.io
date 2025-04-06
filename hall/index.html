@@ -64,10 +64,18 @@
     fpsCamera.speed = 0;
     fpsCamera.angularSensibility = 0;
 
-    const godCamera = new BABYLON.ArcRotateCamera("godCamera", -Math.PI/2, Math.PI/2, 50, 
-      new BABYLON.Vector3(0, 0, 0), scene);
-    godCamera.lowerRadiusLimit = 30;
-    godCamera.upperRadiusLimit = 60;
+    // God's-eye camera (perfectly centered and aligned)
+    const godCamera = new BABYLON.ArcRotateCamera("godCamera", 
+      -Math.PI/2, // Fixed 90° top-down view
+      Math.PI/2, 
+      30, 
+      new BABYLON.Vector3(0, 0, 0), // Always centers on origin
+      scene);
+    godCamera.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
+    godCamera.orthoTop = 12;
+    godCamera.orthoBottom = -12;
+    godCamera.orthoLeft = -12;
+    godCamera.orthoRight = 12;
     godCamera.inputs.clear();
 
     // Start in first-person
@@ -91,21 +99,22 @@
     doorMat.diffuseColor = new BABYLON.Color3(0.5, 0.3, 0.2);
     doorMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
 
-    // --- 10-Pace Wide Hallway (20 units total) ---
-    const paceLength = 2; // 1 pace = 2 units
-    const hallwayLength = 10 * paceLength; // 10 paces = 20 units
-    const hallwayWidth = paceLength * 1.5; // 3 units wide
+    // --- 10-Pace Hallway with Open Center ---
+    const paceLength = 2;
+    const hallwayLength = 10 * paceLength; 
+    const hallwayWidth = 3;
     const wallHeight = 3;
     const wallThickness = 0.2;
     const allWalls = [];
+    const intersectionSize = 3; // Open area at center
 
-    // Create hallway segment (now with 10-pace length)
+    // Modified createHallwaySegment with open center
     const createHallwaySegment = (x1, z1, x2, z2, rotationY) => {
       const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2));
       const centerX = (x1 + x2)/2;
       const centerZ = (z1 + z2)/2;
 
-      // Floor
+      // Floor (continuous)
       const floor = BABYLON.MeshBuilder.CreateGround("floor", { 
         width: hallwayWidth, 
         height: length 
@@ -114,72 +123,86 @@
       floor.rotation.y = rotationY;
       floor.material = floorMat;
 
-      // Left Wall
-      const leftWall = BABYLON.MeshBuilder.CreateBox("wall", {
-        width: wallThickness,
-        height: wallHeight,
-        depth: length
-      }, scene);
-      leftWall.position = new BABYLON.Vector3(
-        centerX - (hallwayWidth/2) * Math.cos(rotationY),
-        wallHeight/2,
-        centerZ - (hallwayWidth/2) * Math.sin(rotationY)
-      );
-      leftWall.rotation.y = rotationY;
-      leftWall.material = wallMat;
-      allWalls.push(leftWall);
+      // Create partial walls (skip center section)
+      const createPartialWall = (offset) => {
+        const wallParts = [];
+        const halfLength = length/2;
+        const partLength = (halfLength - intersectionSize/2);
 
-      // Right Wall
-      const rightWall = leftWall.clone("rightWall");
-      rightWall.position = new BABYLON.Vector3(
-        centerX + (hallwayWidth/2) * Math.cos(rotationY),
-        wallHeight/2,
-        centerZ + (hallwayWidth/2) * Math.sin(rotationY)
-      );
-      allWalls.push(rightWall);
-
-      // Wall molding
-      const createMolding = (wall) => {
-        const molding = BABYLON.MeshBuilder.CreateBox("molding", {
-          width: wallThickness * 1.1,
-          height: 0.15,
-          depth: length * 0.98
+        // First segment (before center)
+        const wall1 = BABYLON.MeshBuilder.CreateBox("wall", {
+          width: wallThickness,
+          height: wallHeight,
+          depth: partLength
         }, scene);
-        molding.position = wall.position.clone();
-        molding.position.y = wallHeight * 0.7;
-        molding.rotation.y = rotationY;
-        molding.material = moldingMat;
+        wall1.position = new BABYLON.Vector3(
+          centerX + offset * Math.cos(rotationY) - (halfLength/2 + intersectionSize/4) * Math.sin(rotationY),
+          wallHeight/2,
+          centerZ + offset * Math.sin(rotationY) - (halfLength/2 + intersectionSize/4) * Math.cos(rotationY)
+        );
+        wall1.rotation.y = rotationY;
+        wall1.material = wallMat;
+        wallParts.push(wall1);
+
+        // Second segment (after center)
+        const wall2 = wall1.clone("wall");
+        wall2.position = new BABYLON.Vector3(
+          centerX + offset * Math.cos(rotationY) + (halfLength/2 + intersectionSize/4) * Math.sin(rotationY),
+          wallHeight/2,
+          centerZ + offset * Math.sin(rotationY) + (halfLength/2 + intersectionSize/4) * Math.cos(rotationY)
+        );
+        wallParts.push(wall2);
+
+        // Add molding to both segments
+        wallParts.forEach(wall => {
+          const molding = BABYLON.MeshBuilder.CreateBox("molding", {
+            width: wallThickness * 1.1,
+            height: 0.15,
+            depth: partLength * 0.98
+          }, scene);
+          molding.position = wall.position.clone();
+          molding.position.y = wallHeight * 0.7;
+          molding.rotation.y = rotationY;
+          molding.material = moldingMat;
+        });
+
+        return wallParts;
       };
-      createMolding(leftWall);
-      createMolding(rightWall);
 
-      // Doors at ends
+      // Left and right walls (with gaps)
+      allWalls.push(...createPartialWall(-hallwayWidth/2));
+      allWalls.push(...createPartialWall(hallwayWidth/2));
+
+      // Doors at ends only (no doors near center)
       const createEndDoor = (x, z) => {
-        const door = BABYLON.MeshBuilder.CreateBox("door", {
-          width: wallThickness * 1.1,
-          height: wallHeight - 0.5,
-          depth: 0.8
-        }, scene);
-        door.position = new BABYLON.Vector3(x, (wallHeight-0.5)/2, z);
-        door.rotation.y = rotationY;
-        door.material = doorMat;
-        allWalls.push(door);
+        // Only place doors if far enough from center
+        if (Math.abs(x) > intersectionSize || Math.abs(z) > intersectionSize) {
+          const door = BABYLON.MeshBuilder.CreateBox("door", {
+            width: wallThickness * 1.1,
+            height: wallHeight - 0.5,
+            depth: 0.8
+          }, scene);
+          door.position = new BABYLON.Vector3(x, (wallHeight-0.5)/2, z);
+          door.rotation.y = rotationY;
+          door.material = doorMat;
+          allWalls.push(door);
+        }
       };
 
       createEndDoor(x1, z1);
       createEndDoor(x2, z2);
     };
 
-    // Create cross-shaped hallway (20 units long each)
-    createHallwaySegment(-10, 0, 10, 0, 0); // Horizontal (10 paces)
-    createHallwaySegment(0, -10, 0, 10, Math.PI/2); // Vertical (10 paces)
+    // Create cross-shaped hallway with open center
+    createHallwaySegment(-10, 0, 10, 0, 0); // Horizontal
+    createHallwaySegment(0, -10, 0, 10, Math.PI/2); // Vertical
 
     // --- Collision Detection ---
     scene.collisionsEnabled = true;
     fpsCamera.checkCollisions = true;
     allWalls.forEach(wall => {
       wall.checkCollisions = true;
-      wall.ellipsoid = new BABYLON.Vector3(wallThickness/2, wallHeight/2, 0.1);
+      wall.ellipsoid = new BABYLON.Vector3(wallThickness/2, wallHeight/2, wallThickness/2);
     });
 
     // --- Triple-Tap Detection ---
@@ -211,8 +234,11 @@
     const toggleCameraView = () => {
       if (activeCamera === fpsCamera) {
         viewLabel.textContent = "Map View";
-        godCamera.target = fpsCamera.position.clone();
-        godCamera.radius = 50;
+        // Reset to perfect top-down view
+        godCamera.alpha = -Math.PI/2;
+        godCamera.beta = Math.PI/2;
+        godCamera.radius = 30;
+        godCamera.target = new BABYLON.Vector3(0, 0, 0);
         scene.activeCamera = godCamera;
         activeCamera = godCamera;
       } else {
@@ -227,19 +253,28 @@
     let touchStartY = 0;
     let isTurning = false;
     const turnSpeed = 300;
-    const moveDistance = paceLength / 2; // Half-pace steps
+    const moveDistance = paceLength / 2;
 
     const tryMove = (direction) => {
       const oldPosition = fpsCamera.position.clone();
       fpsCamera.position.addInPlace(direction);
       
-      // Check collisions
+      // Check collisions with all walls
       for (const wall of allWalls) {
         if (fpsCamera.intersectsMesh(wall)) {
           fpsCamera.position = oldPosition;
           return false;
         }
       }
+
+      // Boundary check
+      const maxDistance = hallwayLength/2 - 1;
+      if (Math.abs(fpsCamera.position.x) > maxDistance || 
+          Math.abs(fpsCamera.position.z) > maxDistance) {
+        fpsCamera.position = oldPosition;
+        return false;
+      }
+      
       return true;
     };
 
@@ -296,7 +331,15 @@
 
     // Run the engine
     engine.runRenderLoop(() => scene.render());
-    window.addEventListener("resize", () => engine.resize());
+    window.addEventListener("resize", () => {
+      engine.resize();
+      // Maintain aspect ratio in god's-eye view
+      if (activeCamera === godCamera) {
+        const aspect = engine.getAspectRatio(godCamera);
+        godCamera.orthoLeft = -12 * aspect;
+        godCamera.orthoRight = 12 * aspect;
+      }
+    });
   </script>
 </body>
 </html>
