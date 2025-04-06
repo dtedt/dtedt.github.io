@@ -41,21 +41,21 @@
     const canvas = document.getElementById("renderCanvas");
     const engine = new BABYLON.Engine(canvas, true);
     const scene = new BABYLON.Scene(engine);
-    scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.15);
+    scene.clearColor = new BABYLON.Color4(0.2, 0.2, 0.3); // Brighter background
 
     // View label
     const viewLabel = document.getElementById("view-label");
 
-    // Lighting
-    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);  
-    light.intensity = 0.8;  
-
+    // --- Enhanced Lighting ---
+    const light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+    light1.intensity = 0.7;
+    
+    const light2 = new BABYLON.DirectionalLight("light2", new BABYLON.Vector3(0.5, -1, 0.5), scene);
+    light2.intensity = 0.5;
+    light2.position = new BABYLON.Vector3(0, 10, 0);
 
     // --- Camera System ---
     let activeCamera;
-    let isTransitioning = false;
-
-    // First-person camera
     const fpsCamera = new BABYLON.UniversalCamera("fpsCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
     fpsCamera.attachControl(canvas, true);
     fpsCamera.applyGravity = false;
@@ -64,11 +64,10 @@
     fpsCamera.speed = 0;
     fpsCamera.angularSensibility = 0;
 
-    // God's-eye camera
-    const godCamera = new BABYLON.ArcRotateCamera("godCamera", -Math.PI/2, Math.PI/2, 20, 
+    const godCamera = new BABYLON.ArcRotateCamera("godCamera", -Math.PI/2, Math.PI/2, 25, 
       new BABYLON.Vector3(0, 0, 0), scene);
     godCamera.lowerRadiusLimit = 15;
-    godCamera.upperRadiusLimit = 25;
+    godCamera.upperRadiusLimit = 30;
     godCamera.inputs.clear();
 
     // Start in first-person
@@ -77,99 +76,117 @@
 
     // --- Materials ---
     const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
-    floorMat.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    floorMat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4); // Brighter floor
+    floorMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
 
     const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
-    wallMat.diffuseColor = new BABYLON.Color3(0.6, 0.8, 0.9);
+    wallMat.diffuseColor = new BABYLON.Color3(0.7, 0.85, 0.9); // Brighter walls
+    wallMat.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
 
     const moldingMat = new BABYLON.StandardMaterial("moldingMat", scene);
-    moldingMat.diffuseColor = new BABYLON.Color3(0.9, 0.9, 0.7);
+    moldingMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.8); // Brighter molding
+    moldingMat.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
 
     const doorMat = new BABYLON.StandardMaterial("doorMat", scene);
-    doorMat.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.1);
+    doorMat.diffuseColor = new BABYLON.Color3(0.5, 0.3, 0.2);
+    doorMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
 
-    // --- Cross-Shaped Hallway ---
+    // --- Complete Hallway Construction ---
     const cellSize = 2;
     const wallHeight = 3;
-    const segments = [
-      // Horizontal hallway
-      { x1: -5, z1: 0, x2: 5, z2: 0, rotation: 0 },
-      // Vertical hallway
-      { x1: 0, z1: -5, x2: 0, z2: 5, rotation: Math.PI/2 }
-    ];
+    const wallThickness = 0.2;
+    const allWalls = []; // For collision detection
 
-    function createWall(x, z, rotationY, length) {
-      // Main wall
-      const wall = BABYLON.MeshBuilder.CreateBox("wall", { 
-        width: 0.1, 
-        height: wallHeight, 
-        depth: length 
-      }, scene);
-      wall.position = new BABYLON.Vector3(x, wallHeight/2, z);
-      wall.rotation.y = rotationY;
-      wall.material = wallMat;
+    // Main hallway segments
+    const createHallwaySegment = (x1, z1, x2, z2, rotationY) => {
+      const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2));
+      const centerX = (x1 + x2)/2;
+      const centerZ = (z1 + z2)/2;
 
-      // Molding
-      const molding = BABYLON.MeshBuilder.CreateBox("molding", {
-        width: 0.11,
-        height: 0.1,
-        depth: length * 0.98
-      }, scene);
-      molding.position = new BABYLON.Vector3(x, wallHeight * 0.7, z);
-      molding.rotation.y = rotationY;
-      molding.material = moldingMat;
-    }
-
-    function createDoor(x, z, rotationY) {
-      const door = BABYLON.MeshBuilder.CreateBox("door", { 
-        width: 0.11, 
-        height: wallHeight-0.5, 
-        depth: 0.8 
-      }, scene);
-      door.position = new BABYLON.Vector3(x, (wallHeight-0.5)/2, z);
-      door.rotation.y = rotationY;
-      door.material = doorMat;
-    }
-
-    // Build hallways
-    segments.forEach(segment => {
       // Floor
       const floor = BABYLON.MeshBuilder.CreateGround("floor", { 
         width: cellSize, 
-        height: Math.abs(segment.x2 - segment.x1 || segment.z2 - segment.z1) 
+        height: length 
       }, scene);
-      floor.position = new BABYLON.Vector3(
-        (segment.x1 + segment.x2)/2, 
-        0, 
-        (segment.z1 + segment.z2)/2
-      );
-      floor.rotation.y = segment.rotation;
+      floor.position = new BABYLON.Vector3(centerX, 0, centerZ);
+      floor.rotation.y = rotationY;
       floor.material = floorMat;
 
-      // Walls
-      const offset = cellSize/2;
-      createWall(
-        segment.x1 + Math.sin(segment.rotation) * offset,
-        segment.z1 + Math.cos(segment.rotation) * offset,
-        segment.rotation,
-        Math.abs(segment.x2 - segment.x1 || segment.z2 - segment.z1)
+      // Left Wall (full length)
+      const leftWall = BABYLON.MeshBuilder.CreateBox("wall", {
+        width: wallThickness,
+        height: wallHeight,
+        depth: length
+      }, scene);
+      leftWall.position = new BABYLON.Vector3(
+        centerX - (cellSize/2) * Math.cos(rotationY),
+        wallHeight/2,
+        centerZ - (cellSize/2) * Math.sin(rotationY)
       );
-      createWall(
-        segment.x1 - Math.sin(segment.rotation) * offset,
-        segment.z1 - Math.cos(segment.rotation) * offset,
-        segment.rotation,
-        Math.abs(segment.x2 - segment.x1 || segment.z2 - segment.z1)
+      leftWall.rotation.y = rotationY;
+      leftWall.material = wallMat;
+      allWalls.push(leftWall);
+
+      // Right Wall (full length)
+      const rightWall = leftWall.clone("rightWall");
+      rightWall.position = new BABYLON.Vector3(
+        centerX + (cellSize/2) * Math.cos(rotationY),
+        wallHeight/2,
+        centerZ + (cellSize/2) * Math.sin(rotationY)
       );
+      allWalls.push(rightWall);
+
+      // Wall molding
+      const createMolding = (wall) => {
+        const molding = BABYLON.MeshBuilder.CreateBox("molding", {
+          width: wallThickness * 1.1,
+          height: 0.15,
+          depth: length * 0.98
+        }, scene);
+        molding.position = wall.position.clone();
+        molding.position.y = wallHeight * 0.7;
+        molding.rotation.y = rotationY;
+        molding.material = moldingMat;
+      };
+      createMolding(leftWall);
+      createMolding(rightWall);
 
       // Doors at ends
-      createDoor(segment.x1, segment.z1, segment.rotation);
-      createDoor(segment.x2, segment.z2, segment.rotation);
+      const createEndDoor = (x, z) => {
+        const door = BABYLON.MeshBuilder.CreateBox("door", {
+          width: wallThickness * 1.1,
+          height: wallHeight - 0.5,
+          depth: 0.8
+        }, scene);
+        door.position = new BABYLON.Vector3(x, (wallHeight-0.5)/2, z);
+        door.rotation.y = rotationY;
+        door.material = doorMat;
+        allWalls.push(door);
+      };
+
+      createEndDoor(x1, z1);
+      createEndDoor(x2, z2);
+    };
+
+    // Create cross-shaped hallway
+    createHallwaySegment(-5, 0, 5, 0, 0); // Horizontal
+    createHallwaySegment(0, -5, 0, 5, Math.PI/2); // Vertical
+
+    // --- Collision Detection ---
+    const cameraEllipsoid = new BABYLON.Vector3(0.5, 1.6, 0.5);
+    scene.collisionsEnabled = true;
+    fpsCamera.checkCollisions = true;
+    fpsCamera.ellipsoid = cameraEllipsoid;
+
+    allWalls.forEach(wall => {
+      wall.checkCollisions = true;
+      wall.ellipsoid = new BABYLON.Vector3(wallThickness/2, wallHeight/2, 0.1);
     });
 
     // --- Triple-Tap Detection ---
     let lastTapTime = 0;
     let tapCount = 0;
-    const tripleTapThreshold = 300; // ms between taps
+    const tripleTapThreshold = 300;
 
     canvas.addEventListener("pointerdown", (e) => {
       e.preventDefault();
@@ -187,19 +204,16 @@
         toggleCameraView();
       }
 
-      // Store for swipe detection
       touchStartX = e.clientX;
       touchStartY = e.clientY;
     }, { passive: false });
 
     // --- Camera Toggle ---
-    function toggleCameraView() {
-      if (isTransitioning) return;
-      
+    const toggleCameraView = () => {
       if (activeCamera === fpsCamera) {
         viewLabel.textContent = "Map View";
         godCamera.target = fpsCamera.position.clone();
-        godCamera.radius = 20;
+        godCamera.radius = 25;
         scene.activeCamera = godCamera;
         activeCamera = godCamera;
       } else {
@@ -207,17 +221,30 @@
         scene.activeCamera = fpsCamera;
         activeCamera = fpsCamera;
       }
-    }
+    };
 
-    // --- Swipe Controls ---
+    // --- Swipe Controls with Collision ---
     let touchStartX = 0;
     let touchStartY = 0;
     let isTurning = false;
     const turnSpeed = 300;
 
+    const tryMove = (direction) => {
+      const oldPosition = fpsCamera.position.clone();
+      fpsCamera.position.addInPlace(direction);
+      
+      // Check if new position collides with walls
+      for (const wall of allWalls) {
+        if (fpsCamera.intersectsMesh(wall)) {
+          fpsCamera.position = oldPosition;
+          return false;
+        }
+      }
+      return true;
+    };
+
     canvas.addEventListener("pointerup", (e) => {
-      if (activeCamera !== fpsCamera) return;
-      if (isTurning) return;
+      if (activeCamera !== fpsCamera || isTurning) return;
       
       const deltaX = e.clientX - touchStartX;
       const deltaY = e.clientY - touchStartY;
@@ -232,33 +259,29 @@
       }
     }, { passive: true });
 
-    // Movement functions
-    function swipeDown() {
-      const forward = fpsCamera.getDirection(BABYLON.Axis.Z).scale(cellSize);
-      const newPos = fpsCamera.position.add(forward);
-      
-      // Boundary check (-5 to 5 on X/Z)
-      if (Math.abs(newPos.x) <= 5 && Math.abs(newPos.z) <= 5) {
-        fpsCamera.position = newPos;
+    const swipeDown = () => {
+      const forward = fpsCamera.getDirection(BABYLON.Axis.Z).scale(cellSize/5);
+      for (let i = 0; i < 5; i++) { // Smooth stepped movement
+        setTimeout(() => tryMove(forward), i * 50);
       }
-    }
+    };
 
-    function swipeLeft() {
+    const swipeLeft = () => {
       isTurning = true;
       animateTurn(fpsCamera.rotation.y + Math.PI/2, () => isTurning = false);
-    }
+    };
 
-    function swipeRight() {
+    const swipeRight = () => {
       isTurning = true;
       animateTurn(fpsCamera.rotation.y - Math.PI/2, () => isTurning = false);
-    }
+    };
 
-    function swipeUp() {
+    const swipeUp = () => {
       isTurning = true;
       animateTurn(fpsCamera.rotation.y + Math.PI, () => isTurning = false);
-    }
+    };
 
-    function animateTurn(targetRotation, onComplete) {
+    const animateTurn = (targetRotation, onComplete) => {
       const startRotation = fpsCamera.rotation.y;
       const startTime = Date.now();
 
@@ -271,7 +294,7 @@
         else if (onComplete) onComplete();
       };
       animate();
-    }
+    };
 
     // Run the engine
     engine.runRenderLoop(() => scene.render());
