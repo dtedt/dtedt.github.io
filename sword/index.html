@@ -131,7 +131,7 @@
         let score = 0;
         let health = 5;
         let enemies = [];
-        let parryWindow = 150; // milliseconds
+        let parryWindow = 100; // milliseconds
         let nextEnemyTime = 0;
         let lastFrameTime = 0;
         let animationId = 0;
@@ -148,9 +148,9 @@
         
         // Enemy types
         const enemyTypes = [
-            { color: '#ff5555', speed: 2, radius: 20, attackCooldown: 1000 }, // Slow
-            { color: '#ff9999', speed: 3, radius: 15, attackCooldown: 800 },  // Medium
-            { color: '#ffcccc', speed: 4, radius: 12, attackCooldown: 600 }   // Fast
+            { color: '#ff5555', speed: 4, radius: 20, attackCooldown: 1000 }, // Slow
+            { color: '#ff9999', speed: 5, radius: 15, attackCooldown: 800 },  // Medium
+            { color: '#ffcccc', speed: 6, radius: 12, attackCooldown: 600 }   // Fast
         ];
         
         // Initialize health bar
