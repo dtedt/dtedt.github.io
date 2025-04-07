@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sword Parry</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            touch-action: manipulation;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+        }
+        
+        #gameCanvas {
+            display: block;
+            background-color: #111;
+            touch-action: none;
+        }
+        
+        #healthBar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+        
+        .heart {
+            width: 30px;
+            height: 30px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff0000"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            background-size: contain;
+        }
+        
+        .heart.lost {
+            opacity: 0.3;
+        }
+        
+        #score {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        #startScreen, #gameOverScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div id="healthBar"></div>
+    <div id="score">0</div>
+    <canvas id="gameCanvas"></canvas>
+    
+    <div id="startScreen">
+        <h1>Sword Parry</h1>
+        <p>Defend against enemies by tapping when they enter your attack range. Time your parries perfectly!</p>
+        <button id="startButton">Start Game</button>
+    </div>
+    
+    <div id="gameOverScreen" style="display: none;">
+        <h1>Game Over</h1>
+        <p id="finalScore">Score: 0</p>
+        <button id="restartButton">Play Again</button>
+    </div>
+
+    <script>
+        // Game variables
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const healthBar = document.getElementById('healthBar');
+        const scoreElement = document.getElementById('score');
+        const startScreen = document.getElementById('startScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const startButton = document.getElementById('startButton');
+        const restartButton = document.getElementById('restartButton');
+        const finalScoreElement = document.getElementById('finalScore');
+        
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Game state
+        let gameRunning = false;
+        let score = 0;
+        let health = 5;
+        let enemies = [];
+        let parryWindow = 150; // milliseconds
+        let nextEnemyTime = 0;
+        let lastFrameTime = 0;
+        let animationId = 0;
+        
+        // Player
+        const player = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 30,
+            parryRadius: 100,
+            parryCooldown: 0,
+            parryCooldownTime: 200
+        };
+        
+        // Enemy types
+        const enemyTypes = [
+            { color: '#ff5555', speed: 2, radius: 20 }, // Slow
+            { color: '#ff9999', speed: 3, radius: 15 }, // Medium
+            { color: '#ffcccc', speed: 4, radius: 12 }   // Fast
+        ];
+        
+        // Initialize health bar
+        function initHealthBar() {
+            healthBar.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                if (i >= health) {
+                    heart.classList.add('lost');
+                }
+                healthBar.appendChild(heart);
+            }
+        }
+        
+        // Create a new enemy
+        function createEnemy() {
+            // Random angle from which enemy approaches
+            const angle = Math.random() * Math.PI * 2;
+            
+            // Choose enemy type
+            const type = Math.floor(Math.random() * enemyTypes.length);
+            
+            // Calculate spawn position outside the screen
+            const spawnDistance = Math.max(canvas.width, canvas.height) * 0.7;
+            const x = player.x + Math.cos(angle) * spawnDistance;
+            const y = player.y + Math.sin(angle) * spawnDistance;
+            
+            enemies.push({
+                x: x,
+                y: y,
+                angle: angle,
+                speed: enemyTypes[type].speed,
+                radius: enemyTypes[type].radius,
+                color: enemyTypes[type].color,
+                state: 'approaching', // 'approaching', 'in-range', 'attacking', 'parried'
+                parryTime: 0,
+                hitPlayer: false
+            });
+        }
+        
+        // Update game state
+        function update(timestamp) {
+            if (!gameRunning) return;
+            
+            const deltaTime = timestamp - lastFrameTime;
+            lastFrameTime = timestamp;
+            
+            // Update player parry cooldown
+            if (player.parryCooldown > 0) {
+                player.parryCooldown -= deltaTime;
+                if (player.parryCooldown < 0) player.parryCooldown = 0;
+            }
+            
+            // Spawn new enemies
+            if (timestamp > nextEnemyTime) {
+                createEnemy();
+                nextEnemyTime = timestamp + 1000 + Math.random() * 1500; // 1-2.5 seconds between enemies
+            }
+            
+            // Update enemies
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const enemy = enemies[i];
+                
+                if (enemy.state === 'approaching') {
+                    // Move enemy toward player
+                    enemy.x -= Math.cos(enemy.angle) * enemy.speed;
+                    enemy.y -= Math.sin(enemy.angle) * enemy.speed;
+                    
+                    // Check if enemy entered parry range
+                    const dx = player.x - enemy.x;
+                    const dy = player.y - enemy.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < player.parryRadius + enemy.radius) {
+                        enemy.state = 'in-range';
+                        enemy.parryTime = timestamp + parryWindow;
+                    }
+                }
+                else if (enemy.state === 'in-range') {
+                    // Enemy is in range, waiting to be parried
+                    if (timestamp > enemy.parryTime) {
+                        enemy.state = 'attacking';
+                    }
+                }
+                else if (enemy.state === 'attacking' && !enemy.hitPlayer) {
+                    // Enemy attacks player
+                    health--;
+                    initHealthBar();
+                    enemy.hitPlayer = true;
+                    
+                    if (health <= 0) {
+                        gameOver();
+                    }
+                }
+                
+                // Remove enemies that are far away
+                const dx = player.x - enemy.x;
+                const dy = player.y - enemy.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance > Math.max(canvas.width, canvas.height) * 0.8) {
+                    enemies.splice(i, 1);
+                }
+            }
+            
+            // Draw everything
+            draw();
+            
+            // Continue animation loop
+            animationId = requestAnimationFrame(update);
+        }
+        
+        // Draw game
+        function draw() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw player
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#4a8fe7';
+            ctx.fill();
+            
+            // Draw parry range (dotted circle)
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.parryRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.setLineDash([5, 5]);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Draw enemies
+            for (const enemy of enemies) {
+                ctx.beginPath();
+                ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI * 2);
+                
+                if (enemy.state === 'parried') {
+                    ctx.fillStyle = '#88ff88';
+                } else if (enemy.state === 'in-range') {
+                    // Flash when in parry range
+                    const flash = Math.sin(Date.now() / 100) * 0.5 + 0.5;
+                    ctx.fillStyle = `rgba(255, ${255 * flash}, ${255 * flash}, 1)`;
+                } else {
+                    ctx.fillStyle = enemy.color;
+                }
+                
+                ctx.fill();
+                
+                // Draw weapon for attacking enemies
+                if (enemy.state === 'attacking') {
+                    ctx.beginPath();
+                    ctx.moveTo(enemy.x, enemy.y);
+                    ctx.lineTo(
+                        enemy.x + Math.cos(enemy.angle) * enemy.radius * 1.5,
+                        enemy.y + Math.sin(enemy.angle) * enemy.radius * 1.5
+                    );
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                }
+            }
+            
+            // Draw parry effect if just parried
+            if (player.parryCooldown > player.parryCooldownTime - 100) {
+                const alpha = (player.parryCooldownTime - player.parryCooldown) / 100;
+                ctx.beginPath();
+                ctx.arc(player.x, player.y, player.parryRadius * 1.2, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(100, 255, 100, ${alpha})`;
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            }
+        }
+        
+        // Handle parry attempt
+        function attemptParry() {
+            if (!gameRunning || player.parryCooldown > 0) return;
+            
+            player.parryCooldown = player.parryCooldownTime;
+            let parrySuccess = false;
+            const now = Date.now();
+            
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const enemy = enemies[i];
+                
+                if (enemy.state === 'in-range') {
+                    // Successful parry
+                    enemy.state = 'parried';
+                    enemy.speed *= -2; // Knock back
+                    score += 100;
+                    scoreElement.textContent = score;
+                    parrySuccess = true;
+                }
+            }
+            
+            // Visual feedback for missed parry
+            if (!parrySuccess) {
+                ctx.beginPath();
+                ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 100, 100, 0.5)';
+                ctx.fill();
+            }
+        }
+        
+        // Start game
+        function startGame() {
+            gameRunning = true;
+            score = 0;
+            health = 5;
+            enemies = [];
+            scoreElement.textContent = score;
+            initHealthBar();
+            
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            
+            lastFrameTime = performance.now();
+            nextEnemyTime = lastFrameTime + 1000; // First enemy after 1 second
+            animationId = requestAnimationFrame(update);
+        }
+        
+        // End game
+        function gameOver() {
+            gameRunning = false;
+            cancelAnimationFrame(animationId);
+            
+            finalScoreElement.textContent = `Score: ${score}`;
+            gameOverScreen.style.display = 'flex';
+        }
+        
+        // Event listeners
+        canvas.addEventListener('click', attemptParry);
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            attemptParry();
+        }, { passive: false });
+        
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', startGame);
+        
+        // Initialize health bar
+        initHealthBar();
+    </script>
+</body>
+</html>
