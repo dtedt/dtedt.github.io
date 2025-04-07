@@ -141,16 +141,16 @@
             x: canvas.width / 2,
             y: canvas.height / 2,
             radius: 30,
-            parryRadius: 100,
+            parryRadius: 60, // Reduced to twice player radius (30 * 2)
             parryCooldown: 0,
             parryCooldownTime: 200
         };
         
         // Enemy types
         const enemyTypes = [
-            { color: '#ff5555', speed: 2, radius: 20 }, // Slow
-            { color: '#ff9999', speed: 3, radius: 15 }, // Medium
-            { color: '#ffcccc', speed: 4, radius: 12 }   // Fast
+            { color: '#ff5555', speed: 2, radius: 20, attackCooldown: 1000 }, // Slow
+            { color: '#ff9999', speed: 3, radius: 15, attackCooldown: 800 },  // Medium
+            { color: '#ffcccc', speed: 4, radius: 12, attackCooldown: 600 }   // Fast
         ];
         
         // Initialize health bar
@@ -186,9 +186,12 @@
                 speed: enemyTypes[type].speed,
                 radius: enemyTypes[type].radius,
                 color: enemyTypes[type].color,
-                state: 'approaching', // 'approaching', 'in-range', 'attacking', 'parried'
+                attackCooldown: enemyTypes[type].attackCooldown,
+                state: 'approaching', // 'approaching', 'in-range', 'attacking', 'recovering', 'parried'
                 parryTime: 0,
-                hitPlayer: false
+                hitPlayer: false,
+                recoveryTimer: 0,
+                originalSpeed: enemyTypes[type].speed
             });
         }
         
@@ -229,11 +232,16 @@
                         enemy.state = 'in-range';
                         enemy.parryTime = timestamp + parryWindow;
                     }
+                    
+                    // Check if enemy reached player
+                    if (distance < player.radius + enemy.radius) {
+                        enemy.state = 'attacking';
+                    }
                 }
                 else if (enemy.state === 'in-range') {
                     // Enemy is in range, waiting to be parried
                     if (timestamp > enemy.parryTime) {
-                        enemy.state = 'attacking';
+                        enemy.state = 'approaching'; // Continue approaching if not parried
                     }
                 }
                 else if (enemy.state === 'attacking' && !enemy.hitPlayer) {
@@ -241,19 +249,57 @@
                     health--;
                     initHealthBar();
                     enemy.hitPlayer = true;
+                    enemy.state = 'recovering';
+                    enemy.recoveryTimer = enemy.attackCooldown;
+                    
+                    // Knock back effect
+                    enemy.speed = -enemy.originalSpeed * 1.5;
                     
                     if (health <= 0) {
                         gameOver();
                     }
                 }
+                else if (enemy.state === 'recovering') {
+                    // Enemy is recovering after attack
+                    enemy.recoveryTimer -= deltaTime;
+                    
+                    // Move enemy during knockback
+                    enemy.x -= Math.cos(enemy.angle) * enemy.speed * 0.5;
+                    enemy.y -= Math.sin(enemy.angle) * enemy.speed * 0.5;
+                    
+                    // Slow down knockback
+                    enemy.speed *= 0.95;
+                    
+                    if (enemy.recoveryTimer <= 0) {
+                        // Return to original speed and approach again
+                        enemy.speed = enemy.originalSpeed;
+                        enemy.hitPlayer = false;
+                        enemy.state = 'approaching';
+                    }
+                }
+                else if (enemy.state === 'parried') {
+                    // Enemy is being knocked back after parry
+                    enemy.x -= Math.cos(enemy.angle) * enemy.speed;
+                    enemy.y -= Math.sin(enemy.angle) * enemy.speed;
+                    
+                    // Slow down knockback
+                    enemy.speed *= 0.9;
+                    
+                    // Remove enemy when it's far enough or almost stopped
+                    if (Math.abs(enemy.speed) < 0.5) {
+                        enemies.splice(i, 1);
+                    }
+                }
                 
-                // Remove enemies that are far away
-                const dx = player.x - enemy.x;
-                const dy = player.y - enemy.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance > Math.max(canvas.width, canvas.height) * 0.8) {
-                    enemies.splice(i, 1);
+                // Remove enemies that are far away (except parried ones)
+                if (enemy.state !== 'parried') {
+                    const dx = player.x - enemy.x;
+                    const dy = player.y - enemy.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance > Math.max(canvas.width, canvas.height) * 0.8) {
+                        enemies.splice(i, 1);
+                    }
                 }
             }
             
@@ -338,12 +384,14 @@
                 const enemy = enemies[i];
                 
                 if (enemy.state === 'in-range') {
-                    // Successful parry
+                    // Successful parry - destroy enemy
                     enemy.state = 'parried';
-                    enemy.speed *= -2; // Knock back
+                    enemy.speed = 15; // Knock back speed
                     score += 100;
                     scoreElement.textContent = score;
                     parrySuccess = true;
+                    
+                    // Remove enemy after a delay (handled in update)
                 }
             }
             
