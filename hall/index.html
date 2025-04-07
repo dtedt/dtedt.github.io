@@ -45,12 +45,31 @@
       transition: opacity 0.3s;
       pointer-events: none;
     }
+    .nav-arrow {
+      position: absolute;
+      bottom: 30px;
+      width: 60px;
+      height: 60px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      filter: drop-shadow(0 0 5px rgba(255,50,50,0.7));
+    }
+    #left-arrow {
+      left: 20px;
+      transform: scaleX(-1);
+    }
+    #right-arrow {
+      right: 20px;
+    }
   </style>
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
   <div id="view-label">First-Person View</div>
   <div id="notification">Wall is impassable!</div>
+  <img id="left-arrow" class="nav-arrow" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0icmVkIiBkPSJNMTMuMDMsNS4wM0wxOS4wMywxMS4wM0gyVjEzSDE5LjAzTDEzLjAzLDE5LjAzTDE1LjQ0LDIxLjQ0TDIzLjQ0LDEzLjQ0TDI0LDEyLjk5TDIzLjQ0LDEyLjU1TDE1LjQ0LDQuNTZMMTMuMDMsNS4wM1oiLz48L3N2Zz4=">
+  <img id="right-arrow" class="nav-arrow" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0icmVkIiBkPSJNMTMuMDMsNS4wM0wxOS4wMywxMS4wM0gyVjEzSDE5LjAzTDEzLjAzLDE5LjAzTDE1LjQ0LDIxLjQ0TDIzLjQ0LDEzLjQ0TDI0LDEyLjk5TDIzLjQ0LDEyLjU1TDE1LjQ0LDQuNTZMMTMuMDMsNS4wM1oiLz48L3N2Zz4=">
   <script>
     // Initialize Babylon.js
     const canvas = document.getElementById("renderCanvas");
@@ -58,11 +77,13 @@
       adaptToDeviceRatio: true
     });
     const scene = new BABYLON.Scene(engine);
-    scene.clearColor = new BABYLON.Color4(0.2, 0.2, 0.3);
+    scene.clearColor = new BABYLON.Color4(0.15, 0.15, 0.2);
 
     // UI Elements
     const viewLabel = document.getElementById("view-label");
     const notification = document.getElementById("notification");
+    const leftArrow = document.getElementById("left-arrow");
+    const rightArrow = document.getElementById("right-arrow");
 
     // Show temporary notification
     function showNotification(message) {
@@ -73,448 +94,44 @@
       }, 1500);
     }
 
+    // Update navigation arrows
+    function updateNavigationArrows() {
+      if (currentView !== "first-person") {
+        leftArrow.style.opacity = 0;
+        rightArrow.style.opacity = 0;
+        return;
+      }
+
+      // Check if we're at an intersection (aligned to grid)
+      const pos = fpsCamera.position;
+      const cellSize = 10; // 5 paces * 2 units/pace
+      const gridOffset = (gridSize * cellSize)/2;
+      
+      // Convert to grid coordinates
+      const gridX = Math.round((pos.x + gridOffset) / cellSize);
+      const gridZ = Math.round((pos.z + gridOffset) / cellSize);
+      
+      // Check if we're exactly centered in a cell
+      const atIntersection = (
+        Math.abs(pos.x - (gridX * cellSize - gridOffset)) < 0.1 &&
+        Math.abs(pos.z - (gridZ * cellSize - gridOffset)) < 0.1
+      );
+
+      if (atIntersection) {
+        leftArrow.style.opacity = 0.8;
+        rightArrow.style.opacity = 0.8;
+      } else {
+        leftArrow.style.opacity = 0;
+        rightArrow.style.opacity = 0;
+      }
+    }
+
     // --- Enhanced Lighting ---
     const light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-    light1.intensity = 0.7;
+    light1.intensity = 0.6;
+    light1.groundColor = new BABYLON.Color3(0.3, 0.3, 0.4);
     
-    const light2 = new BABYLON.DirectionalLight("light2", new BABYLON.Vector3(0.5, -1, 0.5), scene);
-    light2.intensity = 0.5;
-    light2.position = new BABYLON.Vector3(0, 10, 0);
-
-    // --- Camera System ---
-    let activeCamera;
-    let currentView = "first-person";
-    let isDragging = false;
-    let lastDragPosition = null;
-    let playerMarker = null;
-
-    // First-person camera
-    const fpsCamera = new BABYLON.UniversalCamera("fpsCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
-    fpsCamera.attachControl(canvas, false);
-    fpsCamera.applyGravity = false;
-    fpsCamera.ellipsoid = new BABYLON.Vector3(0.3, 1.6, 0.3);
-    fpsCamera.minZ = 0.1;
-    fpsCamera.speed = 0;
-    fpsCamera.angularSensibility = 0;
-
-    // God's-eye camera
-    const godCamera = new BABYLON.ArcRotateCamera("godCamera", 
-      -Math.PI/4, Math.PI/3, 30, 
-      new BABYLON.Vector3(0, 0, 0), scene);
-    godCamera.lowerRadiusLimit = 15;
-    godCamera.upperRadiusLimit = 60;
-    godCamera.upperBetaLimit = Math.PI/2;
-    godCamera.inputs.clear();
-
-    // Create player marker
-    const createPlayerMarker = () => {
-      if (playerMarker) playerMarker.dispose();
-      
-      playerMarker = BABYLON.MeshBuilder.CreateSphere("playerMarker", {
-        diameter: 0.5,
-        segments: 16
-      }, scene);
-      
-      const markerMat = new BABYLON.StandardMaterial("markerMat", scene);
-      markerMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
-      markerMat.emissiveColor = new BABYLON.Color3(0.5, 0, 0);
-      playerMarker.material = markerMat;
-      playerMarker.position.y = 0.25;
-      playerMarker.isPickable = false;
-      playerMarker.renderingGroupId = 2;
-    };
-
-    // Start in first-person
-    activeCamera = fpsCamera;
-    scene.activeCamera = fpsCamera;
-    createPlayerMarker();
-
-    // --- Materials ---
-    const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
-    floorMat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
-
-    const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
-    wallMat.diffuseColor = new BABYLON.Color3(0.7, 0.85, 0.9);
-
-    const moldingMat = new BABYLON.StandardMaterial("moldingMat", scene);
-    moldingMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.8);
-
-    const doorMat = new BABYLON.StandardMaterial("doorMat", scene);
-    doorMat.diffuseColor = new BABYLON.Color3(0.5, 0.3, 0.2);
-
-    // --- Hallway Configuration ---
-    const paceLength = 2;
-    const hallwayLength = 3 * paceLength; // 3 paces = 6 units
-    const visualHallwayWidth = 1.5; // Visual width
-    const walkableWidth = 1.0; // Walkable path
-    const wallHeight = 3;
-    const wallThickness = 0.2;
-    const allWalls = [];
-    const allDoors = [];
-    const intersectionSize = 2;
-    const gridSize = 5; // 5x5 grid of cross-hallways
-    const cellSize = hallwayLength;
-
-    // Door class to handle opening/closing
-    class Door {
-      constructor(mesh, rotationY, x, z) {
-        this.mesh = mesh;
-        this.originalPosition = mesh.position.clone();
-        this.isOpen = false;
-        this.rotationY = rotationY;
-        this.x = x;
-        this.z = z;
-      }
-
-      open() {
-        if (this.isOpen) return;
-        
-        this.isOpen = true;
-        const offset = new BABYLON.Vector3(
-          Math.sin(this.rotationY) * 0.8,
-          0,
-          Math.cos(this.rotationY) * 0.8
-        );
-        this.mesh.position = this.originalPosition.add(offset);
-      }
-
-      close() {
-        if (!this.isOpen) return;
-        
-        this.isOpen = false;
-        this.mesh.position = this.originalPosition.clone();
-      }
-    }
-
-    // Create hallway segment
-    const createHallwaySegment = (x1, z1, x2, z2, rotationY, gridX, gridZ) => {
-      const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2));
-      const centerX = (x1 + x2)/2;
-      const centerZ = (z1 + z2)/2;
-
-      // Floor (visual width)
-      const floor = BABYLON.MeshBuilder.CreateGround(`floor_${gridX}_${gridZ}`, { 
-        width: visualHallwayWidth, 
-        height: length
-      }, scene);
-      floor.position = new BABYLON.Vector3(centerX, 0, centerZ);
-      floor.rotation.y = rotationY;
-      floor.material = floorMat;
-
-      // Invisible walkable boundary
-      const walkableBoundary = BABYLON.MeshBuilder.CreateBox(`boundary_${gridX}_${gridZ}`, {
-        width: wallThickness,
-        height: wallHeight,
-        depth: length
-      }, scene);
-      walkableBoundary.position = new BABYLON.Vector3(
-        centerX - (walkableWidth/2) * Math.cos(rotationY),
-        wallHeight/2,
-        centerZ - (walkableWidth/2) * Math.sin(rotationY)
-      );
-      walkableBoundary.rotation.y = rotationY;
-      walkableBoundary.isVisible = false;
-      allWalls.push(walkableBoundary);
-
-      const walkableBoundary2 = walkableBoundary.clone(`boundary2_${gridX}_${gridZ}`);
-      walkableBoundary2.position = new BABYLON.Vector3(
-        centerX + (walkableWidth/2) * Math.cos(rotationY),
-        wallHeight/2,
-        centerZ + (walkableWidth/2) * Math.sin(rotationY)
-      );
-      allWalls.push(walkableBoundary2);
-
-      // Visual walls (wider than walkable area)
-      const leftWall = BABYLON.MeshBuilder.CreateBox(`wall_${gridX}_${gridZ}`, {
-        width: wallThickness,
-        height: wallHeight,
-        depth: length
-      }, scene);
-      leftWall.position = new BABYLON.Vector3(
-        centerX - (visualHallwayWidth/2) * Math.cos(rotationY),
-        wallHeight/2,
-        centerZ - (visualHallwayWidth/2) * Math.sin(rotationY)
-      );
-      leftWall.rotation.y = rotationY;
-      leftWall.material = wallMat;
-      allWalls.push(leftWall);
-
-      const rightWall = leftWall.clone(`rightWall_${gridX}_${gridZ}`);
-      rightWall.position = new BABYLON.Vector3(
-        centerX + (visualHallwayWidth/2) * Math.cos(rotationY),
-        wallHeight/2,
-        centerZ + (visualHallwayWidth/2) * Math.sin(rotationY)
-      );
-      allWalls.push(rightWall);
-
-      // Molding on visual walls
-      const createMolding = (wall) => {
-        const molding = BABYLON.MeshBuilder.CreateBox(`molding_${gridX}_${gridZ}`, {
-          width: wallThickness * 1.1,
-          height: 0.15,
-          depth: length * 0.98
-        }, scene);
-        molding.position = wall.position.clone();
-        molding.position.y = wallHeight * 0.7;
-        molding.rotation.y = rotationY;
-        molding.material = moldingMat;
-      };
-      createMolding(leftWall);
-      createMolding(rightWall);
-
-      // Doors at ends (only create if not at grid edge)
-      const createEndDoor = (x, z) => {
-        // Check if we're at grid edge
-        const atEdgeX = Math.abs(x) >= (gridSize * cellSize)/2 - 0.1;
-        const atEdgeZ = Math.abs(z) >= (gridSize * cellSize)/2 - 0.1;
-        
-        if (!atEdgeX && !atEdgeZ) {
-          const door = BABYLON.MeshBuilder.CreateBox(`door_${x}_${z}`, {
-            width: wallThickness * 1.1,
-            height: wallHeight - 0.5,
-            depth: 0.8
-          }, scene);
-          door.position = new BABYLON.Vector3(x, (wallHeight-0.5)/2, z);
-          door.rotation.y = rotationY;
-          door.material = doorMat;
-          
-          const doorObj = new Door(door, rotationY, x, z);
-          allDoors.push(doorObj);
-          return doorObj;
-        }
-        return null;
-      };
-
-      const door1 = createEndDoor(x1, z1);
-      const door2 = createEndDoor(x2, z2);
-    };
-
-    // Create 5x5 grid of cross-hallways
-    for (let gridX = 0; gridX < gridSize; gridX++) {
-      for (let gridZ = 0; gridZ < gridSize; gridZ++) {
-        const offsetX = (gridX - (gridSize-1)/2) * cellSize;
-        const offsetZ = (gridZ - (gridSize-1)/2) * cellSize;
-        
-        // Horizontal hallway
-        createHallwaySegment(
-          offsetX - cellSize/2, offsetZ,
-          offsetX + cellSize/2, offsetZ,
-          0, gridX, gridZ
-        );
-        
-        // Vertical hallway
-        createHallwaySegment(
-          offsetX, offsetZ - cellSize/2,
-          offsetX, offsetZ + cellSize/2,
-          Math.PI/2, gridX, gridZ
-        );
-      }
-    }
-
-    // --- Collision Detection ---
-    scene.collisionsEnabled = true;
-    fpsCamera.checkCollisions = true;
-    allWalls.forEach(wall => {
-      wall.checkCollisions = true;
-      wall.ellipsoid = new BABYLON.Vector3(wallThickness/2, wallHeight/2, wallThickness/2);
-    });
-
-    // Check for door opening
-    function checkDoors() {
-      const playerPos = fpsCamera.position;
-      
-      allDoors.forEach(door => {
-        const distance = BABYLON.Vector3.Distance(
-          playerPos,
-          new BABYLON.Vector3(door.x, playerPos.y, door.z)
-        );
-        
-        if (distance < 1.5) {
-          door.open();
-        } else {
-          door.close();
-        }
-      });
-    }
-
-    // --- Input Handling ---
-    let lastTapTime = 0;
-    let tapCount = 0;
-    const tripleTapThreshold = 300;
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let isTurning = false;
-    const turnSpeed = 300;
-    const moveDistance = paceLength / 2;
-
-    // Pointer events
-    canvas.addEventListener("pointerdown", (e) => {
-      e.preventDefault();
-      const currentTime = Date.now();
-      
-      if (currentTime - lastTapTime < tripleTapThreshold) {
-        tapCount++;
-      } else {
-        tapCount = 1;
-      }
-      lastTapTime = currentTime;
-
-      if (tapCount === 3) {
-        tapCount = 0;
-        toggleCameraView();
-      }
-
-      if (currentView === "god-eye") {
-        isDragging = true;
-        lastDragPosition = { x: e.clientX, y: e.clientY };
-      } else {
-        touchStartX = e.clientX;
-        touchStartY = e.clientY;
-      }
-    }, { passive: false });
-
-    canvas.addEventListener("pointermove", (e) => {
-      if (!isDragging || currentView !== "god-eye") return;
-      
-      const deltaX = e.clientX - lastDragPosition.x;
-      const deltaY = e.clientY - lastDragPosition.y;
-      
-      godCamera.alpha -= deltaX * 0.01;
-      godCamera.beta = BABYLON.Scalar.Clamp(
-        godCamera.beta + deltaY * 0.01,
-        0.1,
-        Math.PI/2
-      );
-      
-      lastDragPosition = { x: e.clientX, y: e.clientY };
-    }, { passive: true });
-
-    canvas.addEventListener("pointerup", (e) => {
-      isDragging = false;
-      if (currentView !== "first-person" || isTurning) return;
-      
-      const deltaX = e.clientX - touchStartX;
-      const deltaY = e.clientY - touchStartY;
-      const threshold = 50;
-
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX < -threshold) swipeLeft();
-        else if (deltaX > threshold) swipeRight();
-      } else {
-        if (deltaY < -threshold) swipeUp();
-        else if (deltaY > threshold) swipeDown();
-      }
-    }, { passive: true });
-
-    // --- Camera Control ---
-    function toggleCameraView() {
-      if (currentView === "first-person") {
-        currentView = "god-eye";
-        viewLabel.textContent = "Map View (Swipe to Rotate)";
-        godCamera.alpha = -Math.PI/4;
-        godCamera.beta = Math.PI/3;
-        godCamera.radius = 30;
-        scene.activeCamera = godCamera;
-        activeCamera = godCamera;
-      } else {
-        currentView = "first-person";
-        viewLabel.textContent = "First-Person View";
-        scene.activeCamera = fpsCamera;
-        activeCamera = fpsCamera;
-      }
-      updatePlayerMarker();
-    }
-
-    function updatePlayerMarker() {
-      if (playerMarker) {
-        playerMarker.position.x = fpsCamera.position.x;
-        playerMarker.position.z = fpsCamera.position.z;
-        playerMarker.isVisible = (currentView === "god-eye");
-      }
-    }
-
-    // --- Movement System ---
-    const tryMove = (direction) => {
-      const oldPosition = fpsCamera.position.clone();
-      fpsCamera.position.addInPlace(direction);
-      
-      let hitWall = false;
-      
-      for (const wall of allWalls) {
-        if (fpsCamera.intersectsMesh(wall)) {
-          hitWall = true;
-          break;
-        }
-      }
-
-      const maxDistance = (gridSize * cellSize)/2 - 1;
-      if (Math.abs(fpsCamera.position.x) > maxDistance || 
-          Math.abs(fpsCamera.position.z) > maxDistance) {
-        hitWall = true;
-      }
-      
-      if (hitWall) {
-        fpsCamera.position = oldPosition;
-        showNotification("Wall is impassable!");
-        return false;
-      }
-      
-      checkDoors();
-      updatePlayerMarker();
-      return true;
-    };
-
-    const swipeDown = () => {
-      const forward = fpsCamera.getDirection(BABYLON.Axis.Z).scale(moveDistance);
-      tryMove(forward);
-    };
-
-    const swipeLeft = () => {
-      isTurning = true;
-      animateTurn(fpsCamera.rotation.y + Math.PI/2, () => {
-        isTurning = false;
-        updatePlayerMarker();
-      });
-    };
-
-    const swipeRight = () => {
-      isTurning = true;
-      animateTurn(fpsCamera.rotation.y - Math.PI/2, () => {
-        isTurning = false;
-        updatePlayerMarker();
-      });
-    };
-
-    const swipeUp = () => {
-      isTurning = true;
-      animateTurn(fpsCamera.rotation.y + Math.PI, () => {
-        isTurning = false;
-        updatePlayerMarker();
-      });
-    };
-
-    const animateTurn = (targetRotation, onComplete) => {
-      const startRotation = fpsCamera.rotation.y;
-      const startTime = Date.now();
-
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / turnSpeed, 1);
-        fpsCamera.rotation.y = startRotation + (targetRotation - startRotation) * progress;
-
-        if (progress < 1) requestAnimationFrame(animate);
-        else if (onComplete) onComplete();
-      };
-      animate();
-    };
-
-    // Run the engine
-    engine.runRenderLoop(() => {
-      scene.render();
-      updatePlayerMarker();
-      checkDoors();
-    });
-    window.addEventListener("resize", () => engine.resize());
-  </script>
-</body>
-</html>
+    const light2 = new BABYLON.DirectionalLight("light2", new BABYLON.Vector3(0.5, -0.7, 0.5), scene);
+    light2.intensity = 0.4;
+    light2.position = new BABYLON.Vector3(0, 8, 0);
+    light2.shadowEnabled
