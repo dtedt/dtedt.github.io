@@ -126,12 +126,17 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
+        // Helper functions
+        function randomBetween(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+        
         // Game state
         let gameRunning = false;
         let score = 0;
         let health = 5;
         let enemies = [];
-        let parryWindow = 5; // milliseconds
+        let parryWindow = 150; // milliseconds
         let nextEnemyTime = 0;
         let lastFrameTime = 0;
         let animationId = 0;
@@ -141,16 +146,16 @@
             x: canvas.width / 2,
             y: canvas.height / 2,
             radius: 30,
-            parryRadius: 60, // Reduced to twice player radius (30 * 2)
+            parryRadius: 60,
             parryCooldown: 0,
             parryCooldownTime: 200
         };
         
         // Enemy types
         const enemyTypes = [
-            { color: '#ff5555', speed: 4, radius: 20, attackCooldown: 1000 }, // Slow
-            { color: '#ff9999', speed: 5, radius: 15, attackCooldown: 800 },  // Medium
-            { color: '#ffcccc', speed: 6, radius: 12, attackCooldown: 600 }   // Fast
+            { color: '#ff5555', speed: 2, radius: 20, attackCooldown: 1000 }, // Slow
+            { color: '#ff9999', speed: 3, radius: 15, attackCooldown: 800 },  // Medium
+            { color: '#ffcccc', speed: 4, radius: 12, attackCooldown: 600 }   // Fast
         ];
         
         // Initialize health bar
@@ -187,11 +192,16 @@
                 radius: enemyTypes[type].radius,
                 color: enemyTypes[type].color,
                 attackCooldown: enemyTypes[type].attackCooldown,
-                state: 'approaching', // 'approaching', 'in-range', 'attacking', 'recovering', 'parried'
+                state: 'approaching', // 'approaching', 'in-range', 'attacking', 'recovering', 'circling', 'windup', 'parried'
                 parryTime: 0,
                 hitPlayer: false,
                 recoveryTimer: 0,
-                originalSpeed: enemyTypes[type].speed
+                originalSpeed: enemyTypes[type].speed,
+                orbitAngle: angle,
+                orbitRadius: player.parryRadius * 1.5,
+                circleTimer: 0,
+                circleDuration: randomBetween(5000, 12000), // 5-12 seconds
+                windupTimer: 0
             });
         }
         
@@ -271,10 +281,51 @@
                     enemy.speed *= 0.95;
                     
                     if (enemy.recoveryTimer <= 0) {
-                        // Return to original speed and approach again
-                        enemy.speed = enemy.originalSpeed;
-                        enemy.hitPlayer = false;
+                        // Start circling instead of approaching directly
+                        enemy.state = 'circling';
+                        enemy.circleTimer = 0;
+                        enemy.orbitAngle = Math.atan2(enemy.y - player.y, enemy.x - player.x);
+                        enemy.speed = enemy.originalSpeed * 0.6; // Slower speed for circling
+                    }
+                }
+                else if (enemy.state === 'circling') {
+                    // Enemy circles around player
+                    enemy.circleTimer += deltaTime;
+                    
+                    // Update orbit angle (circle around player)
+                    enemy.orbitAngle += 0.02 * (enemy.speed / enemy.originalSpeed);
+                    
+                    // Calculate orbit position
+                    const targetX = player.x + Math.cos(enemy.orbitAngle) * enemy.orbitRadius;
+                    const targetY = player.y + Math.sin(enemy.orbitAngle) * enemy.orbitRadius;
+                    
+                    // Move toward orbit position
+                    const dx = targetX - enemy.x;
+                    const dy = targetY - enemy.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist > 5) {
+                        enemy.x += dx * 0.05;
+                        enemy.y += dy * 0.05;
+                    }
+                    
+                    // Update angle to face player
+                    enemy.angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+                    
+                    // Randomly decide to strike after circling for required time
+                    if (enemy.circleTimer >= enemy.circleDuration) {
+                        enemy.state = 'windup';
+                        enemy.windupTimer = 300; // Brief windup before strike
+                    }
+                }
+                else if (enemy.state === 'windup') {
+                    // Enemy pauses briefly before striking
+                    enemy.windupTimer -= deltaTime;
+                    
+                    if (enemy.windupTimer <= 0) {
                         enemy.state = 'approaching';
+                        enemy.speed = enemy.originalSpeed * 2; // Faster strike
+                        enemy.hitPlayer = false;
                     }
                 }
                 else if (enemy.state === 'parried') {
@@ -332,33 +383,71 @@
             
             // Draw enemies
             for (const enemy of enemies) {
-                ctx.beginPath();
-                ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI * 2);
+                ctx.save();
+                ctx.translate(enemy.x, enemy.y);
                 
+                // Rotate to face player if not circling
+                if (enemy.state !== 'circling') {
+                    ctx.rotate(enemy.angle);
+                }
+                
+                // Draw enemy body
+                ctx.beginPath();
+                ctx.arc(0, 0, enemy.radius, 0, Math.PI * 2);
+                
+                // Different colors for different states
                 if (enemy.state === 'parried') {
                     ctx.fillStyle = '#88ff88';
                 } else if (enemy.state === 'in-range') {
                     // Flash when in parry range
                     const flash = Math.sin(Date.now() / 100) * 0.5 + 0.5;
                     ctx.fillStyle = `rgba(255, ${255 * flash}, ${255 * flash}, 1)`;
+                } else if (enemy.state === 'circling') {
+                    // Pulsing glow while circling
+                    const pulse = Math.sin(Date.now() / 200) * 0.3 + 0.7;
+                    ctx.fillStyle = `rgba(${parseInt(enemy.color.substr(1, 2), 16)}, 
+                                        ${parseInt(enemy.color.substr(3, 2), 16)}, 
+                                        ${parseInt(enemy.color.substr(5, 2), 16)}, 
+                                        ${pulse})`;
+                } else if (enemy.state === 'windup') {
+                    // Red flash during windup
+                    const flash = Math.sin(Date.now() / 50) * 0.5 + 0.5;
+                    ctx.fillStyle = `rgba(255, ${100 * flash}, ${100 * flash}, 1)`;
                 } else {
                     ctx.fillStyle = enemy.color;
                 }
                 
                 ctx.fill();
                 
-                // Draw weapon for attacking enemies
+                // Draw weapon
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                
+                // Different weapon positions based on state
                 if (enemy.state === 'attacking') {
-                    ctx.beginPath();
-                    ctx.moveTo(enemy.x, enemy.y);
-                    ctx.lineTo(
-                        enemy.x + Math.cos(enemy.angle) * enemy.radius * 1.5,
-                        enemy.y + Math.sin(enemy.angle) * enemy.radius * 1.5
-                    );
-                    ctx.strokeStyle = 'white';
-                    ctx.lineWidth = 3;
-                    ctx.stroke();
+                    // Full attack lunge
+                    ctx.lineTo(enemy.radius * 1.5, 0);
+                } else if (enemy.state === 'windup') {
+                    // Weapon drawn back during windup
+                    ctx.lineTo(-enemy.radius * 0.8, 0);
+                } else {
+                    // Normal ready position
+                    ctx.lineTo(enemy.radius * 0.8, 0);
                 }
+                
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Eye effect for circling enemies
+                if (enemy.state === 'circling') {
+                    ctx.beginPath();
+                    ctx.arc(enemy.radius * 0.5, -enemy.radius * 0.3, enemy.radius * 0.15, 0, Math.PI * 2);
+                    ctx.fillStyle = 'white';
+                    ctx.fill();
+                }
+                
+                ctx.restore();
             }
             
             // Draw parry effect if just parried
@@ -390,8 +479,6 @@
                     score += 100;
                     scoreElement.textContent = score;
                     parrySuccess = true;
-                    
-                    // Remove enemy after a delay (handled in update)
                 }
             }
             
