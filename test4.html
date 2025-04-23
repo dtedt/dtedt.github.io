@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Horizon Business</title>
+    <style>
+        /* Base Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* Shiny Matte Background */
+        body {
+            background: linear-gradient(135deg, 
+                        rgba(255, 199, 0, 0.9) 0%, 
+                        rgba(255, 220, 100, 0.95) 25%, 
+                        rgba(255, 199, 0, 0.85) 50%, 
+                        rgba(255, 220, 100, 0.9) 75%, 
+                        rgba(255, 199, 0, 0.95) 100%);
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, 
+                          rgba(255, 255, 255, 0.4) 0%, 
+                          rgba(255, 255, 255, 0.1) 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #fff;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #444;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #333;
+            color: #ffc700;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: #222;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 60px;
+            color: #333;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            height: 150px;
+        }
+        
+        .submit-button {
+            background-color: #333;
+            color: #ffc700;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .submit-button:hover {
+            background-color: #222;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            color: #333;
+            margin: 0 10px;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Golden Horizon</div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <section id="home" class="hero">
+            <h1>Elevate Your Business to New Heights</h1>
+            <p>We provide innovative solutions to help your business grow and thrive in today's competitive market. Our expertise is your advantage.</p>
+            <a href="#contact" class="cta-button">Get Started Today</a>
+        </section>
+        
+        <section id="features" class="features">
+            <h2 class="section-title">Our Services</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Business Growth</h3>
+                    <p>Strategic planning and execution to scale your operations and increase market share.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Innovation Solutions</h3>
+                    <p>Cutting-edge approaches to solve your business challenges and create opportunities.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Risk Management</h3>
+                    <p>Comprehensive strategies to identify and mitigate potential risks to your business.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="testimonials" class="testimonials">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Golden Horizon transformed our business approach. Their insights helped us increase revenue by 150% in just one year."</p>
+                    <p class="testimonial-author">- Sarah Johnson, TechStart Inc.</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The team's expertise in market analysis gave us the competitive edge we needed to expand internationally."</p>
+                    <p class="testimonial-author">- Michael Chen, Global Retail</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Working with Golden Horizon was the best investment we've made. Their strategic guidance was invaluable."</p>
+                    <p class="testimonial-author">- David Martinez, FinServe Co.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact" class="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </section>
+        
+        <footer>
+            <div class="social-links">
+                <a href="#">📱</a>
+                <a href="#">💻</a>
+                <a href="#">📧</a>
+                <a href="#">🔗</a>
+            </div>
+            <p>&copy; 2023 Golden Horizon Business Solutions. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
