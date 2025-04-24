@@ -3,38 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golden Horizon Business</title>
+    <title>Outpost4 Studio</title>
     <style>
         /* Base Styles */
+        :root {
+            --primary: #ffc700;
+            --black: #111;
+            --white: #f9f9f9;
+        }
+        
         body, html {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
             scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        /* New Background System */
+        .bg-system {
+            position: fixed;
+            width: 100%;
             height: 100%;
+            z-index: -2;
         }
         
-        /* Shiny Matte Background - Fixed Version */
-        body {
-            background-color: #ffc700; /* Solid yellow base */
-            position: relative;
-            min-height: 100vh;
+        .bg-split {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--black) 0%, var(--black) 50%, var(--white) 50%, var(--white) 100%);
         }
         
+        .bg-yellow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            mask-image: linear-gradient(135deg, rgba(0,0,0,0.8) 30%, transparent 70%);
+            -webkit-mask-image: linear-gradient(135deg, rgba(0,0,0,0.8) 30%, transparent 70%);
+            z-index: -1;
+        }
         
+        .bg-shine {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0) 20%,
+                rgba(255, 255, 255, 0.3) 100%
+            );
+            z-index: 0;
+        }
         
+        /* Scroll Reveal Elements */
+        .scroll-reveal {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            background: var(--primary);
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            z-index: 10;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
         
-
-        /* Container */
+        /* Content Container - Now Transparent */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             position: relative;
-            z-index: 1;
-            
+            background-color: transparent;
+            color: var(--black);
+        }
         
-        /* Header */
+        /* Hamburger Menu */
         header {
             padding: 30px 0;
             display: flex;
@@ -45,12 +93,38 @@
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #333;
+            color: var(--black);
+            z-index: 100;
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: var(--black);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        
+        nav {
+            position: relative;
         }
         
         nav ul {
             display: flex;
             list-style: none;
+            margin: 0;
+            padding: 0;
         }
         
         nav ul li {
@@ -59,203 +133,110 @@
         
         nav ul li a {
             text-decoration: none;
-            color: #333;
+            color: var(--black);
             font-weight: 600;
             transition: color 0.3s;
+            position: relative;
         }
         
-        nav ul li a:hover {
-            color: #fff;
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--black);
+            transition: width 0.3s;
         }
         
-        /* Hero Section */
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* Mobile Menu */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.95);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: right 0.3s;
+                z-index: 90;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+            
+            nav ul.active {
+                right: 0;
+            }
+            
+            nav ul li {
+                margin: 20px 0;
+            }
+            
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+        }
+        
+        /* Rest of your sections (hero, features, etc.) would follow */
+        /* I'll include just the hero section as example */
         .hero {
             padding: 100px 0;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
         
         .hero h1 {
             font-size: 48px;
             margin-bottom: 20px;
-            color: #333;
+            color: var(--black);
         }
         
-        .hero p {
-            font-size: 20px;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            color: #444;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background-color: #333;
-            color: #ffc700;
-            padding: 15px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .cta-button:hover {
-            background-color: #222;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Features Section */
-        .features {
-            padding: 80px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 36px;
-            margin-bottom: 60px;
-            color: #333;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        
-        .feature-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .feature-icon {
-            font-size: 40px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            padding: 80px 0;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .testimonial-card {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-        
-        .testimonial-author {
-            font-weight: bold;
-        }
-        
-        /* Contact Section */
-        .contact {
-            padding: 80px 0;
-        }
-        
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: inherit;
-        }
-        
-        .form-group textarea {
-            height: 150px;
-        }
-        
-        .submit-button {
-            background-color: #333;
-            color: #ffc700;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .submit-button:hover {
-            background-color: #222;
-        }
-        
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            background-color: rgba(0, 0, 0, 0.1);
-            color: #333;
-        }
-        
-        .social-links {
-            margin: 20px 0;
-        }
-        
-        .social-links a {
-            color: #333;
-            margin: 0 10px;
-            font-size: 20px;
-            transition: color 0.3s;
-        }
-        
-        .social-links a:hover {
-            color: #fff;
+        /* Add this to all content sections */
+        section {
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
 <body>
+    <div class="bg-system">
+        <div class="bg-split"></div>
+        <div class="bg-yellow"></div>
+        <div class="bg-shine"></div>
+    </div>
+    
+    <div class="scroll-reveal" id="scrollReveal"></div>
+    
     <div class="container">
         <header>
             <div class="logo">Outpost4 Studio</div>
+            <div class="menu-toggle" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <nav>
-                <ul>
+                <ul id="navMenu">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#features">Our Portfolio</a></li>
                     <li><a href="#testimonials">Our Process</a></li>
@@ -270,73 +251,51 @@
             <a href="#contact" class="cta-button">Create With Us</a>
         </section>
         
-        <section id="features" class="features">
-            <h2 class="section-title">Our Portfolio</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Business Growth</h3>
-                    <p>Strategic planning and execution to scale your operations and increase market share.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💡</div>
-                    <h3>Innovation Solutions</h3>
-                    <p>Cutting-edge approaches to solve your business challenges and create opportunities.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Risk Management</h3>
-                    <p>Comprehensive strategies to identify and mitigate potential risks to your business.</p>
-                </div>
-            </div>
-        </section>
+        <!-- Your other sections here -->
         
-        <section id="testimonials" class="testimonials">
-            <h2 class="section-title">Our Process</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Golden Horizon transformed our business approach. Their insights helped us increase revenue by 150% in just one year."</p>
-                    <p class="testimonial-author">- Sarah Johnson, TechStart Inc.</p>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The team's expertise in market analysis gave us the competitive edge we needed to expand internationally."</p>
-                    <p class="testimonial-author">- Michael Chen, Global Retail</p>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Working with Golden Horizon was the best investment we've made. Their strategic guidance was invaluable."</p>
-                    <p class="testimonial-author">- David Martinez, FinServe Co.</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="contact" class="contact">
-            <h2 class="section-title">Let's Work Together</h2>
-            <form class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" required></textarea>
-                </div>
-                <button type="submit" class="submit-button">Send Message</button>
-            </form>
-        </section>
-        
-        <footer>
-            <div class="social-links">
-                <a href="#">📱</a>
-                <a href="#">💻</a>
-                <a href="#">📧</a>
-                <a href="#">🔗</a>
-            </div>
-            <p>&copy; 2025 Outpost4 Studio Inc. All rights reserved.</p>
-        </footer>
     </div>
+    
+    <script>
+        // Hamburger Menu Toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Scroll Reveal Effect
+        const scrollReveal = document.getElementById('scrollReveal');
+        window.addEventListener('scroll', () => {
+            const scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            
+            // Create dynamic cutout effect
+            const cutoutSize = 100 - (scrollPercentage * 60);
+            const cutoutPosition = scrollPercentage * 100;
+            
+            scrollReveal.style.clipPath = `
+                polygon(
+                    0 0, 
+                    100% 0, 
+                    100% 100%, 
+                    0% 100%,
+                    0% ${cutoutPosition}%,
+                    ${cutoutSize}% ${cutoutPosition}%,
+                    ${cutoutSize}% ${cutoutPosition + 20}%,
+                    0% ${cutoutPosition + 20}%
+                )
+            `;
+            
+            // Adjust background mask based on scroll
+            document.querySelector('.bg-yellow').style.maskImage = `
+                linear-gradient(
+                    135deg, 
+                    rgba(0,0,0,${0.8 - (scrollPercentage * 0.6)}) 30%, 
+                    transparent 70%
+                )
+            `;
+        });
+    </script>
 </body>
 </html>
