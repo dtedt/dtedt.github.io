@@ -18,6 +18,7 @@
             font-family: 'Arial', sans-serif;
             scroll-behavior: smooth;
             overflow-x: hidden;
+            color: var(--black);
         }
         
         /* New Background System */
@@ -79,7 +80,6 @@
             padding: 0 20px;
             position: relative;
             background-color: transparent;
-            color: var(--black);
         }
         
         /* Hamburger Menu */
@@ -181,6 +181,7 @@
             
             nav ul li {
                 margin: 20px 0;
+                margin-left: 0;
             }
             
             .menu-toggle.active span:nth-child(1) {
@@ -196,25 +197,209 @@
             }
         }
         
-        /* Rest of your sections (hero, features, etc.) would follow */
-        /* I'll include just the hero section as example */
-        .hero {
-            padding: 100px 0;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: var(--black);
-        }
-        
-        /* Add this to all content sections */
+        /* Sections */
         section {
             position: relative;
             z-index: 2;
+            padding: 80px 0;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 64px);
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: clamp(18px, 2.5vw, 22px);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--black);
+            color: var(--primary);
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid var(--black);
+        }
+        
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--black);
+            transform: translateY(-3px);
+        }
+        
+        /* Features Section */
+        .section-title {
+            text-align: center;
+            font-size: clamp(28px, 4vw, 42px);
+            margin-bottom: 60px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+        }
+        
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            background-color: rgba(255,255,255,0.7);
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background-color: var(--black);
+            color: var(--primary);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .submit-button:hover {
+            background-color: #222;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            background-color: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            margin-top: 80px;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            color: var(--black);
+            margin: 0 10px;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #555;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            section {
+                padding: 60px 0;
+            }
+            
+            .hero {
+                padding: 120px 0 80px;
+            }
+            
+            .feature-card, .testimonial-card {
+                padding: 20px;
+            }
+            
+            .contact-form {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
@@ -251,8 +436,73 @@
             <a href="#contact" class="cta-button">Create With Us</a>
         </section>
         
-        <!-- Your other sections here -->
+        <section id="features" class="features">
+            <h2 class="section-title">Our Portfolio</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Business Growth</h3>
+                    <p>Strategic planning and execution to scale your operations and increase market share.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Innovation Solutions</h3>
+                    <p>Cutting-edge approaches to solve your business challenges and create opportunities.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Risk Management</h3>
+                    <p>Comprehensive strategies to identify and mitigate potential risks to your business.</p>
+                </div>
+            </div>
+        </section>
         
+        <section id="testimonials" class="testimonials">
+            <h2 class="section-title">Our Process</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Golden Horizon transformed our business approach. Their insights helped us increase revenue by 150% in just one year."</p>
+                    <p class="testimonial-author">- Sarah Johnson, TechStart Inc.</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The team's expertise in market analysis gave us the competitive edge we needed to expand internationally."</p>
+                    <p class="testimonial-author">- Michael Chen, Global Retail</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Working with Golden Horizon was the best investment we've made. Their strategic guidance was invaluable."</p>
+                    <p class="testimonial-author">- David Martinez, FinServe Co.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact" class="contact">
+            <h2 class="section-title">Let's Work Together</h2>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </section>
+        
+        <footer>
+            <div class="social-links">
+                <a href="#">📱</a>
+                <a href="#">💻</a>
+                <a href="#">📧</a>
+                <a href="#">🔗</a>
+            </div>
+            <p>&copy; 2025 Outpost4 Studio Inc. All rights reserved.</p>
+        </footer>
     </div>
     
     <script>
@@ -263,6 +513,14 @@
         mobileMenu.addEventListener('click', () => {
             mobileMenu.classList.toggle('active');
             navMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
         });
         
         // Scroll Reveal Effect
@@ -296,6 +554,9 @@
                 )
             `;
         });
+        
+        // Initialize scroll position
+        window.dispatchEvent(new Event('scroll'));
     </script>
 </body>
 </html>
