@@ -11,8 +11,6 @@
 @media (min-width: 40em) {
 
 .grid {
-
-    align-content: center;
     display: grid;
     align-items: center-stretch;
     grid-template-columns: repeat(12, 1fr);
@@ -28,7 +26,6 @@
     grid-row: auto;
     box-shadow: 10px 10px 10px 10px white inset;
     box-sizing: border-box;
-    align-content: center;
     padding: 10px;
     place-self: center-stretch;
     background-color: lightblue;
