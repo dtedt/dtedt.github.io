@@ -12,6 +12,8 @@ html {
     box-shadow: 10px 10px lightblue;
     
     opacity: 20%
+    min-height: 2vw
+    min-width: 2vw
     max-height: 3vw
     max-width: 3vw
 
