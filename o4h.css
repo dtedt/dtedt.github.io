@@ -9,6 +9,8 @@ html {
     
 .box {
     place-self: center-stretch;
+    background: white;
+    opacity: 20%
     }
     
 #head {
