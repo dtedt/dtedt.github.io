@@ -6,10 +6,10 @@ html {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-content: center;
+    place-self: center-stretch;
     }
     
 .box {
-    place-self: center-stretch;
     box-shadow: 10px 10px 5px 5px white inset;
     min-height: 2vw;
     min-width: 2vw;
