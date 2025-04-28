@@ -1,6 +1,6 @@
 * {
     background-color: #ffc700;
-    text-align: center;
+    
     font-family: Arial;
     font-size: 3vw;
     
@@ -23,11 +23,12 @@
 
      }
 .box {
+    text-align: center;
     grid-column: auto;
     grid-row: auto;
     box-shadow: 10px 10px 10px 10px white inset;
     box-sizing: border-box;
-    align-content: left;
+    align-content: center;
     padding: 10px;
     place-self: center-stretch;
     background-color: lightblue;
