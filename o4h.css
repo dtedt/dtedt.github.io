@@ -11,6 +11,9 @@ html {
     place-self: center-stretch;
     background: white;
     opacity: 20%
+    max-height: 3vw
+    max-width: 3vw
+
     }
     
 #head {
