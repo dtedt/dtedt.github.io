@@ -18,8 +18,8 @@ div.box {
     box-shadow: 10px 10px 10px 10px white inset;
     align-content: center;
     padding: 10px;
-    grid-column: auto / span 6;
-    grid-row: auto / span 6
+    grid-column: auto;
+    grid-row: auto;
     align-content: center;
 
     }
