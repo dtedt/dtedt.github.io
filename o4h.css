@@ -3,9 +3,7 @@ html {
     text-align: center;
     font-family: Arial;
     font-size: 3vw;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-content: center;
+    
     align-items: center-stretch;
     }
     
@@ -15,6 +13,9 @@ div.box {
     height: 48%;
     width: 48%;
     padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: center;
 
     }
     
