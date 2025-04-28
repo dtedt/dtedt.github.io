@@ -28,6 +28,7 @@ div.box {
     align-content: left;
     padding: 10px;
     place-self: center-stretch;
+    background-color: lightblue;
 
     }
     
