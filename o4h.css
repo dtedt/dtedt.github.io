@@ -11,12 +11,16 @@ html {
 .box {
     place-self: center-stretch;
     box-shadow: 10px 10px lightblue;
-    min-height: 2vw
-    min-width: 2vw
-    max-height: 3vw
-    max-width: 3vw
+    min-height: 2vw;
+    min-width: 2vw;
+    max-height: 3vw;
+    max-width: 3vw;
 
     }
+    
+img {
+    width: 1vw;
+    height: 1vw;
     
 #head {
     font-weight: bold;
