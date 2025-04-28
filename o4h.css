@@ -19,7 +19,7 @@
     
 
      }
-.box {
+.grid.box {
     width: 100px;
     text-align: center;
     grid-column: 1;
