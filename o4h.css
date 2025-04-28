@@ -11,8 +11,10 @@
 div.box {
     box-shadow: 10px 10px 5px 5px white inset;
     
-    height: 48%;
-    width: 48%;
+    min-height: 400px
+    min-width: 400px
+    max-width: 10vw
+    max-height: 10vw
     padding: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
