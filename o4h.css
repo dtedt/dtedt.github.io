@@ -10,7 +10,7 @@
     
 @media (min-width: 40em) {
 
-div.grid {
+.grid {
 
     align-content: center;
     display: grid;
@@ -22,7 +22,7 @@ div.grid {
     
 
      }
-div.box {
+.box {
     box-shadow: 10px 10px 10px 10px white inset;
     box-sizing: border-box;
     align-content: left;
