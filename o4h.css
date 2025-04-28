@@ -1,4 +1,4 @@
-* {
+i'm* {
     background-color: #ffc700;
     text-align: center;
     font-family: Arial;
@@ -27,7 +27,7 @@ div.box {
     box-sizing: border-box;
     align-content: left;
     padding: 10px;
-    
+    place-self: center-stretch;
 
     }
     
