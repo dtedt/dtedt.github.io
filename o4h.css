@@ -10,7 +10,7 @@
     
 @media (min-width: 40em) {
 
-#grid {
+div.grid {
 
     align-content: center;
     display: grid;
