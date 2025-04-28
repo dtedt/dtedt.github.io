@@ -10,7 +10,7 @@ html {
     
 .box {
     place-self: center-stretch;
-    box-shadow: 10px 10px lightblue;
+    box-shadow: 10px 10px;
     min-height: 2vw;
     min-width: 2vw;
     max-height: 3vw;
