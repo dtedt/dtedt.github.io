@@ -3,7 +3,11 @@ html {
     text-align: center;
     font-family: Arial;
     font-size: 3vw;
+    display: grid;
+    grid-template-columns: 49%;
     }
+    
+.box {
     
 #head {
     font-weight: bold;
