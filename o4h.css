@@ -19,6 +19,7 @@ div.box {
     align-content: center;
     padding: 10px;
     grid-column: auto / span 6;
+    grid-row: auto / span 6
     align-content: center;
 
     }
