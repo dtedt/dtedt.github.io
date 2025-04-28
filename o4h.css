@@ -9,7 +9,8 @@ html {
     
 .box {
     place-self: center-stretch;
-    background: white;
+    box-shadow: 10px 10px lightblue;
+    
     opacity: 20%
     max-height: 3vw
     max-width: 3vw
