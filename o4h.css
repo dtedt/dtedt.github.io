@@ -9,7 +9,7 @@ html {
     place-self: center-stretch;
     }
     
-.box {
+div.box {
     box-shadow: 10px 10px 5px 5px white inset;
     min-height: 2vw;
     min-width: 2vw;
