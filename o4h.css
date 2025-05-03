@@ -1,0 +1,41 @@
+* {
+    background-color: #ffc700;
+    
+    font-family: Arial;
+    font-size: 3vw;
+    
+    margin: 0;
+    
+    }
+    
+@media (min-width: 40em) {
+
+.grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.75em;
+     }
+.grid > div {
+    text-align: center;
+    grid-column: auto;
+    grid-row: auto;
+    box-shadow: 10px 10px 10px 10px white inset;
+    box-sizing: border-box;
+    padding: 8px;
+    background-color: lightblue;
+
+    }
+    
+img {
+    width: 1vw;
+    height: 1vw;
+    
+#head {
+    font-weight: bold;
+    }
+    
+#work {
+    font-weight: light;
+    }
+    
+    }
