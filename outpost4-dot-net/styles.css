@@ -9,14 +9,13 @@
 body, html {
     background-color: #ffc700;
     font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin: 0;
+    margin: auto;
     padding: 0;
     font-family: 'Arial', sans-serif;
     scroll-behavior: smooth;
     overflow-x: hidden;
     color: var(--black);
-    display: grid;
-    place-items: center;
+    display: flex;
     height: 100%;
     width: 100%;
 }
@@ -56,7 +55,7 @@ nav ul li a {
 }
 
 .container {
-    text-align: center;
+ 
 
     
 }
@@ -89,6 +88,40 @@ nav ul li a {
     
 }
 
+.hero {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "clutch clutch"
+        "image1 text1";
+    gap:1rem;
+    justify-content: center;
+
+    box-sizing: border-box;
+    padding:1rem;
+}
+
+.hero-image {
+    width: 300px;
+    grid-area: image1;
+}
+
+.clutch {
+    grid-area: clutch;
+    border: solid 3px #000;
+}
+
+.hero-text {
+    grid-area: text1;
+    border: solid 3px #000;
+}
+
 .feature-image {
     width: 100px;
+    grid-area: image;
+}
+
+.feature-text {
+    grid-area: text;
 }
