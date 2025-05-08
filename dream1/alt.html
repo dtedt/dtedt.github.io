@@ -10,6 +10,10 @@
       margin: 0;
       overflow: hidden;
       font-family: Arial, sans-serif;
+      background-color: #000;
+    }
+    canvas {
+      display: block;
     }
     #info {
       position: absolute;
@@ -19,6 +23,7 @@
       color: white;
       z-index: 100;
       pointer-events: none;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
     }
     #timer {
       position: absolute;
@@ -29,6 +34,7 @@
       font-size: 24px;
       z-index: 100;
       pointer-events: none;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
     }
     #tutorial {
       position: absolute;
@@ -55,6 +61,36 @@
       display: none;
       z-index: 200;
     }
+    #startButton {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+      z-index: 300;
+    }
+    #permissionMessage {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 18px;
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+      z-index: 150;
+    }
   </style>
 </head>
 <body>
@@ -68,37 +104,113 @@
     <p id="gameOverText">Dream Over</p>
     <p id="gameOverReason"></p>
   </div>
+  <div id="permissionMessage">This experience requires device orientation for tilt controls. Desktop users can use keyboard controls.</div>
+  <button id="startButton">Start Dream</button>
 
   <script>
-    // Scene setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x87CEEB); // Sky blue
-    document.body.appendChild(renderer.domElement);
-
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
+    // Start button event listener
+    document.getElementById('startButton').addEventListener('click', initializeGame);
     
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(directionalLight);
-
-    // World boundary
-    const worldSize = 1000;
-    const boundaryGeometry = new THREE.BoxGeometry(worldSize * 2, worldSize * 2, worldSize * 2);
-    const boundaryMaterial = new THREE.MeshBasicMaterial({ 
-      color: 0x87CEEB, 
-      side: THREE.BackSide,
-      transparent: true,
-      opacity: 0.2
-    });
-    const boundary = new THREE.Mesh(boundaryGeometry, boundaryMaterial);
-    scene.add(boundary);
-
-    // Create clouds
+    // Variables to store game elements
+    let scene, camera, renderer, clouds, birds, airplane;
+    let player, gameActive, timeRemaining, rollDirection, rollProgress;
+    let deviceTilt, touchStartX, touchStartY;
+    let worldSize, boundary, airplaneDirection, airplaneSpeed;
+    let animationFrameId;
+    let timerInterval;
+    
+    function initializeGame() {
+      // Request device orientation permission if available
+      if (typeof DeviceOrientationEvent !== 'undefined' && 
+          typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(response => {
+            if (response === 'granted') {
+              startGame();
+            } else {
+              alert('Device orientation permission denied. You can still use keyboard controls.');
+              startGame();
+            }
+          })
+          .catch(error => {
+            console.error('Error requesting device orientation permission:', error);
+            startGame();
+          });
+      } else {
+        // Device doesn't require permission or doesn't support orientation
+        startGame();
+      }
+    }
+    
+    function startGame() {
+      // Hide start button and permission message
+      document.getElementById('startButton').style.display = 'none';
+      document.getElementById('permissionMessage').style.display = 'none';
+      
+      // Initialize game
+      setupScene();
+      setupCamera();
+      createWorldBoundary();
+      createClouds();
+      createBirds();
+      createAirplane();
+      setupControls();
+      setupGameState();
+      
+      // Start the game loop
+      animate();
+      
+      // Start timer
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+    
+    function setupScene() {
+      // Create scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x87CEEB); // Sky blue
+      
+      // Create renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+      
+      // Add lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+      
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(1, 1, 1);
+      scene.add(directionalLight);
+      
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+    
+    function setupCamera() {
+      // Create camera
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+      camera.position.set(0, 100, 0);
+      camera.lookAt(0, 100, -10);
+    }
+    
+    function createWorldBoundary() {
+      // World boundary
+      worldSize = 1000;
+      const boundaryGeometry = new THREE.BoxGeometry(worldSize * 2, worldSize * 2, worldSize * 2);
+      const boundaryMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x87CEEB, 
+        side: THREE.BackSide,
+        transparent: true,
+        opacity: 0.2
+      });
+      boundary = new THREE.Mesh(boundaryGeometry, boundaryMaterial);
+      scene.add(boundary);
+    }
+    
     function createCloud(x, y, z) {
       const cloudGroup = new THREE.Group();
       const numPuffs = 5 + Math.floor(Math.random() * 5);
@@ -126,20 +238,21 @@
       cloudGroup.position.set(x, y, z);
       return cloudGroup;
     }
-
-    // Generate clouds
-    const clouds = [];
-    for (let i = 0; i < 50; i++) {
-      const x = (Math.random() - 0.5) * worldSize * 1.8;
-      const y = (Math.random() - 0.5) * worldSize * 0.5 + 100;
-      const z = (Math.random() - 0.5) * worldSize * 1.8;
-      
-      const cloud = createCloud(x, y, z);
-      clouds.push(cloud);
-      scene.add(cloud);
+    
+    function createClouds() {
+      // Generate clouds
+      clouds = [];
+      for (let i = 0; i < 50; i++) {
+        const x = (Math.random() - 0.5) * worldSize * 1.8;
+        const y = (Math.random() - 0.5) * worldSize * 0.5 + 100;
+        const z = (Math.random() - 0.5) * worldSize * 1.8;
+        
+        const cloud = createCloud(x, y, z);
+        clouds.push(cloud);
+        scene.add(cloud);
+      }
     }
-
-    // Create birds
+    
     function createBird() {
       const birdGroup = new THREE.Group();
       
@@ -167,36 +280,38 @@
       
       return birdGroup;
     }
-
-    // Generate birds
-    const birds = [];
-    for (let i = 0; i < 20; i++) {
-      const bird = createBird();
-      
-      const x = (Math.random() - 0.5) * worldSize * 1.5;
-      const y = (Math.random() - 0.5) * worldSize * 0.3 + 100;
-      const z = (Math.random() - 0.5) * worldSize * 1.5;
-      
-      bird.position.set(x, y, z);
-      
-      // Random rotation
-      bird.rotation.y = Math.random() * Math.PI * 2;
-      
-      birds.push({
-        mesh: bird,
-        speed: 0.5 + Math.random() * 0.5,
-        direction: new THREE.Vector3(
-          Math.random() - 0.5,
-          (Math.random() - 0.5) * 0.2,
-          Math.random() - 0.5
-        ).normalize()
-      });
-      
-      scene.add(bird);
+    
+    function createBirds() {
+      // Generate birds
+      birds = [];
+      for (let i = 0; i < 20; i++) {
+        const bird = createBird();
+        
+        const x = (Math.random() - 0.5) * worldSize * 1.5;
+        const y = (Math.random() - 0.5) * worldSize * 0.3 + 100;
+        const z = (Math.random() - 0.5) * worldSize * 1.5;
+        
+        bird.position.set(x, y, z);
+        
+        // Random rotation
+        bird.rotation.y = Math.random() * Math.PI * 2;
+        
+        birds.push({
+          mesh: bird,
+          speed: 0.5 + Math.random() * 0.5,
+          direction: new THREE.Vector3(
+            Math.random() - 0.5,
+            (Math.random() - 0.5) * 0.2,
+            Math.random() - 0.5
+          ).normalize()
+        });
+        
+        scene.add(bird);
+      }
     }
-
-    // Create airplane
+    
     function createAirplane() {
+      // Create airplane
       const airplaneGroup = new THREE.Group();
       
       // Fuselage
@@ -226,90 +341,80 @@
       stabilizer.position.set(-18, 0, 0);
       airplaneGroup.add(stabilizer);
       
-      return airplaneGroup;
+      // Add airplane to scene
+      airplane = airplaneGroup;
+      airplane.position.set(500, 200, 500);
+      airplane.rotation.y = Math.PI / 4;
+      scene.add(airplane);
+      
+      airplaneDirection = new THREE.Vector3(-1, 0, -1).normalize();
+      airplaneSpeed = 2;
     }
-
-    // Add airplane
-    const airplane = createAirplane();
-    airplane.position.set(500, 200, 500);
-    airplane.rotation.y = Math.PI / 4;
-    scene.add(airplane);
     
-    const airplaneDirection = new THREE.Vector3(-1, 0, -1).normalize();
-    const airplaneSpeed = 2;
-
-    // Camera setup
-    camera.position.set(0, 100, 0);
-    camera.lookAt(0, 100, -10);
-
-    // Player movement
-    const player = {
-      velocity: new THREE.Vector3(0, 0, 0),
-      rotation: new THREE.Euler(0, 0, 0),
-      speed: 1.0,
-      rollAngle: 0
-    };
-
-    // Game state
-    let gameActive = true;
-    let timeRemaining = 30;
-    let rollDirection = 0;
-    let rollProgress = 0;
-    
-    // Device orientation controls
-    let deviceTilt = {
-      x: 0,
-      y: 0,
-      z: 0
-    };
-
-    // Touch controls for orientation
-    let touchStartX = 0;
-    let touchStartY = 0;
-    
-    document.addEventListener('touchstart', function(event) {
-      touchStartX = event.touches[0].clientX;
-      touchStartY = event.touches[0].clientY;
-    });
-    
-    document.addEventListener('touchmove', function(event) {
-      if (!gameActive) return;
+    function setupControls() {
+      // Player movement object
+      player = {
+        velocity: new THREE.Vector3(0, 0, 0),
+        rotation: new THREE.Euler(0, 0, 0),
+        speed: 1.0,
+        rollAngle: 0
+      };
       
-      const touchX = event.touches[0].clientX;
-      const touchY = event.touches[0].clientY;
+      // Device tilt controls
+      deviceTilt = {
+        x: 0,
+        y: 0,
+        z: 0
+      };
       
-      const deltaX = touchX - touchStartX;
-      const deltaY = touchY - touchStartY;
+      // Touch controls
+      touchStartX = 0;
+      touchStartY = 0;
       
-      // Adjust camera rotation based on swipe
-      camera.rotation.y -= deltaX * 0.005;
-      camera.rotation.x -= deltaY * 0.005;
+      document.addEventListener('touchstart', function(event) {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      });
       
-      // Clamp vertical look
-      camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
-      
-      touchStartX = touchX;
-      touchStartY = touchY;
-    });
-
-    // Device orientation for tilt controls
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', function(event) {
+      document.addEventListener('touchmove', function(event) {
         if (!gameActive) return;
         
-        // Get device orientation
-        deviceTilt.x = event.beta;  // Front/back tilt (-180 to 180)
-        deviceTilt.y = event.gamma; // Left/right tilt (-90 to 90)
-        deviceTilt.z = event.alpha; // Compass direction (0 to 360)
+        const touchX = event.touches[0].clientX;
+        const touchY = event.touches[0].clientY;
         
-        // Handle barrel roll if device tilted sideways significantly
-        if (Math.abs(deviceTilt.y) > 45 && rollDirection === 0) {
-          rollDirection = deviceTilt.y > 0 ? 1 : -1;
-        }
+        const deltaX = touchX - touchStartX;
+        const deltaY = touchY - touchStartY;
+        
+        // Adjust camera rotation based on swipe
+        camera.rotation.y -= deltaX * 0.005;
+        camera.rotation.x -= deltaY * 0.005;
+        
+        // Clamp vertical look
+        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+        
+        touchStartX = touchX;
+        touchStartY = touchY;
       });
-    } else {
-      // Fallback for devices without orientation
-      document.getElementById('tutorial').innerHTML = 'Arrow keys to move | WASD to look | Q/E for barrel roll';
+      
+      // Device orientation control
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', function(event) {
+          if (!gameActive) return;
+          
+          // Get device orientation
+          if (event.beta !== null) deviceTilt.x = event.beta;  // Front/back tilt (-180 to 180)
+          if (event.gamma !== null) deviceTilt.y = event.gamma; // Left/right tilt (-90 to 90)
+          if (event.alpha !== null) deviceTilt.z = event.alpha; // Compass direction (0 to 360)
+          
+          // Handle barrel roll if device tilted sideways significantly
+          if (Math.abs(deviceTilt.y) > 45 && rollDirection === 0) {
+            rollDirection = deviceTilt.y > 0 ? 1 : -1;
+          }
+        });
+      }
+      
+      // Keyboard controls (fallback)
+      document.getElementById('tutorial').innerHTML += '<br>Keyboard: Arrow keys to move | WASD to look | Q/E for barrel roll';
       
       window.addEventListener('keydown', function(event) {
         if (!gameActive) return;
@@ -360,9 +465,16 @@
         }
       });
     }
-
-    // Timer update
-    setInterval(function() {
+    
+    function setupGameState() {
+      // Initialize game state
+      gameActive = true;
+      timeRemaining = 30;
+      rollDirection = 0;
+      rollProgress = 0;
+    }
+    
+    function updateTimer() {
       if (!gameActive) return;
       
       timeRemaining--;
@@ -371,18 +483,35 @@
       if (timeRemaining <= 0) {
         endGame('Time's up! The dream has ended.');
       }
-    }, 1000);
-
-    // End game function
+    }
+    
     function endGame(reason) {
+      if (!gameActive) return; // Prevent multiple calls
+      
       gameActive = false;
       document.getElementById('gameOverReason').textContent = reason;
       document.getElementById('gameOver').style.display = 'block';
+      
+      // Clear timer interval
+      clearInterval(timerInterval);
+      
+      // Show restart button after 3 seconds
+      setTimeout(() => {
+        const restartButton = document.createElement('button');
+        restartButton.textContent = 'Restart Dream';
+        restartButton.style.marginTop = '20px';
+        restartButton.style.padding = '10px 20px';
+        restartButton.style.cursor = 'pointer';
+        restartButton.addEventListener('click', function() {
+          // Reload page to restart
+          window.location.reload();
+        });
+        document.getElementById('gameOver').appendChild(restartButton);
+      },): 3000;
     }
-
-    // Animation loop
+    
     function animate() {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       
       if (gameActive) {
         // Update player movement based on device tilt
@@ -466,16 +595,6 @@
       
       renderer.render(scene, camera);
     }
-
-    // Handle window resize
-    window.addEventListener('resize', function() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    // Start animation
-    animate();
   </script>
 </body>
 </html>
