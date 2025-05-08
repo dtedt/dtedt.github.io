@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dream Flight Simulation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #info {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      z-index: 100;
+      pointer-events: none;
+    }
+    #timer {
+      position: absolute;
+      top: 50px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 24px;
+      z-index: 100;
+      pointer-events: none;
+    }
+    #tutorial {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px 0;
+      z-index: 100;
+      pointer-events: none;
+    }
+    #gameOver {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 36px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      z-index: 200;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">Dream Flight Simulation</div>
+  <div id="timer">30</div>
+  <div id="tutorial">
+    Controls: Swipe to look around | Tilt forward to move forward | 
+    Tilt back to move backward | Tilt sideways to do a barrel roll
+  </div>
+  <div id="gameOver">
+    <p id="gameOverText">Dream Over</p>
+    <p id="gameOverReason"></p>
+  </div>
+
+  <script>
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x87CEEB); // Sky blue
+    document.body.appendChild(renderer.domElement);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
+
+    // World boundary
+    const worldSize = 1000;
+    const boundaryGeometry = new THREE.BoxGeometry(worldSize * 2, worldSize * 2, worldSize * 2);
+    const boundaryMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0x87CEEB, 
+      side: THREE.BackSide,
+      transparent: true,
+      opacity: 0.2
+    });
+    const boundary = new THREE.Mesh(boundaryGeometry, boundaryMaterial);
+    scene.add(boundary);
+
+    // Create clouds
+    function createCloud(x, y, z) {
+      const cloudGroup = new THREE.Group();
+      const numPuffs = 5 + Math.floor(Math.random() * 5);
+      
+      for (let i = 0; i < numPuffs; i++) {
+        const puffSize = 15 + Math.random() * 15;
+        const puffGeometry = new THREE.SphereGeometry(puffSize, 16, 16);
+        const puffMaterial = new THREE.MeshLambertMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.8
+        });
+        const puff = new THREE.Mesh(puffGeometry, puffMaterial);
+        
+        // Position each puff slightly offset
+        puff.position.set(
+          (Math.random() - 0.5) * 30,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 20
+        );
+        
+        cloudGroup.add(puff);
+      }
+      
+      cloudGroup.position.set(x, y, z);
+      return cloudGroup;
+    }
+
+    // Generate clouds
+    const clouds = [];
+    for (let i = 0; i < 50; i++) {
+      const x = (Math.random() - 0.5) * worldSize * 1.8;
+      const y = (Math.random() - 0.5) * worldSize * 0.5 + 100;
+      const z = (Math.random() - 0.5) * worldSize * 1.8;
+      
+      const cloud = createCloud(x, y, z);
+      clouds.push(cloud);
+      scene.add(cloud);
+    }
+
+    // Create birds
+    function createBird() {
+      const birdGroup = new THREE.Group();
+      
+      // Body
+      const bodyGeometry = new THREE.ConeGeometry(2, 8, 8);
+      const bodyMaterial = new THREE.MeshLambertMaterial({ color: 0x333333 });
+      const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+      body.rotation.x = Math.PI / 2;
+      birdGroup.add(body);
+      
+      // Wings
+      const wingGeometry = new THREE.BoxGeometry(18, 0.5, 6);
+      const wingMaterial = new THREE.MeshLambertMaterial({ color: 0x555555 });
+      const wings = new THREE.Mesh(wingGeometry, wingMaterial);
+      wings.position.y = 1;
+      birdGroup.add(wings);
+      
+      // Tail
+      const tailGeometry = new THREE.BoxGeometry(1, 0.5, 4);
+      const tailMaterial = new THREE.MeshLambertMaterial({ color: 0x555555 });
+      const tail = new THREE.Mesh(tailGeometry, tailMaterial);
+      tail.position.z = -5;
+      tail.position.y = 1;
+      birdGroup.add(tail);
+      
+      return birdGroup;
+    }
+
+    // Generate birds
+    const birds = [];
+    for (let i = 0; i < 20; i++) {
+      const bird = createBird();
+      
+      const x = (Math.random() - 0.5) * worldSize * 1.5;
+      const y = (Math.random() - 0.5) * worldSize * 0.3 + 100;
+      const z = (Math.random() - 0.5) * worldSize * 1.5;
+      
+      bird.position.set(x, y, z);
+      
+      // Random rotation
+      bird.rotation.y = Math.random() * Math.PI * 2;
+      
+      birds.push({
+        mesh: bird,
+        speed: 0.5 + Math.random() * 0.5,
+        direction: new THREE.Vector3(
+          Math.random() - 0.5,
+          (Math.random() - 0.5) * 0.2,
+          Math.random() - 0.5
+        ).normalize()
+      });
+      
+      scene.add(bird);
+    }
+
+    // Create airplane
+    function createAirplane() {
+      const airplaneGroup = new THREE.Group();
+      
+      // Fuselage
+      const fuselageGeometry = new THREE.CylinderGeometry(5, 5, 40, 16);
+      const fuselageMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+      const fuselage = new THREE.Mesh(fuselageGeometry, fuselageMaterial);
+      fuselage.rotation.z = Math.PI / 2;
+      airplaneGroup.add(fuselage);
+      
+      // Wings
+      const wingGeometry = new THREE.BoxGeometry(70, 2, 10);
+      const wingMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+      const wings = new THREE.Mesh(wingGeometry, wingMaterial);
+      airplaneGroup.add(wings);
+      
+      // Tail
+      const tailFinGeometry = new THREE.BoxGeometry(2, 15, 10);
+      const tailFinMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+      const tailFin = new THREE.Mesh(tailFinGeometry, tailFinMaterial);
+      tailFin.position.set(-18, 7.5, 0);
+      airplaneGroup.add(tailFin);
+      
+      // Horizontal stabilizers
+      const stabilizerGeometry = new THREE.BoxGeometry(20, 2, 5);
+      const stabilizerMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+      const stabilizer = new THREE.Mesh(stabilizerGeometry, stabilizerMaterial);
+      stabilizer.position.set(-18, 0, 0);
+      airplaneGroup.add(stabilizer);
+      
+      return airplaneGroup;
+    }
+
+    // Add airplane
+    const airplane = createAirplane();
+    airplane.position.set(500, 200, 500);
+    airplane.rotation.y = Math.PI / 4;
+    scene.add(airplane);
+    
+    const airplaneDirection = new THREE.Vector3(-1, 0, -1).normalize();
+    const airplaneSpeed = 2;
+
+    // Camera setup
+    camera.position.set(0, 100, 0);
+    camera.lookAt(0, 100, -10);
+
+    // Player movement
+    const player = {
+      velocity: new THREE.Vector3(0, 0, 0),
+      rotation: new THREE.Euler(0, 0, 0),
+      speed: 1.0,
+      rollAngle: 0
+    };
+
+    // Game state
+    let gameActive = true;
+    let timeRemaining = 30;
+    let rollDirection = 0;
+    let rollProgress = 0;
+    
+    // Device orientation controls
+    let deviceTilt = {
+      x: 0,
+      y: 0,
+      z: 0
+    };
+
+    // Touch controls for orientation
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
+    document.addEventListener('touchstart', function(event) {
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchmove', function(event) {
+      if (!gameActive) return;
+      
+      const touchX = event.touches[0].clientX;
+      const touchY = event.touches[0].clientY;
+      
+      const deltaX = touchX - touchStartX;
+      const deltaY = touchY - touchStartY;
+      
+      // Adjust camera rotation based on swipe
+      camera.rotation.y -= deltaX * 0.005;
+      camera.rotation.x -= deltaY * 0.005;
+      
+      // Clamp vertical look
+      camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+      
+      touchStartX = touchX;
+      touchStartY = touchY;
+    });
+
+    // Device orientation for tilt controls
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', function(event) {
+        if (!gameActive) return;
+        
+        // Get device orientation
+        deviceTilt.x = event.beta;  // Front/back tilt (-180 to 180)
+        deviceTilt.y = event.gamma; // Left/right tilt (-90 to 90)
+        deviceTilt.z = event.alpha; // Compass direction (0 to 360)
+        
+        // Handle barrel roll if device tilted sideways significantly
+        if (Math.abs(deviceTilt.y) > 45 && rollDirection === 0) {
+          rollDirection = deviceTilt.y > 0 ? 1 : -1;
+        }
+      });
+    } else {
+      // Fallback for devices without orientation
+      document.getElementById('tutorial').innerHTML = 'Arrow keys to move | WASD to look | Q/E for barrel roll';
+      
+      window.addEventListener('keydown', function(event) {
+        if (!gameActive) return;
+        
+        switch(event.key) {
+          case 'ArrowUp':
+            deviceTilt.x = 20;
+            break;
+          case 'ArrowDown':
+            deviceTilt.x = -20;
+            break;
+          case 'ArrowLeft':
+            deviceTilt.y = -20;
+            break;
+          case 'ArrowRight':
+            deviceTilt.y = 20;
+            break;
+          case 'q':
+            if (rollDirection === 0) rollDirection = -1;
+            break;
+          case 'e':
+            if (rollDirection === 0) rollDirection = 1;
+            break;
+          case 'w':
+            camera.rotation.x -= 0.05;
+            break;
+          case 's':
+            camera.rotation.x += 0.05;
+            break;
+          case 'a':
+            camera.rotation.y -= 0.05;
+            break;
+          case 'd':
+            camera.rotation.y += 0.05;
+            break;
+        }
+        
+        // Clamp vertical look
+        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+      });
+      
+      window.addEventListener('keyup', function(event) {
+        if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
+          deviceTilt.x = 0;
+        }
+        if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+          deviceTilt.y = 0;
+        }
+      });
+    }
+
+    // Timer update
+    setInterval(function() {
+      if (!gameActive) return;
+      
+      timeRemaining--;
+      document.getElementById('timer').textContent = timeRemaining;
+      
+      if (timeRemaining <= 0) {
+        endGame('Time's up! The dream has ended.');
+      }
+    }, 1000);
+
+    // End game function
+    function endGame(reason) {
+      gameActive = false;
+      document.getElementById('gameOverReason').textContent = reason;
+      document.getElementById('gameOver').style.display = 'block';
+    }
+
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      if (gameActive) {
+        // Update player movement based on device tilt
+        if (Math.abs(deviceTilt.x) > 10) {
+          // Forward/backward movement
+          const moveIntensity = deviceTilt.x / 90;
+          const direction = new THREE.Vector3(0, 0, -1);
+          direction.applyEuler(camera.rotation);
+          
+          player.velocity.x = direction.x * player.speed * moveIntensity;
+          player.velocity.y = direction.y * player.speed * moveIntensity;
+          player.velocity.z = direction.z * player.speed * moveIntensity;
+        } else {
+          // Slow down gradually
+          player.velocity.x *= 0.95;
+          player.velocity.y *= 0.95;
+          player.velocity.z *= 0.95;
+        }
+        
+        // Apply velocity to camera position
+        camera.position.x += player.velocity.x;
+        camera.position.y += player.velocity.y;
+        camera.position.z += player.velocity.z;
+        
+        // Handle barrel roll
+        if (rollDirection !== 0) {
+          rollProgress += 0.05 * rollDirection;
+          camera.rotation.z = Math.sin(rollProgress) * Math.PI;
+          
+          if (rollProgress >= Math.PI || rollProgress <= -Math.PI) {
+            rollDirection = 0;
+            rollProgress = 0;
+            camera.rotation.z = 0;
+          }
+        }
+        
+        // Check boundary collision
+        if (
+          Math.abs(camera.position.x) > worldSize ||
+          Math.abs(camera.position.y) > worldSize ||
+          Math.abs(camera.position.z) > worldSize
+        ) {
+          endGame('You've reached the edge of the dream world.');
+        }
+        
+        // Move birds
+        birds.forEach(bird => {
+          const birdMesh = bird.mesh;
+          
+          // Move bird in its current direction
+          birdMesh.position.x += bird.direction.x * bird.speed;
+          birdMesh.position.y += bird.direction.y * bird.speed;
+          birdMesh.position.z += bird.direction.z * bird.speed;
+          
+          // Check world bounds and reverse direction if needed
+          if (Math.abs(birdMesh.position.x) > worldSize * 0.9 ||
+              Math.abs(birdMesh.position.y) > worldSize * 0.9 ||
+              Math.abs(birdMesh.position.z) > worldSize * 0.9) {
+            bird.direction.negate();
+            birdMesh.rotation.y = Math.atan2(bird.direction.x, bird.direction.z);
+          }
+          
+          // Animate wings
+          const wings = birdMesh.children[1];
+          wings.rotation.z = Math.sin(Date.now() * 0.02) * 0.2;
+        });
+        
+        // Move airplane
+        airplane.position.x += airplaneDirection.x * airplaneSpeed;
+        airplane.position.y += airplaneDirection.y * airplaneSpeed;
+        airplane.position.z += airplaneDirection.z * airplaneSpeed;
+        
+        // Check if airplane should reverse direction
+        if (Math.abs(airplane.position.x) > worldSize * 0.9 ||
+            Math.abs(airplane.position.y) > worldSize * 0.9 ||
+            Math.abs(airplane.position.z) > worldSize * 0.9) {
+          airplaneDirection.negate();
+          airplane.rotation.y = Math.atan2(airplaneDirection.x, airplaneDirection.z);
+        }
+      }
+      
+      renderer.render(scene, camera);
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Start animation
+    animate();
+  </script>
+</body>
+</html>
