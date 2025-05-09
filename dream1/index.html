@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Dream Flight</title>
     <style>
-            <style>
         body { 
             margin: 0; 
             overflow: hidden; 
@@ -58,12 +57,10 @@
             to { opacity: 0; }
         }
     </style>
-    </style>
 </head>
 <body>
     <div id="instructions">
-        Swipe to look around<br>
-        Tilt forward/back to move
+        Tilt your device to move through the dream
     </div>
     <div id="game-over">
         You woke up...<br>
@@ -71,295 +68,396 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
     <script>
+        // Game variables
         let scene, camera, renderer;
-        let currentSpeed = 0;
+        let player;
+        let boundaries = 5; // 5 units in each direction
+        let speed = 4 / 60; // 4 units per minute converted to units per frame (assuming 60fps)
         let gameActive = true;
-        let clouds = [], birds = [], plane;
-        let touchStartX = 0, touchStartY = 0;
-        let targetRotationX = 0, targetRotationY = 0;
-        let currentRotationX = 0, currentRotationY = 0;
+        let clouds = [];
+        let birds = [];
+        let plane;
+        let beta = 0; // Device tilt left/right
+        let gamma = 0; // Device tilt forward/back
+        let lastX = 0;
+        let lastY = 0;
 
-        // Constants
-        const BOUNDARIES = 5;
-        const MAX_SPEED = 0.1;
-        const ACCELERATION = 0.001;
-        const ROTATION_SENSITIVITY = 0.002;
-
+        // Initialize the game
         function init() {
-            // Initialize scene
+            // Create scene
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x87CEEB);
+            scene.background = new THREE.Color(0x87CEEB); // Sky blue
             
-            // Setup camera
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.set(0, 0, 0);
             
             // Create renderer
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.domElement.style.touchAction = 'none';
             document.body.appendChild(renderer.domElement);
-
-            // Setup controls and environment
-            setupControls();
+            
+            // Add event listeners
+            window.addEventListener('resize', onWindowResize);
+            window.addEventListener('deviceorientation', handleOrientation);
+            document.getElementById('restart-btn').addEventListener('click', restartGame);
+            
+            // For devices without device orientation (desktop testing)
+            if (!window.DeviceOrientationEvent) {
+                document.addEventListener('mousemove', handleMouseMove);
+                document.getElementById('instructions').textContent = "Move your mouse to navigate the dream";
+            }
+            
+            // Create player (just a camera in this case)
+            player = camera;
+            
+            // Create dream environment
             createEnvironment();
             
-            // Start animation loop
+            // Start game loop
             animate();
         }
 
-        function setupControls() {
-            // Touch controls
-            let isDragging = false;
-            
-            renderer.domElement.addEventListener('touchstart', e => {
-                isDragging = true;
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            });
-
-            renderer.domElement.addEventListener('touchmove', e => {
-                if (!isDragging || !gameActive) return;
-                
-                const deltaX = e.touches[0].clientX - touchStartX;
-                const deltaY = e.touches[0].clientY - touchStartY;
-                
-                targetRotationY += deltaX * ROTATION_SENSITIVITY;
-                targetRotationX += deltaY * ROTATION_SENSITIVITY;
-                
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            });
-
-            renderer.domElement.addEventListener('touchend', () => {
-                isDragging = false;
-            });
-
-            // Device tilt controls
-            window.addEventListener('deviceorientation', e => {
-                if (!gameActive) return;
-                
-                // Use beta for forward/back tilt (adjusted for mobile orientation)
-                let tilt = e.beta;
-                if (tilt > 90) tilt = 180 - tilt;
-                if (tilt < -90) tilt = -180 - tilt;
-                
-                currentSpeed = THREE.MathUtils.clamp(
-                    -tilt * 0.01, 
-                    -MAX_SPEED, 
-                    MAX_SPEED
-                );
-            });
-
-            // Desktop fallback
-            if (!window.DeviceOrientationEvent) {
-                document.addEventListener('keydown', e => {
-                    if (e.key === 'ArrowUp') currentSpeed = MAX_SPEED;
-                    if (e.key === 'ArrowDown') currentSpeed = -MAX_SPEED;
-                });
-                document.addEventListener('keyup', () => currentSpeed = 0);
-            }
-
-            // Restart button
-            document.getElementById('restart-btn').addEventListener('click', restartGame);
-        }
-
+        // Create dream environment
         function createEnvironment() {
-            // Add lighting
+            // Add directional light (sun)
             const light = new THREE.DirectionalLight(0xfff5e6, 1);
             light.position.set(1, 1, 1);
             scene.add(light);
-            scene.add(new THREE.AmbientLight(0x404040));
-
-            // Create clouds
-            const cloudGeo = new THREE.SphereGeometry(0.3);
-            const cloudMat = new THREE.MeshLambertMaterial({ 
+            
+            // Add ambient light
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+            
+            // Create fluffy clouds
+            const cloudGeometry = new THREE.SphereGeometry(0.3, 8, 8);
+            const cloudMaterial = new THREE.MeshLambertMaterial({ 
                 color: 0xffffff,
                 transparent: true,
                 opacity: 0.9
             });
-
+            
             for (let i = 0; i < 20; i++) {
-                const cloud = new THREE.Mesh(cloudGeo, cloudMat);
+                const cloud = new THREE.Group();
+                
+                // Create cloud from multiple spheres
+                for (let j = 0; j < 5; j++) {
+                    const part = new THREE.Mesh(cloudGeometry, cloudMaterial);
+                    part.position.set(
+                        (Math.random() - 0.5) * 1.5,
+                        (Math.random() - 0.5) * 1.5,
+                        (Math.random() - 0.5) * 1.5
+                    );
+                    part.scale.set(
+                        1 + Math.random(),
+                        1 + Math.random() * 0.5,
+                        1 + Math.random()
+                    );
+                    cloud.add(part);
+                }
+                
+                // Position clouds randomly in front of the player
                 cloud.position.set(
-                    Math.random() * BOUNDARIES * 2 - BOUNDARIES,
-                    Math.random() * BOUNDARIES - BOUNDARIES/2,
-                    Math.random() * -100 - 50
+                    Math.random() * boundaries * 2 - boundaries,
+                    Math.random() * boundaries - boundaries/2,
+                    -Math.random() * 100 - 20
                 );
+                
                 scene.add(cloud);
                 clouds.push(cloud);
             }
-
-            // Create plane
-            const planeGeo = new THREE.BoxGeometry(1.5, 0.3, 0.5);
-            const planeMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
-            plane = new THREE.Mesh(planeGeo, planeMat);
-            resetPlane();
+            
+            // Create dream birds
+            const birdGeometry = new THREE.ConeGeometry(0.1, 0.2, 3);
+            const birdMaterial = new THREE.MeshLambertMaterial({ 
+                color: 0x333333,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            for (let i = 0; i < 10; i++) {
+                const bird = new THREE.Mesh(birdGeometry, birdMaterial);
+                
+                // Position birds randomly
+                bird.position.set(
+                    Math.random() * boundaries * 2 - boundaries,
+                    Math.random() * boundaries - boundaries/2,
+                    -Math.random() * 100 - 30
+                );
+                
+                // Birds should face forward (toward the player)
+                bird.rotation.y = Math.PI;
+                
+                scene.add(bird);
+                birds.push({
+                    mesh: bird,
+                    speed: 0.02 + Math.random() * 0.03,
+                    wingFlapSpeed: 5 + Math.random() * 3,
+                    originalY: bird.position.y,
+                    originalX: bird.position.x
+                });
+            }
+            
+            // Create dream plane
+            const planeBodyGeometry = new THREE.BoxGeometry(1, 0.2, 0.5);
+            const planeWingGeometry = new THREE.BoxGeometry(1.5, 0.1, 0.3);
+            const planeMaterial = new THREE.MeshLambertMaterial({ 
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.9
+            });
+            
+            plane = new THREE.Group();
+            
+            const body = new THREE.Mesh(planeBodyGeometry, planeMaterial);
+            const wing = new THREE.Mesh(planeWingGeometry, planeMaterial);
+            wing.position.y = -0.1;
+            
+            plane.add(body);
+            plane.add(wing);
+            
+            // Position plane far ahead
+            plane.position.set(
+                boundaries * 0.7,
+                boundaries * 0.5,
+                -80
+            );
+            
             scene.add(plane);
         }
 
+        // Game loop
         function animate() {
             if (!gameActive) return;
             
             requestAnimationFrame(animate);
-
-            // Smooth camera rotation
-            currentRotationX += (targetRotationX - currentRotationX) * 0.1;
-            currentRotationY += (targetRotationY - currentRotationY) * 0.1;
-            camera.rotation.set(currentRotationX, currentRotationY, 0);
-
-            // Move camera
-            const direction = new THREE.Vector3();
-            camera.getWorldDirection(direction);
-            camera.position.addScaledVector(direction, currentSpeed);
-
-            // Check boundaries
-            if (Math.abs(camera.position.x) > BOUNDARIES || 
-                Math.abs(camera.position.y) > BOUNDARIES) {
+            
+            // Move FORWARD through the dream (positive Z direction)
+            player.position.z += speed;
+            
+            // Update player position based on device tilt
+            updatePlayerPosition();
+            
+            // Check boundaries (if player wakes up by leaving the dream)
+            if (Math.abs(player.position.x) > boundaries || 
+                Math.abs(player.position.y) > boundaries) {
                 endGame("You left the dream...");
                 return;
             }
-
-            // Update environment
-            updateEnvironment();
-            checkCollisions();
+            
+            // Check collision with plane (if player sees something shocking)
+            if (checkCollisionWithPlane()) {
+                endGame("You saw something impossible...");
+                return;
+            }
+            
+            // Update dream elements
+            updateClouds();
+            updateBirds();
+            updatePlane();
             
             renderer.render(scene, camera);
         }
 
-        function updateEnvironment() {
-            // Move clouds
-            clouds.forEach(cloud => {
-                cloud.position.z += currentSpeed * 40;
-                if (cloud.position.z > 50) {
-                    cloud.position.set(
-                        Math.random() * BOUNDARIES * 2 - BOUNDARIES,
-                        Math.random() * BOUNDARIES - BOUNDARIES/2,
-                        Math.random() * -100 - 50
-                    );
+        // Update player position based on device tilt
+        function updatePlayerPosition() {
+            // Apply smoothing to movement
+            const smoothingFactor = 0.2;
+            
+            // Calculate target position based on tilt
+            const targetX = THREE.MathUtils.clamp(gamma * 0.05, -boundaries, boundaries);
+            const targetY = THREE.MathUtils.clamp(beta * -0.05, -boundaries, boundaries);
+            
+            // Apply smoothing
+            lastX = lastX + (targetX - lastX) * smoothingFactor;
+            lastY = lastY + (targetY - lastY) * smoothingFactor;
+            
+            // Update player position
+            player.position.x = lastX;
+            player.position.y = lastY;
+        }
+
+        // Handle device orientation
+        function handleOrientation(event) {
+            // Check if orientation data is available
+            if (event.beta !== null && event.gamma !== null) {
+                beta = event.beta;  // -180 to 180 (front/back tilt)
+                gamma = event.gamma; // -90 to 90 (left/right tilt)
+                
+                // On some iOS devices, you need to request permission
+                if (typeof DeviceOrientationEvent !== 'undefined' && 
+                    typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(response => {
+                            if (response === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation);
+                            }
+                        })
+                        .catch(console.error);
                 }
-            });
-
-            // Move plane
-            plane.position.z += currentSpeed * 60;
-            if (plane.position.z > 50) resetPlane();
-        }
-
-        function resetPlane() {
-            plane.position.set(
-                (Math.random() - 0.5) * BOUNDARIES * 2,
-                (Math.random() - 0.5) * BOUNDARIES,
-                Math.random() * -100 - 100
-            );
-        }
-
-        function checkCollisions() {
-            const distance = camera.position.distanceTo(plane.position);
-            if (distance < 2.5) {
-                endGame("You encountered something impossible...");
             }
         }
 
+        // Fallback for desktop testing
+        function handleMouseMove(event) {
+            gamma = (event.clientX / window.innerWidth) * 180 - 90;
+            beta = (event.clientY / window.innerHeight) * 180 - 90;
+        }
+
+        // Update cloud positions
+        function updateClouds() {
+            clouds.forEach(cloud => {
+                // Move clouds toward the player (negative Z direction)
+                cloud.position.z -= speed * 0.8; // Clouds move slower for depth effect
+                
+                // If cloud is behind the player, reposition it ahead
+                if (cloud.position.z > 15) {
+                    cloud.position.set(
+                        Math.random() * boundaries * 2 - boundaries,
+                        Math.random() * boundaries - boundaries/2,
+                        -Math.random() * 100 - 50
+                    );
+                    
+                    // Randomize cloud scale for variety
+                    const scale = 0.5 + Math.random();
+                    cloud.children.forEach(part => {
+                        part.scale.set(scale, scale, scale);
+                    });
+                }
+            });
+        }
+
+        // Update bird positions and animations
+        function updateBirds() {
+            const time = Date.now() * 0.001; // Get time in seconds
+            
+            birds.forEach(bird => {
+                const birdObj = bird.mesh;
+                
+                // Move birds toward the player (negative Z direction)
+                birdObj.position.z -= speed + bird.speed;
+                
+                // Make birds flap wings (rotate on x-axis)
+                birdObj.rotation.x = Math.sin(time * bird.wingFlapSpeed) * 0.5;
+                
+                // Make birds move in gentle arcs
+                birdObj.position.y = bird.originalY + Math.sin(time * 2 + bird.originalX) * 0.3;
+                birdObj.position.x = bird.originalX + Math.cos(time * 1.5 + bird.originalY) * 0.3;
+                
+                // If bird is behind the player, reposition it ahead
+                if (birdObj.position.z > 15) {
+                    birdObj.position.set(
+                        Math.random() * boundaries * 2 - boundaries,
+                        Math.random() * boundaries - boundaries/2,
+                        -Math.random() * 100 - 40
+                    );
+                    bird.originalY = birdObj.position.y;
+                    bird.originalX = birdObj.position.x;
+                }
+            });
+        }
+
+        // Update plane position
+        function updatePlane() {
+            // Move plane toward the player (negative Z direction)
+            plane.position.z -= speed * 1.5; // Plane moves faster
+            
+            // Make plane move in gentle arcs
+            plane.position.y += Math.sin(Date.now() * 0.0005) * 0.02;
+            plane.position.x += Math.cos(Date.now() * 0.0007) * 0.01;
+            
+            // If plane is behind the player, reposition it ahead
+            if (plane.position.z > 15) {
+                plane.position.set(
+                    (Math.random() > 0.5 ? 1 : -1) * boundaries * 0.7,
+                    Math.random() * boundaries * 0.5,
+                    -80 - Math.random() * 40
+                );
+            }
+        }
+
+        // Check collision with plane
+        function checkCollisionWithPlane() {
+            const distance = player.position.distanceTo(plane.position);
+            return distance < 1.5; // Collision radius
+        }
+
+        // Handle window resize
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // End game function
         function endGame(message) {
             gameActive = false;
             document.getElementById('game-over').innerHTML = `${message}<br><button id="restart-btn">Dream Again</button>`;
             document.getElementById('game-over').style.display = 'block';
+            // Re-add event listener for the new button
+            document.getElementById('restart-btn').addEventListener('click', restartGame);
         }
 
+        // Restart game function
         function restartGame() {
-            // Reset positions and state
-            camera.position.set(0, 0, 0);
-            camera.rotation.set(0, 0, 0);
-            currentSpeed = 0;
-            targetRotationX = 0;
-            targetRotationY = 0;
-            currentRotationX = 0;
-            currentRotationY = 0;
+            // Reset player position
+            player.position.set(0, 0, 0);
+            beta = 0;
+            gamma = 0;
+            lastX = 0;
+            lastY = 0;
             
-            // Reset environment
-            clouds.forEach(cloud => {
-                cloud.position.set(
-                    Math.random() * BOUNDARIES * 2 - BOUNDARIES,
-                    Math.random() * BOUNDARIES - BOUNDARIES/2,
-                    Math.random() * -100 - 50
-                );
-            });
-            resetPlane();
+            // Reset all objects
+            resetObjects();
             
             // Hide game over screen
             document.getElementById('game-over').style.display = 'none';
+            
+            // Show brief instructions again
+            document.getElementById('instructions').style.animation = 'none';
+            void document.getElementById('instructions').offsetWidth; // Trigger reflow
+            document.getElementById('instructions').style.animation = 'fadeOut 5s forwards';
+            
+            // Reactivate game
             gameActive = true;
+            
+            // Restart animation loop
             animate();
         }
 
-        // Start the experience
+        // Reset all game objects
+        function resetObjects() {
+            // Reset clouds
+            clouds.forEach(cloud => {
+                cloud.position.set(
+                    Math.random() * boundaries * 2 - boundaries,
+                    Math.random() * boundaries - boundaries/2,
+                    -Math.random() * 100 - 50
+                );
+            });
+            
+            // Reset birds
+            birds.forEach(bird => {
+                bird.mesh.position.set(
+                    Math.random() * boundaries * 2 - boundaries,
+                    Math.random() * boundaries - boundaries/2,
+                    -Math.random() * 100 - 40
+                );
+                bird.originalY = bird.mesh.position.y;
+                bird.originalX = bird.mesh.position.x;
+            });
+            
+            // Reset plane
+            plane.position.set(
+                (Math.random() > 0.5 ? 1 : -1) * boundaries * 0.7,
+                Math.random() * boundaries * 0.5,
+                -80 - Math.random() * 40
+            );
+        }
+
+        // Start the dream
         init();
     </script>
-    // Add this HTML element for the permission button
-<button id="enable-tilt" style="
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    font-size: 1.2em;
-">
-    Tap to Enable Tilt Controls
-</button>
-
-<script>
-// iOS Device Orientation Permission
-async function requestIOSPermission() {
-    try {
-        if (typeof DeviceOrientationEvent !== 'undefined' && 
-            typeof DeviceOrientationEvent.requestPermission === 'function') {
-            
-            const permission = await DeviceOrientationEvent.requestPermission();
-            
-            if (permission === 'granted') {
-                // Permission granted - start the game
-                document.getElementById('enable-tilt').style.display = 'none';
-                startGameWithTilt();
-            } else {
-                alert('Tilt controls are required to play. Please refresh and allow access.');
-            }
-        }
-    } catch (error) {
-        console.error('Error requesting orientation permission:', error);
-        alert('Failed to enable tilt controls. Using touch fallback.');
-    }
-}
-
-// Initial setup
-document.getElementById('enable-tilt').addEventListener('click', requestIOSPermission);
-
-// For non-iOS devices, start immediately
-if (!/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-    document.getElementById('enable-tilt').style.display = 'none';
-    startGameWithTilt();
-}
-
-function startGameWithTilt() {
-    // Your game initialization code here
-    window.addEventListener('deviceorientation', handleOrientation);
-    
-    // iOS-specific orientation handling
-    function handleOrientation(event) {
-        // iOS uses different orientation values:
-        // beta: front/back tilt (-180 to 180)
-        // gamma: left/right tilt (-90 to 90)
-        
-        // Apply iOS orientation adjustments
-        let beta = event.beta;  // Front/back tilt
-        let gamma = event.gamma; // Left/right tilt
-        
-        // Clamp values to prevent extreme angles
-        beta = Math.max(-90, Math.min(90, beta));
-        gamma = Math.max(-90, Math.min(90, gamma));
-        
-        // Use these values for your game controls
-        console.log('Tilt values:', beta, gamma);
-    }
-}
-</script>
 </body>
 </html>
