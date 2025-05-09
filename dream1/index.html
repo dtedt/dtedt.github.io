@@ -5,68 +5,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Dream Flight</title>
     <style>
-        body { 
-            margin: 0; 
-            overflow: hidden; 
-            touch-action: none;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        canvas { 
-            display: block; 
-        }
-        #game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 6vw;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            display: none;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            width: 80%;
-        }
-        #restart-btn {
-            margin-top: 5vw;
-            padding: 3vw 6vw;
-            font-size: 4vw;
-            cursor: pointer;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid white;
-            color: white;
-            border-radius: 2vw;
-        }
-        #instructions {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 4vw;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            width: 90%;
-            opacity: 0.8;
-            animation: fadeOut 5s forwards;
-        }
-        @keyframes fadeOut {
-            to { opacity: 0; }
-        }
+        /* ... (keep previous styles) ... */
     </style>
 </head>
 <body>
     <div id="instructions">
-        Tilt your device to move through the dream
+        Swipe to look around<br>
+        Tilt forward/back to move
     </div>
     <div id="game-over">
         You woke up...<br>
         <button id="restart-btn">Dream Again</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-    <script src="game.js"></script>
+    <script>
+        // Game variables
+        let scene, camera, renderer;
+        let player;
+        let boundaries = 5;
+        let currentSpeed = 0;
+        let gameActive = true;
+        let clouds = [], birds = [], plane;
+        let touchStartX = 0, touchStartY = 0;
+        let isTouching = false;
+        let targetRotationX = 0, targetRotationY = 0;
+        let currentRotationX = 0, currentRotationY = 0;
+
+        // Sensitivity settings
+        const ROTATION_SENSITIVITY = 0.002;
+        const TILT_SENSITIVITY = 0.5;
+        const MAX_SPEED = 0.1;
+        const ACCELERATION = 0.001;
+
+        function init() {
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x87CEEB);
+            
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/innerHeight, 0.1, 1000);
+            camera.rotation.order = 'YXZ';
+            
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Input handlers
+            setupControls();
+            createEnvironment();
+            animate();
+        }
+
+        function setupControls() {
+            // Touch events for swiping
+            renderer.domElement.addEventListener('touchstart', e => {
+                isTouching = true;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            });
+
+            renderer.domElement.addEventListener('touchmove', e => {
+                if (!isTouching) return;
+                
+                const deltaX = e.touches[0].clientX - touchStartX;
+                const deltaY = e.touches[0].clientY - touchStartY;
+                
+                targetRotationY += deltaX * ROTATION_SENSITIVITY;
+                targetRotationX += deltaY * ROTATION_SENSITIVITY;
+                
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            });
+
+            renderer.domElement.addEventListener('touchend', () => {
+                isTouching = false;
+            });
+
+            // Device tilt for movement
+            window.addEventListener('deviceorientation', e => {
+                if (!gameActive) return;
+                
+                // Use beta (front/back tilt) for speed control
+                const tilt = e.beta; // Range: -180 to 180
+                
+                // Map tilt to speed
+                if (tilt > 10) {
+                    currentSpeed = THREE.MathUtils.clamp(
+                        currentSpeed + ACCELERATION,
+                        -MAX_SPEED,
+                        MAX_SPEED
+                    );
+                } else if (tilt < -10) {
+                    currentSpeed = THREE.MathUtils.clamp(
+                        currentSpeed - ACCELERATION,
+                        -MAX_SPEED,
+                        MAX_SPEED
+                    );
+                } else {
+                    // Slowly return to zero when neutral
+                    currentSpeed *= 0.98;
+                }
+            });
+
+            // Desktop fallback
+            if (!window.DeviceOrientationEvent) {
+                document.addEventListener('keydown', e => {
+                    if (e.key === 'ArrowUp') currentSpeed = MAX_SPEED;
+                    if (e.key === 'ArrowDown') currentSpeed = -MAX_SPEED;
+                });
+                document.addEventListener('keyup', () => currentSpeed = 0);
+            }
+        }
+
+        function animate() {
+            if (!gameActive) return;
+            
+            requestAnimationFrame(animate);
+
+            // Smooth camera rotation
+            currentRotationX += (targetRotationX - currentRotationX) * 0.1;
+            currentRotationY += (targetRotationY - currentRotationY) * 0.1;
+            
+            camera.rotation.x = currentRotationX;
+            camera.rotation.y = currentRotationY;
+
+            // Movement direction based on camera orientation
+            const direction = new THREE.Vector3();
+            camera.getWorldDirection(direction);
+            
+            // Apply movement
+            camera.position.addScaledVector(direction, currentSpeed);
+
+            // Boundary check
+            if (Math.abs(camera.position.x) > boundaries || 
+                Math.abs(camera.position.y) > boundaries) {
+                endGame("You left the dream...");
+            }
+
+            // Update environment
+            updateEnvironment();
+            checkCollisions();
+            
+            renderer.render(scene, camera);
+        }
+
+        function updateEnvironment() {
+            // Move clouds relative to player speed
+            clouds.forEach(cloud => {
+                cloud.position.z += currentSpeed * 50;
+                if (cloud.position.z > 100) resetCloud(cloud);
+            });
+
+            // Update birds
+            birds.forEach(bird => {
+                bird.mesh.position.z += currentSpeed * 30;
+                bird.mesh.rotation.x = Math.sin(Date.now() * 0.001 * bird.wingFlapSpeed);
+                if (bird.mesh.position.z > 100) resetBird(bird);
+            });
+
+            // Update plane
+            plane.position.z += currentSpeed * 40;
+            if (plane.position.z > 100) resetPlane();
+        }
+
+        function checkCollisions() {
+            // Plane collision
+            if (camera.position.distanceTo(plane.position) < 2) {
+                endGame("You encountered something strange...");
+            }
+        }
+
+        // ... (keep previous environment creation and reset functions) ...
+
+        function endGame(message) {
+            gameActive = false;
+            document.getElementById('game-over').innerHTML = `${message}<br><button id="restart-btn">Dream Again</button>`;
+            document.getElementById('game-over').style.display = 'block';
+            document.getElementById('restart-btn').addEventListener('click', restartGame);
+        }
+
+        function restartGame() {
+            // Reset positions and state
+            camera.position.set(0, 0, 0);
+            camera.rotation.set(0, 0, 0);
+            currentSpeed = 0;
+            targetRotationX = targetRotationY = 0;
+            currentRotationX = currentRotationY = 0;
+            resetEnvironment();
+            gameActive = true;
+            animate();
+        }
+
+        // ... (remaining helper functions) ...
+
+        // Initialize the game
+        init();
+    </script>
 </body>
 </html>
