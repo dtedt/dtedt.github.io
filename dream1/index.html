@@ -294,5 +294,72 @@
         // Start the experience
         init();
     </script>
+    // Add this HTML element for the permission button
+<button id="enable-tilt" style="
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    font-size: 1.2em;
+">
+    Tap to Enable Tilt Controls
+</button>
+
+<script>
+// iOS Device Orientation Permission
+async function requestIOSPermission() {
+    try {
+        if (typeof DeviceOrientationEvent !== 'undefined' && 
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+            
+            const permission = await DeviceOrientationEvent.requestPermission();
+            
+            if (permission === 'granted') {
+                // Permission granted - start the game
+                document.getElementById('enable-tilt').style.display = 'none';
+                startGameWithTilt();
+            } else {
+                alert('Tilt controls are required to play. Please refresh and allow access.');
+            }
+        }
+    } catch (error) {
+        console.error('Error requesting orientation permission:', error);
+        alert('Failed to enable tilt controls. Using touch fallback.');
+    }
+}
+
+// Initial setup
+document.getElementById('enable-tilt').addEventListener('click', requestIOSPermission);
+
+// For non-iOS devices, start immediately
+if (!/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    document.getElementById('enable-tilt').style.display = 'none';
+    startGameWithTilt();
+}
+
+function startGameWithTilt() {
+    // Your game initialization code here
+    window.addEventListener('deviceorientation', handleOrientation);
+    
+    // iOS-specific orientation handling
+    function handleOrientation(event) {
+        // iOS uses different orientation values:
+        // beta: front/back tilt (-180 to 180)
+        // gamma: left/right tilt (-90 to 90)
+        
+        // Apply iOS orientation adjustments
+        let beta = event.beta;  // Front/back tilt
+        let gamma = event.gamma; // Left/right tilt
+        
+        // Clamp values to prevent extreme angles
+        beta = Math.max(-90, Math.min(90, beta));
+        gamma = Math.max(-90, Math.min(90, gamma));
+        
+        // Use these values for your game controls
+        console.log('Tilt values:', beta, gamma);
+    }
+}
+</script>
 </body>
 </html>
