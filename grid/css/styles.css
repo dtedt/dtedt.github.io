@@ -4,7 +4,7 @@ width: 16rem;
 }
 
 .all {
-    display:block;
+    display:inline-block;
     }
 .two {
 background-color:blue;
