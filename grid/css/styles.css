@@ -1,5 +1,5 @@
 .one {
-color:red;
+
 
 }
 
@@ -8,6 +8,7 @@ color:red;
     }
 .two {
 background-color:blue;
+    color:red;
 }
 .three {
 color:blue;
