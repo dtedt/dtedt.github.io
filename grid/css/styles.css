@@ -1,6 +1,10 @@
 #one {
 color:red;
 }
+
+.all {
+    display:black;
+    }
 .two {
 background-color:blue;
 }
