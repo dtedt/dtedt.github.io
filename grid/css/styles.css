@@ -2,8 +2,9 @@
     box-sizing: border-box;
 }
 .one {
-grid-template: 3 / 2;
-grid-area: auto / auto / auto / auto;
+
+      max-width: 940px;
+  margin: 0 auto;
 }
 
 .all {
