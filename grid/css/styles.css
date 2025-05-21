@@ -1,6 +1,6 @@
 .one {
 grid-template: 3 / 2;
-
+grid-area: auto / auto / auto / auto;
 }
 
 .all {
