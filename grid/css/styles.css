@@ -6,6 +6,19 @@
       max-width: 940px;
   margin: 0 auto;
 }
+.one > div {
+  border: 2px solid rgb(233 171 88);
+  border-radius: 5px;
+
+  padding: 1em;
+
+}
+.one {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
 
 .all {
     display:grid;
