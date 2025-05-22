@@ -14,7 +14,7 @@
     
     }
 
-    * {
+* {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
@@ -22,16 +22,16 @@
         text-decoration: none;
         color:white
     }
-    h1 {
+h1 {
         margin-bottom: 8px;
         font-weight: bold;
     }
-    p {
+p {
         color: white;
         font-weight: bold;
     }
     
-    section {
+section {
         font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         border-radius: 10px;
         
@@ -43,13 +43,23 @@
 
 
     }
-    .container {
+.container {
         border-radius: 10px;
         border-color:white;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 30px;
         text-align: center;
         width: 350px;
+    }
+
+    .alt-container {
+        border-radius: 10px;
+        border-color:white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        text-align: center;
+        width: 350px;
+        background-color: var(--1);
     }
 a {
     color: #00DEFA;
