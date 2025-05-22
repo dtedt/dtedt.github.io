@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+}
+.one {
+
+      max-width: 940px;
+  margin: 0 auto;
+}
+.one > div {
+  border: 2em solid rgb(233 171 88);
+  border-radius: 5px;
+
+  padding: 1em;
+
+}
+.one {
+  display: flex;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: 2;
+}
+
+.all {
+    display:grid;
+    }
+.two {
+background-color:blue;
+    color:red;
+}
+.three {
+color:blue;
+    background-color:red;
+}
+
+.four {
+    color:green;
+    background-color:yellow;
+}
