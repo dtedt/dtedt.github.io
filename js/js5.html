@@ -6,14 +6,14 @@
         <h4 id="die">You haven't rolled the die...</h4>
         <button type="button" onclick="myFunction()">click here to roll a die</button>
         <script>
-        
+        let dSix = math.floor(math.random() * 7)
         
         function myFunction() {
         document.getElementById("die").innerHTML = "you rolled a die";
         
         document.getElementById("die").style = "color:red;";
         }
-        document.getElementById("die").innerHTML += math.Random(6);
+        document.getElementById("die").innerHTML += dSix;
         </script>
     </body>
 
