@@ -53,7 +53,7 @@
         width:auto;
         }
         .wrap {
-        text-wrap:wrap;
+        text-wrap:pretty;
         }
         </style>
     </head>
@@ -91,7 +91,10 @@ function startGame() {
     }
 
 function moreLetters() {
+    if yourLetters <= 12
     document.getElementById("yourLetters").innerHTML += "LETTERS";
+    else
+    return 
     }
 function availableLetters() {
 
