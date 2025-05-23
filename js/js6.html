@@ -91,8 +91,12 @@ function startGame() {
     }
 
 function moreLetters() {
-    if yourLetters <= 12
-    document.getElementById("yourLetters").innerHTML += "LETTERS";
+    let newLetters = "ABC"
+    let yourLetters = document.getElementById("yourLetters")
+    let currentLetters = yourLetters.textcontent
+    const maxLetters = 12;
+    if (yourLetters.length + newLetters.length <= maxLetters)
+    document.getElementById("yourLetters").innerHTML += newLetters;
     else
     return 
     }
