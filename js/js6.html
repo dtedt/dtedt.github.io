@@ -10,9 +10,11 @@
 <body>
     <h1>Word Reaver</h1>
     <button type="button" id="start" style="font-size:8vw;">Start Game</button>
+    <div id="gameBoard">
     <h3>Your Letters:</h3>
         <h4 id="yourLetters"></h4>
         <button type="button" id="moreLetters>Get more Letters</button>
+    </div>
 <script>
 const wordBank = [SWORD, DOOR, KEY, AXE, JUMP, MAGIC, FIRE, FIREBALL, SPELL]
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -20,9 +22,11 @@ const vowels = "AEIOU"
 let playersHand = availableLetters() - enemy
 let enemy = null
 let availableWords = availableWords()
-
+gameBoard.hidden = true;
 function startGame {
-    
+    let start = document.getElementById("start");
+    start.hidden = true;
+    gameBoard.hidden = false;
     }
 
 function availableLetters() {
