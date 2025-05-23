@@ -15,6 +15,9 @@
         border:7px solid green;
         padding:9px;
         }
+        #gameBoard {
+        display:none;
+        }
         </style>
     </head>
 <body>
@@ -37,7 +40,7 @@ gameBoard.hidden = true;
 function startGame() {
     let start = document.getElementById("start");
     start.hidden = true;
-    gameBoard.hidden = false;
+    document.getElementById("gameBoard").style.display = "block";
     }
 
 function moreLetters() {
