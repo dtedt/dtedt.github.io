@@ -42,10 +42,10 @@ let playersHand = availableLetters() - enemy
 let enemy = null
 let availableWords = availableWords()
 let gameBoard = document.getElementById("gameBoard")
+let start = document.getElementById("start")
 
 function startGame() {
-    let start = document.getElementById("start")
-    start.style.display = "none";
+    document.getElementById("start").style.display = "none";
     document.getElementById("gameBoard").style.display = "block";
     document.getElementById("border").style.display = "block";
     }
