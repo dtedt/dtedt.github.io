@@ -18,8 +18,11 @@
         padding:9px;
         display:none;
         }
+        #border2 {
+            border:7px dashed double dotted brown;
+            }
         #gameBoard {
-        border:7px dotted grey;
+        border:7px inset groove grey;
         }
         </style>
     </head>
@@ -27,10 +30,12 @@
     <h1>Word Reaver</h1>
     <button type="button"  id="start" onclick="startGame()">Start Game</button>
     <div id="border">
+    <div id="border2>
     <div id="gameBoard">
     <h3>Your Letters:</h3>
         <h4 id="yourLetters"></h4>
         <button type="button" onclick="moreLetters()">Get more Letters</button>
+    </div>
     </div>
     </div>
 <script>
