@@ -35,12 +35,12 @@
     </div>
     </div>
 <script>
-const wordBank = [SWORD, DOOR, KEY, AXE, JUMP, MAGIC, FIRE, FIREBALL, SPELL]
+const wordBank = ['SWORD', 'DOOR', 'KEY', 'AXE', 'JUMP', 'MAGIC', 'FIRE', 'FIREBALL', 'SPELL']
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const vowels = "AEIOU"
-let playersHand = availableLetters() - enemy
+let playersHand = []
 let enemy = null
-let availableWords = availableWords()
+let availableWords = [];
 let gameBoard = document.getElementById("gameBoard")
 let start = document.getElementById("start")
 
