@@ -2,85 +2,22 @@
 <html> 
 <body>
 <script>
-// Your word bank (simplified example)
-const validWords = [
-  'SWORD', 'DOOR', 'FROD', 'HOLD', 'FORK', 'WORD', 'ROD', 'HOW', 
-  'ROW', 'WHO', 'SOW', 'FOW', 'ORK', 'DORK', 'WOOD', 'HOOD'
-];
+const wordBank = [SWORD, DOOR, KEY, AXE, JUMP, MAGIC, FIRE, FIREBALL, SPELL]
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const vowels = "AEIOU"
+let playersHand = availableLetters() - enemy
+let enemy = null
+let availableWords = availableWords()
 
-// Combat function
-function handleCombat(enemy, letters) {
-  // Add the mandatory 'O' to the player's letters
-  const availableLetters = (letters + 'O').toUpperCase();
-  
-  // Find all possible valid words
-  const possibleActions = findPossibleWords(availableLetters, validWords);
-  
-  if (possibleActions.length === 0) {
-    console.log(`No valid actions with letters: ${availableLetters}`);
-    return false;
-  }
-  
-  // Present options to player (in a real game, this would be a UI)
-  console.log(`A ${enemy} appears! Choose an action:`);
-  possibleActions.forEach((word, index) => {
-    console.log(`${index + 1}: ${word}`);
-  });
-  
-  // In a real game, you'd wait for player input
-  // For this example, we'll auto-select the first option
-  const selectedAction = possibleActions[0];
-  console.log(`You used ${selectedAction}!`);
-  
-  // Determine combat outcome
-  return resolveAction(selectedAction, enemy);
+function availableLetters() {
+
 }
 
-// Helper function to find possible words
-function findPossibleLetters(availableLetters, word) {
-  const letters = [...availableLetters];
-  for (const char of word) {
-    const index = letters.indexOf(char);
-    if (index === -1) return false;
-    letters.splice(index, 1);
-  }
-  return true;
+function availableWords() {
+
 }
 
-function findPossibleWords(availableLetters, wordList) {
-  return wordList.filter(word => 
-    findPossibleLetters(availableLetters, word)
-  ).sort((a, b) => b.length - a.length); // Sort by longest first
-}
 
-// Determine combat results
-function resolveAction(action, enemy) {
-  const weaponWords = ['SWORD', 'AXE', 'DAGGER', 'MACE', 'BOW', 'ARROW'];
-  const magicWords = ['SPELL', 'BLAST', 'FIRE', 'SHOCK'];
-  const escapeWords = ['DOOR', 'FLEE', 'HIDE', 'RUN'];
-  
-  if (weaponWords.includes(action)) {
-    console.log(`You strike the ${enemy} with your ${action}!`);
-    return { success: true, damage: action.length }; // More letters = more damage
-  }
-  else if (magicWords.includes(action)) {
-    console.log(`You cast ${action} at the ${enemy}!`);
-    return { success: true, damage: action.length * 2 }; // Magic does extra damage
-  }
-  else if (escapeWords.includes(action)) {
-    console.log(`You ${action} to escape the ${enemy}!`);
-    return { success: true, escaped: true };
-  }
-  else {
-    console.log(`${action} has no effect on the ${enemy}!`);
-    return { success: false };
-  }
-}
-
-// Example usage
-const enemy = 'TROLL';
-const playerLetters = 'SDFODRWHK';
-handleCombat(enemy, playerLetters);
 </script>
 </body>
 </html>
