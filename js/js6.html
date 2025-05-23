@@ -19,7 +19,7 @@
     <div id="gameBoard">
     <h3>Your Letters:</h3>
         <h4 id="yourLetters"></h4>
-        <button type="button" id="moreLetters>Get more Letters</button>
+        <button type="button" onclick="moreLetters">Get more Letters</button>
     </div>
 <script>
 const wordBank = [SWORD, DOOR, KEY, AXE, JUMP, MAGIC, FIRE, FIREBALL, SPELL]
@@ -30,12 +30,15 @@ let enemy = null
 let availableWords = availableWords()
 let gameBoard = document.getElementById("gameBoard")
 gameBoard.hidden = true;
-function startGame {
+function startGame() {
     let start = document.getElementById("start");
     start.hidden = true;
     gameBoard.hidden = false;
     }
 
+function moreLetters() {
+    
+    }
 function availableLetters() {
 
 }
