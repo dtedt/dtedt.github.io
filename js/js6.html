@@ -10,23 +10,26 @@
         button {
         font-size:4vw;
         }
-        div {
+        #border {
         text-align:center;
-        border:7px dotted green;
+        border:7px solid green;
         padding:9px;
         }
         #gameBoard {
         display:none;
+        border:7px dotted green;
         }
         </style>
     </head>
 <body>
     <h1>Word Reaver</h1>
     <button type="button" id="start" style="font-size:8vw;">Start Game</button>
+    <div id="border">
     <div id="gameBoard">
     <h3>Your Letters:</h3>
         <h4 id="yourLetters"></h4>
         <button type="button" onclick="moreLetters">Get more Letters</button>
+    </div>
     </div>
 <script>
 const wordBank = [SWORD, DOOR, KEY, AXE, JUMP, MAGIC, FIRE, FIREBALL, SPELL]
