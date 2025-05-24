@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <style>
+        * {
+            text-align:center;
+            
+            }
+            
+        h1 {
+            font-size:8vw;
+            }
+        h2, h3, h4 {
+            font-size:6vw;
+            }
+        button {
+        font-size:4vw;
+        border:9px outset grey;
+        }
+        #border {
+        box-sizing:border-box;
+        border-top:11px solid green;
+        display:none;
+        margin:auto;
+        width:88%;
+        
+        align-items: center;
+        justify-content: center;
+        }
+        #border2 {
+            border-top:2px inset  brown;
+            margin:auto;
+            width:100%;
+            }
+        #border3 {
+            border-top:2px dotted brown;
+            background:grey;
+            margin:auto;
+            width:100%;
+            }
+        #border4 {
+            border-top:3px dashed brown;
+            background:grey;
+            margin:auto;
+            width:auto;
+            }
+        #border5 {
+            border-top:2px solid brown;
+            margin:auto;
+            width:auto;
+            }
+        #gameBoard {
+        border:11px groove grey;
+        margin:3px;
+        background:#eee;
+        width:auto;
+        }
+        .wrap {
+        text-wrap:pretty;
+        }
+        padding-bottom:10px;
+        </style>
+    </head>
+<body>
+    <h1>Word Reaver</h1>
+    <button type="button"  id="start" onclick="startGame()">Start Game</button>
+    <div id="border">
+    <div id="border2">
+    <div id="border3">
+    <div id="border4">
+    <div id="border5">
+    <div id="gameBoard">
+    <div class="wrap">
+              <h3>Your Letters:</h3>
+    
+        <h4 id="yourLetters"></h4>
+    </div>
+        <button type="button" onclick="moreLetters()">Get more Letters</button>
+        <br>
+        <br>
+            <br>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<script>
+const wordBank = ['SWORD', 'DOOR', 'KEY', 'AXE', 'JUMP', 'MAGIC', 'FIRE', 'FIREBALL', 'SPELL']
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const vowels = "AEIOU";
+
+function startGame() {
+    document.getElementById("start").style.display = "none";
+    
+    document.getElementById("border").style.display = "flex";
+    }
+
+function moreLetters() {
+    let newLetters = "ABC"
+    let yourLetters = document.getElementById("yourLetters")
+    let currentLetters = yourLetters.textcontent
+    const maxLetters = 12;
+    if (yourLetters.length + newLetters.length <= maxLetters)
+    document.getElementById("yourLetters").innerHTML += newLetters;
+    else
+    return 
+    }
+function availableLetters() {
+
+}
+
+function availableWords() {
+
+}
+
+
+</script>
+</body>
+</html>
