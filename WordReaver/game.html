@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Reaver</title>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <h1 id="title">Word Reaver</h1>
+    <button type="button"  id="start" onclick="startGame()">Start Game</button>
+    <div id="border">
+    <div id="border2">
+    <div id="border3">
+    <div id="border4">
+    <div id="border5">
+    <div id="gameBoard">
+    <div id="statusBoard">
+            <button type="button" id="getMore" onclick="moreLetters()">Get more Letters</button>
+
+        <h5 id="haveLetters"></h5>
+    </div>
+    <div id="battleBoard">
+        <button type="button" id="dungeon" onclick="enemyAppears()">Enter the Dungeon</button>
+        <p id="appearance"></p>
+        <h1 id="currentEnemy"></h1>
+        <p id="nowWhat"></p>
+        <p>Available Letters:</p>
+        <p class="wrap words" id="yourLetters"></p>
+        <button type="button" id="attack" onclick="spellableWords()">Attack!</button>
+        <p>Available Actions:</p>
+        <p id="yourOptions"></p>
+    </div>
+        <br>
+        <br>
+            <br>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+        <script src="script.js"></script>
+</body>
+</html>

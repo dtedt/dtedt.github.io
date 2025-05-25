@@ -54,11 +54,12 @@
         margin:3px;
         background:#eee;
         width:auto;
+        padding-bottom:10px;
         }
         .wrap {
         text-wrap:pretty;
         }
-        padding-bottom:10px;
+        
         </style>
     </head>
 <body>
@@ -70,10 +71,11 @@
     <div id="border4">
     <div id="border5">
     <div id="gameBoard">
-    <div class="wrap">
+    <div >
               <h3>Your Letters:</h3>
     
-        <h4 id="yourLetters"></h4>
+        <h4 class="wrap" id="yourLetters"></h4>
+        <h5 id="haveLetters"></h5>
     </div>
         <button type="button" onclick="moreLetters()">Get more Letters</button>
         <br>
@@ -90,7 +92,22 @@
 const wordBank = ['SWORD', 'DOOR', 'KEY', 'AXE', 'JUMP', 'MAGIC', 'FIRE', 'FIREBALL', 'SPELL']
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const vowels = "AEIOU";
+/* let dSix = (Math.floor(Math.random()*6)+1); */
 
+function randomLetter() {
+    return alphabet[Math.floor(Math.random() * alphabet.length)];
+}    
+
+function randomVowel() {
+    return vowels[Math.floor(Math.random() * vowels.length)]
+}
+function myFunction() {
+    let d24 = (Math.floor(Math.random()*24)+1);
+    let rLetter = randomLetter();
+    document.getElementById("die2").innerHTML += rLetter;        
+document.getElementById("die").style.color = "red";
+addLetters()
+}
 function startGame() {
     document.getElementById("start").style.display = "none";
     
@@ -98,15 +115,25 @@ function startGame() {
     }
 
 function moreLetters() {
+    let rLetter = randomLetter();
     let newLetters = "ABC"
     let yourLetters = document.getElementById("yourLetters")
-    let currentLetters = yourLetters.textcontent
+    let currentLetters = yourLetters.textContent
     const maxLetters = 12;
-    if (yourLetters.length + newLetters.length <= maxLetters)
-    document.getElementById("yourLetters").innerHTML += newLetters;
-    else
-    return 
+    if (yourLetters.length + 1 <= maxLetters) {
+    document.getElementById("yourLetters").innerHTML += rLetter;
+    document.getElementById("haveLetters").innerHTML = "You're carrying " + yourLetters.innerHTML.length + " letters.";
+    document.getElementById("haveLetters").style.color = "grey";
+    }      
+    else {
+    document.getElementById("haveLetters").innerHTML = "Chill! You've got maximum letters now.";
+    document.getElementById("haveLetters").style.color = "red";
+
+    document.getElementById("yourLetters").innerHTML = yourLetters.textContent.substring(0, maxLetters);
     }
+}
+
+
 function availableLetters() {
 
 }
