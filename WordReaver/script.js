@@ -25,7 +25,7 @@ const enemyBank = [
     },
     {
         name: "DRAGONKIN",
-        emoji: "dragon",
+        emoji: "🐲",
         hp: 8,
         weaknesses: ["ICE", "ZAP"],
         resistance: ["FIRE", "FIREBALL", "BURN"],
