@@ -61,30 +61,50 @@
         justify-items: center;
         }
         
-        #statusBoard {
-            justify-items:left;
-            padding:9px;
-        }
+       /* #statusBoard {
+
+        }*/
         #battleBoard {
             display:grid;
             grid-template-columns: auto auto auto;
             grid-template-rows: auto auto auto;
         }
 
-        #haveLetters {
-            font-size:1vw;
+        #yourLetters {
+            display:block;
+        }
+        #getLetters {
+            display:none;
         }
 
-        #dungeon {
+        #haveLetters {
+            display: none;
+            font-size:2vw;
+        }
+        #chill {
             display:none;
+        }
+        #dungeon {
+            display:flex;
         }
 
         #attack {
             display:none;
         }
 
+        #appearance {
+            width:15rem;
+        }
+
         #youroptions {
             display:flex;
+        }
+
+        #indicator1 {
+            display:none;
+        }
+        #indicator2 {
+            display:none;
         }
         .words {
             font-size:3vw;

@@ -17,19 +17,21 @@
     <div id="border5">
     <div id="gameBoard">
     <div id="statusBoard">
-            <button type="button" id="getMore" onclick="moreLetters()">Get more Letters</button>
 
+        <button type="button" id="getLetters" onclick="moreLetters()">Get more letters</button>
         <h5 id="haveLetters"></h5>
+        <p id="chill"></p>
+        <span><p>Your Letters:</p><p class="wrap words" id="yourLetters"></p></span>
     </div>
     <div id="battleBoard">
         <button type="button" id="dungeon" onclick="enemyAppears()">Enter the Dungeon</button>
         <p id="appearance"></p>
         <h1 id="currentEnemy"></h1>
-        <p id="nowWhat"></p>
-        <p>Available Letters:</p>
-        <p class="wrap words" id="yourLetters"></p>
+<!--        <p id="nowWhat"></p>  -->
+        <p id="indicator1">Available Letters:</p>
+
         <button type="button" id="attack" onclick="spellableWords()">Attack!</button>
-        <p>Available Actions:</p>
+        <p id="indicator2">Available Actions:</p>
         <p id="yourOptions"></p>
     </div>
         <br>

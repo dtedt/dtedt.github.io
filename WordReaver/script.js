@@ -1,24 +1,74 @@
-const wordBank = ['SWORD', 'DOOR', 'KEY', 'AXE', 'JUMP', 'MAGIC', 'FIRE', 'FIREBALL', 'SPELL', 'BAG', 'ZAP', 'POW', 'LIMP', 'MINI', 'HURT', 'HOT', 'CAT', 'ACT', 'POT', 'JAM', 'POET', 'POEM', 'PELT', 'POLE', 'TEETH', 'BITE', 'MIST', 'MOTH', 'QUIT', 'FROG', 'HORSE', 'HOVER', 'GRIME', 'GHOST', 'TREAT', 'STRIKE', 'STORM', 'WORM', 'COLT', 'CROW', 'CRY', 'COY', 'XYST', 'CRWTH', 'GRIMOIRE', 'WARRIOR', 'QUIZ', 'WIZ', 'POUND', 'RONDO', 'BURN', 'FOOD', 'ODOR', 'POOF', 'SPURN', 'BOP', 'OOPS', 'OPUS', 'ORBS', 'ROD', 'STAFF', 'SOUP', 'ROB', 'URN', 'COAX', 'CARDIO', 'GRACE', 'RODEO', 'ZODIAC', 'ACID', 'ARC', 'CIDER', 'CORGI', 'DARING', 'DECOY', 'DIRGE', 'DICE', 'RAZE', 'DANCE', 'RAGE', 'YOGA', 'AID', 'DOX', 'FORK', 'GROOVE', 'HOOK', 'AUGURY', 'FAKE', 'HEAVY', 'RHYME', 'VOGUE', 'HUGE', 'OYSTER', 'MAGE']
-const enemyBank = ['TROLL', 'GOBLIN', 'GHOUL', 'DRAGONKIN', 'FJORD OGRE', 'AUTOMATON', 'SODIUM WARG' ]
-const bossBank = ['WOLFESCHLEGELSTEINHAUSENBERGERDORFF', 'RED BOG MEGADRAGON', 'MISTER MXYZPTLK', 'ZRFFF', 'Y']
+const wordBank = ['BANANA', 'COGNAC', 'CANNON', 'CANON', 'CONGA', 'KABOB', 'BACON', 'BLUFF', 'BALL', 'BUFF', 'TALL', 'SWORD', 'DOOR', 'KEY', 'AXE', 'JUMP', 'MAGIC', 'FIRE', 'FIREBALL', 'SPELL', 'BAG', 'ZAP', 'POW', 'LIMP', 'MINI', 'HURT', 'HOT', 'CAT', 'ACT', 'POT', 'JAM', 'POET', 'POEM', 'PELT', 'POLE', 'TEETH', 'BITE', 'MIST', 'MOTH', 'QUIT', 'FROG', 'HORSE', 'HOVER', 'GRIME', 'GHOST', 'TREAT', 'STRIKE', 'STORM', 'WORM', 'COLT', 'CROW', 'CRY', 'COY', 'XYST', 'CRWTH', 'GRIMOIRE', 'WARRIOR', 'QUIZ', 'WIZ', 'POUND', 'RONDO', 'BURN', 'FOOD', 'ODOR', 'POOF', 'SPURN', 'BOP', 'OOPS', 'OPUS', 'ORBS', 'ROD', 'STAFF', 'SOUP', 'ROB', 'URN', 'COAX', 'CARDIO', 'GRACE', 'RODEO', 'ZODIAC', 'ACID', 'ARC', 'CIDER', 'CORGI', 'DARING', 'DECOY', 'DIRGE', 'DICE', 'RAZE', 'DANCE', 'RAGE', 'YOGA', 'AID', 'DOX', 'FORK', 'GROOVE', 'HOOK', 'AUGURY', 'FAKE', 'HEAVY', 'RHYME', 'VOGUE', 'HUGE', 'OYSTER', 'MAGE']
+/*const enemyBank = ['TROLL', 'GOBLIN', 'GHOUL', 'DRAGONKIN', 'FJORD OGRE', 'AUTOMATON', 'SODIUM WARG' ]*/
+
+const enemyBank = [
+    {
+        name: "TROLL",
+        emoji: "🧌",
+        hp: 6,
+        weaknesses: ["FIRE", "LIGHT"],  // Takes extra damage from these words
+        resistance: ["ROCK", "EARTH"]   // Reduced damage from these
+    },
+    {
+        name: "GOBLIN",
+        emoji: "👺",
+        hp: 4,
+        weaknesses: ["SWORD", "LIGHT"],
+        resistance: ["POISON", "DARK"]
+    },
+    {
+        name: "FJORD OGRE",
+        emoji: "👹❄️",
+        hp: 9,
+        weaknesses: ["FIRE", "SUN"],
+        resistance: ["ICE", "WATER"]
+    },
+    {
+        name: "DRAGONKIN",
+        emoji: "dragon",
+        hp: 8,
+        weaknesses: ["ICE", "ZAP"],
+        resistance: ["FIRE", "FIREBALL", "BURN"],
+    },
+    {
+        name: "GHOUL",
+        emoji: "ghost",
+        hp: 3,
+        weaknesses: ["MAGIC", "LIGHT"],
+        resistance: [],
+        immunity: ["SWORD", "BITE", "TEETH", "AXE", "BASH"],
+    },
+    {
+        name: "AUTOMATON",
+        emoji: "robot",
+        hp: 10,
+        weaknesses: ["WATER", "SPLASH"],
+        resistance: ["FIRE", "FIREBALL", "HEAT"],
+        immunity: ["ZAP", "LIGHT"],
+    },
+    {
+        name: "SODIUM WARG",
+        emoji: "salt wolf",
+        hp: 7,
+        weaknesses: ["LIGHT", "FIRE", "FIREBALL"],
+        resistances: ["WATER", "SPLASH", "ICE"],
+        immunity: [],
+    }]
+/*const bossBank = ['WOLFESCHLEGELSTEINHAUSENBERGERDORFF', 'RED BOG MEGADRAGON', 'MISTER MXYZPTLK', 'ZRFFF', 'Y']*/
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const vowels = "AEIOU";
 let yourLettersDOM = document.getElementById("yourLetters")
 maxLetters = 12;
+let enemy;
 
 
-    for (let i = 0; i < 12; i++) {
-        moreLetters();
-    }
-    if (yourLettersDOM.length == maxLetters) {
-    document.getElementById("getMore").style.display = "none";
-}
 
 /* let dSix = (Math.floor(Math.random()*6)+1); let d24 = (Math.floor(Math.random()*24)+1); */
 
 function randomLetter() {
     return alphabet[Math.floor(Math.random() * alphabet.length)];
 }    
+
 
 /*function randomVowel() {
     return vowels[Math.floor(Math.random() * vowels.length)]
@@ -29,31 +79,43 @@ function startGame() {
     
     document.getElementById("border").style.display = "flex";
 
-        if (yourLettersDOM.length == maxLetters) {
-    document.getElementById("getMore").style.display = "none";
+    yourLettersDOM.innerHTML = '';
+    for (let i = 0; i < 12; i++) {
+        moreLetters();
+    }
+}
+    if (yourLettersDOM.length == maxLetters) {
+    
+    document.getElementById("getLetters").style.display = "none";
+    document.getElementById("indicator1").style.display = "block";  
+    document.getElementById("dungeon").style.display = "block";
+    console.log("indicator1 element:", document.getElementById("indicator1"));
 }
 
 
-    }
+
+    
 
 function moreLetters() {
     let rLetter = randomLetter();
     let currentLetters = yourLettersDOM.textContent
     const maxLetters = 12;
     
-    if (currentLetters.length + 1 <= maxLetters) {
+    if (currentLetters.length < maxLetters) {
     const letterSpan = document.createElement("span");
-    /*yourLettersDOM.textContent += rLetter;*/
+    document.getElementById("getLetters").style.display = "block";
+    yourLettersDOM.textContent += rLetter;
     document.getElementById("haveLetters").textContent = "You're carrying " + (yourLettersDOM.textContent.length + 1) + " letters.";
     document.getElementById("haveLetters").style.color = "grey";
     letterSpan.textContent = rLetter;
     letterSpan.className = "new-letter";
     yourLettersDOM.appendChild(letterSpan);
     } else {
-    document.getElementById("haveLetters").textContent = "Chill! You've got maximum letters now.";
+    document.getElementById("haveLetters").textContent = "You're carrying " + (yourLettersDOM.textContent.length + 1) + " letters.";
+    document.getElementById("chill").textContent = "Chill! You've got maximum letters now.";
     document.getElementById("haveLetters").style.color = "red";
-    document.getElementById("getMore").style.display = "none";
-    document.getElementById("dungeon").style.display = "flex";
+    document.getElementById("getLetters").style.display = "none";
+
     yourLettersDOM.textContent = currentLetters.substring(0, maxLetters);
     }
 }
@@ -69,22 +131,24 @@ function availableWords() {
 
 function enemyAppears() {
 let currentLetters = yourLettersDOM.textContent
-let enemy = enemyBank[Math.floor(Math.random() * enemyBank.length)]
-let enemyNoSpace = enemy.replace(/\s/g,"");
+    enemy = enemyBank[Math.floor(Math.random() * enemyBank.length)]
+let enemyNoSpace = enemy.name.replace(/\s/g,"");
 
 
-document.getElementById("appearance").textContent = "An enemy " + enemy + " appears!"
-document.getElementById("currentEnemy").textContent = enemy;
-document.getElementById("nowWhat").textContent = "What will you do?"
+document.getElementById("appearance").textContent = "An enemy " + enemy.name + " appears!"
+/*document.getElementById("currentEnemy").innerHTML = `${enemy.emoji} ${enemy.name} ${'🟥'.repeat(enemy.hp)}
+`;
+document.getElementById("nowWhat").textContent = "What will you do?"*/
 yourLettersDOM.textContent += enemyNoSpace;
 
 document.getElementById("dungeon").style.display = "none";
 document.getElementById("attack").style.display = "block";
+return enemy;
 }
 
 
-
 function spellableWords() {
+document.getElementById("appearance").style.display = "none";
 let yourHand = yourLettersDOM.textContent;
 const createLetterMap = yourHand => {
     const map = {};
@@ -112,6 +176,7 @@ for (const word of wordBank) {
 }
    /* document.getElementById("yourOptions").textContent = result; */
    const optionsDOM = document.getElementById('yourOptions')
+           document.getElementById("currentEnemy").innerHTML = `${enemy.emoji} ${enemy.name} ${'🟥'.repeat(enemy.hp)}`;
    if (optionsDOM) {
     optionsDOM.innerHTML = '';
 
@@ -145,6 +210,8 @@ for (const word of wordBank) {
         } else {
             optionsDOM.textContent = 'No actions available!'
         }
-        
+        document.getElementById("indicator2").style.display = "block";
+
+
    }
 }
