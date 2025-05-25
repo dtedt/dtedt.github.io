@@ -32,7 +32,7 @@ const enemyBank = [
     },
     {
         name: "GHOUL",
-        emoji: "ghost",
+        emoji: "👻",
         hp: 3,
         weaknesses: ["MAGIC", "LIGHT"],
         resistance: [],
@@ -40,7 +40,7 @@ const enemyBank = [
     },
     {
         name: "AUTOMATON",
-        emoji: "robot",
+        emoji: "🤖",
         hp: 10,
         weaknesses: ["WATER", "SPLASH"],
         resistance: ["FIRE", "FIREBALL", "HEAT"],
@@ -48,7 +48,7 @@ const enemyBank = [
     },
     {
         name: "SODIUM WARG",
-        emoji: "salt wolf",
+        emoji: "🐺🧂",
         hp: 7,
         weaknesses: ["LIGHT", "FIRE", "FIREBALL"],
         resistances: ["WATER", "SPLASH", "ICE"],
