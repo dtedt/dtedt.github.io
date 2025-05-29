@@ -1,4 +1,152 @@
-const wordBank = ['BANANA', 'COGNAC', 'CANNON', 'CANON', 'CONGA', 'KABOB', 'BACON', 'BLUFF', 'BALL', 'BUFF', 'TALL', 'SWORD', 'DOOR', 'KEY', 'AXE', 'JUMP', 'MAGIC', 'FIRE', 'FIREBALL', 'SPELL', 'BAG', 'ZAP', 'POW', 'LIMP', 'MINI', 'HURT', 'HOT', 'CAT', 'ACT', 'POT', 'JAM', 'POET', 'POEM', 'PELT', 'POLE', 'TEETH', 'BITE', 'MIST', 'MOTH', 'QUIT', 'FROG', 'HORSE', 'HOVER', 'GRIME', 'GHOST', 'TREAT', 'STRIKE', 'STORM', 'WORM', 'COLT', 'CROW', 'CRY', 'COY', 'XYST', 'CRWTH', 'GRIMOIRE', 'WARRIOR', 'QUIZ', 'WIZ', 'POUND', 'RONDO', 'BURN', 'FOOD', 'ODOR', 'POOF', 'SPURN', 'BOP', 'OOPS', 'OPUS', 'ORBS', 'ROD', 'STAFF', 'SOUP', 'ROB', 'URN', 'COAX', 'CARDIO', 'GRACE', 'RODEO', 'ZODIAC', 'ACID', 'ARC', 'CIDER', 'CORGI', 'DARING', 'DECOY', 'DIRGE', 'DICE', 'RAZE', 'DANCE', 'RAGE', 'YOGA', 'AID', 'DOX', 'FORK', 'GROOVE', 'HOOK', 'AUGURY', 'FAKE', 'HEAVY', 'RHYME', 'VOGUE', 'HUGE', 'OYSTER', 'MAGE']
+/*const wordBank = ['JOLT', 'LOOT', 'ZOOM', 'TOOL', 'ROLL', 'BANANA', 'COGNAC', 'CANNON', 'CANON', 'CONGA', 'KABOB', 'BACON', 'BLUFF', 'BALL', 'BUFF', 'TALL', 'SWORD', 'DOOR', 'KEY', 'AXE', 'JUMP', 'MAGIC', 'FIRE', 'FIREBALL', 'SPELL', 'BAG', 'ZAP', 'POW', 'LIMP', 'MINI', 'HURT', 'HOT', 'CAT', 'ACT', 'POT', 'JAM', 'POET', 'POEM', 'PELT', 'POLE', 'TEETH', 'BITE', 'MIST', 'MOTH', 'QUIT', 'FROG', 'HORSE', 'HOVER', 'GRIME', 'GHOST', 'TREAT', 'STRIKE', 'STORM', 'WORM', 'COLT', 'CROW', 'CRY', 'COY', 'XYST', 'CRWTH', 'GRIMOIRE', 'WARRIOR', 'QUIZ', 'WIZ', 'POUND', 'RONDO', 'BURN', 'FOOD', 'ODOR', 'POOF', 'SPURN', 'BOP', 'OOPS', 'OPUS', 'ORBS', 'ROD', 'STAFF', 'SOUP', 'ROB', 'URN', 'COAX', 'CARDIO', 'GRACE', 'RODEO', 'ZODIAC', 'ACID', 'ARC', 'CIDER', 'CORGI', 'DARING', 'DECOY', 'DIRGE', 'DICE', 'RAZE', 'DANCE', 'RAGE', 'YOGA', 'AID', 'DOX', 'FORK', 'GROOVE', 'HOOK', 'AUGURY', 'FAKE', 'HEAVY', 'RHYME', 'VOGUE', 'HUGE', 'OYSTER', 'MAGE']
+*/
+const wordBank = [
+    {
+        name: "JOLT",
+        description: "",
+        dmg: 0,
+        element: "",
+        effect: "",
+        invent: "",
+
+    }
+    {
+        name: "LOOT",
+        description: "Your eyes dart around the room in search of items or weapons. With a keen eye and a quick hand, you deftly collect several items or questionable value and add them to your inventory.",
+        dmg: 0,
+        element: ,
+        effect: ,
+        invent: /*three random items*/,
+
+    }       
+    {
+        name: "ZOOM"
+        description: "You immediately begin running laps around the $enemy. The $enemy is briefly confused and becomes somewhat dizzy as it cranes it's neck to follow your movements. You get tired after a while and stop to catch your breath.",
+        dmg: 0,
+        element: ,
+        effect: /*dizzy*/,
+        invent: ,
+
+    }
+    {
+        name: "TOOL"
+        description: "You grab a nearby $tool and fling it gracelessly at the $enemy. You never were a handy man."
+        dmg: 2,
+        element: /*steel*/
+        effect: /*chance to stun*/
+        invent: ,
+
+    }       
+    {
+        name: "ROLL"
+        description: "You keenly anticipate the $enemy's attack and prepare to roll to safety. Years of playing Fromsoft games have prepared you for this moment."
+        dmg: 0,
+        element: ,
+        effect: /*perfect dodge (of next attack)*/
+        invent: 
+
+    }
+    {
+        name: "BANANA"
+        description: "You reach into your pocket and produce a banana your forgot you had. You peel the banana and devour it in a mad frenzy, regaining 2 HP. You discard the banana peel carelessly."
+        dmg: 0,
+        element: ,
+        effect: /*gain 2 HP*/ /*chance for either combatant to slip on banana peel*/
+        invent: ,
+
+    }       
+    {
+        name: "COGNAC"
+        description: "You see a dusty bottle on the stone shelf to your left and drink deeply of the sticky ancient brew, gaining you 1HP and a nice afternoon buzz"
+        dmg: 0,
+        element: ,
+        effect: /*gain 2HP*/ /*status:inebriation*/
+        invent: /*empty bottle*/
+
+    }
+    {
+        name: "CANNON"
+        description: "You take a step back and bump up against a low railing, only you turn around and realize it is not a railing-- it's a cannon! Abandoning all common sense, you pull the mouth of the cannon around to face the $enemy and light the fuse. Sure enough, an enormous blast buffets the $enemy!"
+        dmg: 8,
+        element: /*explosive*/
+        effect: /*chance of arena damage*/
+        invent: ,
+
+    }       
+    {
+        name: "CANON"
+        description: "You produce a thick volume and read aloud from In Search Of Lost Time by Marcel Proust, but only after a brief preface discussing the relative merits of it's former English title Remembrance Of Things Past, which is less accurate to the exact translation, but is more evocative of the novel's subject matter. The $enemy finds the novel dull and questions it's position of importance in light of the legacy of colonialism it obscures through it's romanticization of aristocratic introspection. Your attempt to connect with the $enemy has failed spectacularly, and violence is imminent."
+        dmg: 0,
+        element: ,
+        effect: ,
+        invent: ,
+
+    }
+    {
+        name:
+        description:
+        dmg:
+        element:
+        effect:
+        invent:
+
+    }       
+    {
+        name:
+        description:
+        dmg:
+        element:
+        effect:
+        invent:
+
+    }
+    {
+        name:
+        description:
+        dmg:
+        element:
+        effect:
+        invent:
+
+    }       
+    {
+        name:
+        description:
+        dmg:
+        element:
+        effect:
+        invent:
+
+    }
+    {
+        name:
+        description:
+        dmg:
+        element:
+        effect:
+        invent:
+
+    }       
+    {
+        name:
+        description:
+        dmg:
+        element:
+        effect:
+        invent:
+
+    }
+    {
+        name:
+        description:
+        dmg:
+        element:
+        effect:
+        invent:
+
+    }       
+]
+
 /*const enemyBank = ['TROLL', 'GOBLIN', 'GHOUL', 'DRAGONKIN', 'FJORD OGRE', 'AUTOMATON', 'SODIUM WARG' ]*/
 
 const enemyBank = [
@@ -142,6 +290,7 @@ document.getElementById("nowWhat").textContent = "What will you do?"*/
 yourLettersDOM.textContent += enemyNoSpace;
 
 document.getElementById("dungeon").style.display = "none";
+document.getElementById("intro").style.display = "none";
 document.getElementById("attack").style.display = "block";
 return enemy;
 }
@@ -190,12 +339,12 @@ for (const word of wordBank) {
             result.forEach(word => {
                 const button = document.createElement('button');
 
+                button.classList.add('action');
                 button.textContent = word;
-                button.style.padding = '8px 16px';
-                button.style.cursor = 'pointer';
-                button.style.border = "2px solid #6b4bcc";
-                button.style.color = "white";
-                button.style.flexShrink = "0";
+                button.onclick = () => {
+                    console.log("button clicked!");
+                };
+
 
                 button.addEventListener('mouseenter', () => {
                     button.style.backgroundColor = "#6b4bcc";
@@ -211,7 +360,12 @@ for (const word of wordBank) {
             optionsDOM.textContent = 'No actions available!'
         }
         document.getElementById("indicator2").style.display = "block";
+        document.getElementById("attack").style.display = "none";
 
 
    }
+}
+
+function takeAction() {
+
 }

@@ -24,7 +24,7 @@
         border-top:11px solid green;
         display:none;
         margin:auto;
-        width:88%;
+        width:100%;
         
         align-items: center;
         justify-content: center;
@@ -55,11 +55,12 @@
         border:11px groove grey;
         margin:3px;
         background:#eee;
-        width:100%;
+        width:98%;
         padding-bottom:10px;
         display: block;
         justify-items: center;
         }
+    
         
        /* #statusBoard {
 
@@ -68,6 +69,16 @@
             display:grid;
             grid-template-columns: auto auto auto;
             grid-template-rows: auto auto auto;
+        }
+
+        #intro {
+            font-style: italic;
+            font-weight: 600;
+            font-family: "Apple Chancery", "Snell Roundhand", "cursive";
+            font-size: medium;
+            color: green;
+              text-shadow: 2px 6px 4px gold;
+
         }
 
         #yourLetters {
@@ -86,6 +97,7 @@
         }
         #dungeon {
             display:flex;
+            justify-self:center;
         }
 
         #attack {
@@ -121,4 +133,12 @@
 
         .new-letter {
             animation: newLetter 0.5s;
+        }
+        .action {
+                padding: '8px 16px';
+                cursor: 'pointer';
+                border: "2px solid #6b4bcc";
+                color: "white";
+                flex-shrink: "0";
+                background-color: "#3a246d"
         }
