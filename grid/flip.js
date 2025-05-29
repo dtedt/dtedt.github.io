@@ -1,0 +1,1 @@
+let cornerCardDOM = document.getElementById("module2")
