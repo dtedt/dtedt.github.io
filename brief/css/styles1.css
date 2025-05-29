@@ -1,3 +1,10 @@
 * {
 
 }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'><rect width='100%' height='100%' fill='%23ffc700'/><path d='M0,0 Q600,200 1200,0 L1200,800 Q600,600 0,800 Z' fill='white'/></svg>");
+  background-size: cover;
+}
