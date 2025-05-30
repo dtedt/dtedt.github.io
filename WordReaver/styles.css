@@ -57,8 +57,9 @@
         background:#eee;
         width:98%;
         padding-bottom:10px;
-        display: block;
-        justify-items: center;
+        display: flexbox;
+        justify-content: center;
+        align-items: center;
         }
     
         
