@@ -6,9 +6,10 @@ margin:0;
 padding:0;
   }
 #wrapper {
-display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr;
-grid-template-rows: auto auto auto auto;
+display: flexbox;
+
+justify-content:center;
+align-items:center;
 
 gap:16px;
 margin: 9px;
@@ -16,10 +17,6 @@ padding: 2vw 2px;
 
 }
 #O4 {
-
-display: grid;
-  grid-column: 1 / 3;
-  grid-row: 1 / 3;
 box-sizing:border-box;
   place-content: center;
   text-align:center;
@@ -34,9 +31,6 @@ padding:0 0.5em;
 box-shadow: 10px 10px 10px 30px;
 }
 #cornerCard {
-display: grid;
-grid-column: 3 / 5;
-grid-row: 1 / 3;
 box-sizing:border-box;
   place-content: center;
   text-align:center;
@@ -51,9 +45,7 @@ margin:0;
 padding:0 0.5em;
 }
 #banner1 {
-display: grid;
-grid-column: 1 / 5;
-grid-row: 3
+
 box-sizing:border-box;
   place-content: center;
   text-align:center;
@@ -68,9 +60,7 @@ margin:0;
 padding:0 0.5em;
 }
 #banner2 {
-display: grid;
-grid-column: 1 / 5;
-grid-row: 4;
+
 box-sizing:border-box;
   place-content: center;
   text-align:center;
@@ -85,8 +75,7 @@ margin:0;
 padding:0 0.5em;
 }
 .boiler {
-display: grid;
-grid-row: 6;
+
 box-sizing:border-box;
   place-content: center;
   text-align:center;
@@ -101,9 +90,7 @@ margin:0;
 padding:0 0.5em;
 }
 #banner3 {
-display: grid;
-grid-column: 1 / 5;
-grid-row: 5;
+
 box-sizing:border-box;
   place-content: center;
   text-align:center;
