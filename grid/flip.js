@@ -1,1 +1,1 @@
-let cornerCardDOM = document.getElementById("module2")
+let cornerCard = document.getElementById("module2")
