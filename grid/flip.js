@@ -6,5 +6,5 @@ function fitScreen() {
     wrapper.height = window.innerHeight;
 }
 
-fitScreen()
+fitScreen();
 
