@@ -9,7 +9,7 @@ padding:0;
 display: grid;
 grid-template-columns: 1fr 1fr 1fr 1fr;
 grid-template-rows: auto auto auto auto;
-
+align-items:center;
 gap:16px;
 margin: 9px;
 padding: 2vw 2px;
