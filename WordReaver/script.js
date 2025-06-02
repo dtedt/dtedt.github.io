@@ -206,7 +206,7 @@ const enemyBank = [
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const vowels = "AEIOU";
 let yourLettersDOM = document.getElementById("yourLetters")
-maxLetters = 12;
+const maxLetters = 12;
 let enemy;
 
 
@@ -247,7 +247,7 @@ function startGame() {
 function moreLetters() {
     let rLetter = randomLetter();
     let currentLetters = yourLettersDOM.textContent
-    const maxLetters = 12;
+    
     
     if (currentLetters.length < maxLetters) {
     const letterSpan = document.createElement("span");
