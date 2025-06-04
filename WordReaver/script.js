@@ -225,7 +225,7 @@ function randomLetter() {
 function startGame() {
     document.getElementById("start").style.display = "none";
     
-    document.getElementById("border").style.display = "flex";
+    document.getElementById("border").style.display = "flexbox";
 
     yourLettersDOM.innerHTML = '';
     for (let i = 0; i < 12; i++) {
@@ -235,8 +235,8 @@ function startGame() {
     if (yourLettersDOM.length == maxLetters) {
     
     document.getElementById("getLetters").style.display = "none";
-    document.getElementById("indicator1").style.display = "block";  
-    document.getElementById("dungeon").style.display = "block";
+    document.getElementById("indicator1").style.display = "flexbox";  
+    document.getElementById("dungeon").style.display = "flexbox";
     console.log("indicator1 element:", document.getElementById("indicator1"));
 }
 
@@ -251,7 +251,7 @@ function moreLetters() {
     
     if (currentLetters.length < maxLetters) {
     const letterSpan = document.createElement("span");
-    document.getElementById("getLetters").style.display = "block";
+    document.getElementById("getLetters").style.display = "flexbox";
     yourLettersDOM.textContent += rLetter;
     document.getElementById("haveLetters").textContent = "You're carrying " + (yourLettersDOM.textContent.length + 1) + " letters.";
     document.getElementById("haveLetters").style.color = "grey";
@@ -291,7 +291,7 @@ yourLettersDOM.textContent += enemyNoSpace;
 
 document.getElementById("dungeon").style.display = "none";
 document.getElementById("intro").style.display = "none";
-document.getElementById("attack").style.display = "block";
+document.getElementById("attack").style.display = "flexbox";
 return enemy;
 }
 
@@ -359,7 +359,7 @@ for (const word of wordBank) {
         } else {
             optionsDOM.textContent = 'No actions available!'
         }
-        document.getElementById("indicator2").style.display = "block";
+        document.getElementById("indicator2").style.display = "flexbox";
         document.getElementById("attack").style.display = "none";
 
 
