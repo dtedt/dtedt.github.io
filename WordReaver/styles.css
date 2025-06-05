@@ -11,8 +11,8 @@
             font-size:3vw;
             }
         button {
-        font-size:2vw;
-        border:9px outset grey;
+        font-size:3rem;
+        border:9px inset grey;
         }
 
         #title {
@@ -25,32 +25,11 @@
         display:none;
         margin:auto;
         width:100%;
-        
+        box-shadow: 10px 4px 5px gold;
         align-items: center;
         justify-content: center;
         }
-        #border2 {
-            border-top:2px inset  brown;
-            margin:auto;
-            width:100%;
-            }
-        #border3 {
-            border-top:2px dotted brown;
-            background:grey;
-            margin:auto;
-            width:100%;
-            }
-        #border4 {
-            border-top:3px dashed brown;
-            background:grey;
-            margin:auto;
-            width:auto;
-            }
-        #border5 {
-            border-top:2px solid brown;
-            margin:auto;
-            width:auto;
-            }
+
         #gameBoard {
         border:11px groove grey;
         margin:3px;
@@ -63,11 +42,15 @@
         }
     
         
-       /* #statusBoard {
-
-        }*/
+        #statusBoard {
+            display:flex;
+            border: 13px blue;
+            background:lightblue;
+        }
         #battleBoard {
             display:grid;
+            border: 19px red;
+            background:lightred;
             grid-template-columns: auto auto auto;
             grid-template-rows: auto auto auto;
         }

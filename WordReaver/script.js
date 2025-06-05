@@ -5,146 +5,66 @@ const wordBank = [
         name: "JOLT",
         description: "",
         dmg: 0,
-        element: "",
-        effect: "",
-        invent: "",
+
 
     },
     {
         name: "LOOT",
         description: "Your eyes dart around the room in search of items or weapons. With a keen eye and a quick hand, you deftly collect several items or questionable value and add them to your inventory.",
         dmg: 0,
-        element: ,
-        effect: ,
-        invent: /*three random items*/,
+
 
     },
     {
-        name: "ZOOM"
+        name: "ZOOM",
         description: "You immediately begin running laps around the $enemy. The $enemy is briefly confused and becomes somewhat dizzy as it cranes it's neck to follow your movements. You get tired after a while and stop to catch your breath.",
         dmg: 0,
-        element: ,
-        effect: /*dizzy*/,
-        invent: ,
+
 
     },
     {
-        name: "TOOL"
-        description: "You grab a nearby $tool and fling it gracelessly at the $enemy. You never were a handy man."
+        name: "TOOL",
+        description: "You grab a nearby $tool and fling it gracelessly at the $enemy. You never were a handy man.",
         dmg: 2,
-        element: /*steel*/
-        effect: /*chance to stun*/
-        invent: ,
+
 
     },
     {
-        name: "ROLL"
-        description: "You keenly anticipate the $enemy's attack and prepare to roll to safety. Years of playing Fromsoft games have prepared you for this moment."
+        name: "ROLL",
+        description: "You keenly anticipate the $enemy's attack and prepare to roll to safety. Years of playing Fromsoft games have prepared you for this moment.",
         dmg: 0,
-        element: ,
-        effect: /*perfect dodge (of next attack)*/
-        invent: 
+
 
     },
     {
-        name: "BANANA"
-        description: "You reach into your pocket and produce a banana your forgot you had. You peel the banana and devour it in a mad frenzy, regaining 2 HP. You discard the banana peel carelessly."
+        name: "BANANA",
+        description: "You reach into your pocket and produce a banana your forgot you had. You peel the banana and devour it in a mad frenzy, regaining 2 HP. You discard the banana peel carelessly.",
         dmg: 0,
-        element: ,
-        effect: /*gain 2 HP*/ /*chance for either combatant to slip on banana peel*/
-        invent: ,
+
 
     },
     {
-        name: "COGNAC"
-        description: "You see a dusty bottle on the stone shelf to your left and drink deeply of the sticky ancient brew, gaining you 1HP and a nice afternoon buzz"
+        name: "COGNAC",
+        description: "You see a dusty bottle on the stone shelf to your left and drink deeply of the sticky ancient brew, gaining you 1HP and a nice afternoon buzz",
         dmg: 0,
-        element: ,
-        effect: /*gain 2HP*/ /*status:inebriation*/
-        invent: /*empty bottle*/
+
 
     },
     {
-        name: "CANNON"
-        description: "You take a step back and bump up against a low railing, only you turn around and realize it is not a railing-- it's a cannon! Abandoning all common sense, you pull the mouth of the cannon around to face the $enemy and light the fuse. Sure enough, an enormous blast buffets the $enemy!"
+        name: "CANNON",
+        description: "You take a step back and bump up against a low railing, only you turn around and realize it is not a railing-- it's a cannon! Abandoning all common sense, you pull the mouth of the cannon around to face the $enemy and light the fuse. Sure enough, an enormous blast buffets the $enemy!",
         dmg: 8,
-        element: /*explosive*/
-        effect: /*chance of arena damage*/
-        invent: ,
+
 
     },
     {
-        name: "CANON"
-        description: "You produce a thick volume and read aloud from In Search Of Lost Time by Marcel Proust, but only after a brief preface discussing the relative merits of it's former English title Remembrance Of Things Past, which is less accurate to the exact translation, but is more evocative of the novel's subject matter. The $enemy finds the novel dull and questions it's position of importance in light of the legacy of colonialism it obscures through it's romanticization of aristocratic introspection. Your attempt to connect with the $enemy has failed spectacularly, and violence is imminent."
+        name: "CANON",
+        description: "You produce a thick volume and read aloud from In Search Of Lost Time by Marcel Proust, but only after a brief preface discussing the relative merits of it's former English title Remembrance Of Things Past, which is less accurate to the exact translation, but is more evocative of the novel's subject matter. The $enemy finds the novel dull and questions it's position of importance in light of the legacy of colonialism it obscures through it's romanticization of aristocratic introspection. Your attempt to connect with the $enemy has failed spectacularly, and violence is imminent.",
         dmg: 0,
-        element: ,
-        effect: ,
-        invent: ,
 
-    },
-    {
-        name:
-        description:
-        dmg:
-        element:
-        effect:
-        invent:
 
-    },
-    {
-        name:
-        description:
-        dmg:
-        element:
-        effect:
-        invent:
+    }
 
-    },
-    {
-        name:
-        description:
-        dmg:
-        element:
-        effect:
-        invent:
-
-    },
-    {
-        name:
-        description:
-        dmg:
-        element:
-        effect:
-        invent:
-
-    },
-    {
-        name:
-        description:
-        dmg:
-        element:
-        effect:
-        invent:
-
-    },
-    {
-        name:
-        description:
-        dmg:
-        element:
-        effect:
-        invent:
-
-    },
-    {
-        name:
-        description:
-        dmg:
-        element:
-        effect:
-        invent:
-
-    }       
 ]
 
 /*const enemyBank = ['TROLL', 'GOBLIN', 'GHOUL', 'DRAGONKIN', 'FJORD OGRE', 'AUTOMATON', 'SODIUM WARG' ]*/
@@ -225,7 +145,7 @@ function randomLetter() {
 function startGame() {
     document.getElementById("start").style.display = "none";
     
-    document.getElementById("border").style.display = "flexbox";
+    document.getElementById("border").style.display = "flex";
 
     yourLettersDOM.innerHTML = '';
     for (let i = 0; i < 12; i++) {
@@ -291,7 +211,7 @@ yourLettersDOM.textContent += enemyNoSpace;
 
 document.getElementById("dungeon").style.display = "none";
 document.getElementById("intro").style.display = "none";
-document.getElementById("attack").style.display = "flexbox";
+document.getElementById("attack").style.display = "flex";
 return enemy;
 }
 
