@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dreamlike: Floating Among Clouds</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            touch-action: none;
+            font-family: Arial, sans-serif;
+        }
+        #scene {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #instructions {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity 2s;
+        }
+        #instructions.fade {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="scene"></div>
+    <div id="instructions">Swipe to look around</div>
+    <script src="dreamlike.js"></script>
+</body>
+</html>
