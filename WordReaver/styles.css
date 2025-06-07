@@ -31,6 +31,7 @@
         }
 
         #gameBoard {
+        box-sizing:border-box;
         border:11px groove grey;
         margin:3px;
         background:#eee;
@@ -46,6 +47,7 @@
             display:flex;
             border: 13px blue;
             background:lightblue;
+               box-sizing:border-box;
         }
         #battleBoard {
             display:grid;
@@ -53,6 +55,7 @@
             background:lightred;
             grid-template-columns: auto auto auto;
             grid-template-rows: auto auto auto;
+            box-sizing:border-box;
         }
 
         #intro {
