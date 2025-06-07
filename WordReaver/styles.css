@@ -47,6 +47,7 @@
             border: 13px blue;
             background:lightblue;
                box-sizing:border-box;
+               text-align:center;
         }
         #battleBoard {
             display:grid;
@@ -55,6 +56,7 @@
             grid-template-columns: auto auto auto;
             grid-template-rows: auto auto auto;
             box-sizing:border-box;
+               text-align:center;
         }
 
         #intro {
