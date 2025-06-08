@@ -212,13 +212,14 @@ yourLettersDOM.textContent += enemyNoSpace;
 document.getElementById("dungeon").style.display = "none";
 document.getElementById("intro").style.display = "none";
 document.getElementById("attack").style.display = "flex";
+document.getElementById("indicator1").style.display = "flex";
 return enemy;
 }
 
 
 function spellableWords() {
 document.getElementById("appearance").style.display = "none";
-let yourHand = yourLettersDOM.textContent;
+let yourHand = document.getElementById("yourLetters").textContent;
 const createLetterMap = yourHand => {
     const map = {};
     for (const char of yourHand.toUpperCase()) {
