@@ -82,7 +82,7 @@ function availableWords() {
 
 function enemyAppears() {
 let currentLetters = yourLettersDOM.textContent
-    enemy = enemyBank[Math.floor(Math.random() * enemyBank.length)]
+let enemy = enemyBank[Math.floor(Math.random() * enemyBank.length)]
 let enemyNoSpace = enemy.name.replace(/\s/g,"");
 
 
