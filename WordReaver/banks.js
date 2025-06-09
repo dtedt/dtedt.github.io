@@ -64,3 +64,57 @@ export const wordBank = [
     }
 
 ]
+
+export const enemyBank = [
+    {
+        name: "TROLL",
+        emoji: "🧌",
+        hp: 6,
+        weaknesses: ["FIRE", "LIGHT"],  // Takes extra damage from these words
+        resistance: ["ROCK", "EARTH"]   // Reduced damage from these
+    },
+    {
+        name: "GOBLIN",
+        emoji: "👺",
+        hp: 4,
+        weaknesses: ["SWORD", "LIGHT"],
+        resistance: ["POISON", "DARK"]
+    },
+    {
+        name: "FJORD OGRE",
+        emoji: "👹❄️",
+        hp: 9,
+        weaknesses: ["FIRE", "SUN"],
+        resistance: ["ICE", "WATER"]
+    },
+    {
+        name: "DRAGONKIN",
+        emoji: "🐲",
+        hp: 8,
+        weaknesses: ["ICE", "ZAP"],
+        resistance: ["FIRE", "FIREBALL", "BURN"],
+    },
+    {
+        name: "GHOUL",
+        emoji: "👻",
+        hp: 3,
+        weaknesses: ["MAGIC", "LIGHT"],
+        resistance: [],
+        immunity: ["SWORD", "BITE", "TEETH", "AXE", "BASH"],
+    },
+    {
+        name: "AUTOMATON",
+        emoji: "🤖",
+        hp: 10,
+        weaknesses: ["WATER", "SPLASH"],
+        resistance: ["FIRE", "FIREBALL", "HEAT"],
+        immunity: ["ZAP", "LIGHT"],
+    },
+    {
+        name: "SODIUM WARG",
+        emoji: "🐺🧂",
+        hp: 7,
+        weaknesses: ["LIGHT", "FIRE", "FIREBALL"],
+        resistances: ["WATER", "SPLASH", "ICE"],
+        immunity: [],
+    }]
