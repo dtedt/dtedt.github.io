@@ -30,7 +30,9 @@
     const list = document.createElement('ul');
 
     for (i=0;i<6;i++) {
-      list.myArray[i]
+      const listItem = document.createElement('li');
+      listItem.textContent = myArray[i];
+      list.appendChild(listItem);
       }
     // Add your code here
 
