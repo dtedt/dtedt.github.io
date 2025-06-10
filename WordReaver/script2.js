@@ -1,0 +1,1 @@
+alert(`After years spent in preparation, <br>wandering the land in search of powerful glyphs, <br>you arrive at the mouth of the catacombs <br>with nothing in your inventory but these letters: ${yourLetters}`)
