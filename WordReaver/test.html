@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <textarea id="passwordInput" type="input"></textarea>
+    <script>
+        let pw = document.getElementById("passwordInput").textContent
+        function passwordChecker(pw) {
+            let counts = {
+                uppercase: 0;
+                lowercase: 0;
+                numbers: 0;
+                special: 0;
+            };
+
+            for (const char of pw) {
+                if char === char.toUpperCase() && char !== char.toLowerCase()) {
+                    counts.uppercase = (counts.uppercase || 0) + 1
+                }
+                if char === ("?><:}{}:{}|!@#$%^&*)(")
+            }
+
+            return counts;
+        }
+    </script>
+</body>
+</html>
