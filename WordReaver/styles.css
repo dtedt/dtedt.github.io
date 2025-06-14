@@ -37,8 +37,7 @@
         padding-bottom:10px;
         display: flex;
         flex-flow: row wrap;
-        justify-content: center;
-        align-items: center;
+
         }
     
         
@@ -49,18 +48,29 @@
             background:lightblue;
             box-sizing:border-box;
             text-align: center;
-            min-width: 90%;
+            flex-grow: 2;
+            flex-basis: 100vw;
         }
         #battleBoard {
             display:flex;
             flex-flow: column wrap;
             border: 19px red;
             background:red;
-            grid-template-columns: auto auto auto;
-            grid-template-rows: auto auto auto;
             box-sizing:border-box;
                text-align:center;
-               min-width: 50vw;
+            flex-grow: 1;
+
+
+        }
+
+        #commandBoard {
+            display:flex;
+            flex-flow: row wrap;
+            border: 19px green;
+            background:green;
+            box-sizing:border-box;
+               text-align:center;
+            flex-grow: 1;
 
         }
 
