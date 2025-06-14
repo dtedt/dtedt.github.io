@@ -11,17 +11,18 @@
         let pw = document.getElementById("passwordInput").textContent
         function passwordChecker(pw) {
             let counts = {
-                uppercase: 0;
-                lowercase: 0;
-                numbers: 0;
-                special: 0;
+                uppercase: 0,
+                lowercase: 0,
+                numbers: 0,
+                special: 0,
             };
 
             for (const char of pw) {
-                if char === char.toUpperCase() && char !== char.toLowerCase()) {
+                if (char === char.toUpperCase() && char !== char.toLowerCase()) {
                     counts.uppercase = (counts.uppercase || 0) + 1
                 }
-                if char === ("?><:}{}:{}|!@#$%^&*)(")
+                let special = "?><:}{}:{}|!@#$%^&*)("
+                if (char === ());
             }
 
             return counts;

@@ -22,7 +22,6 @@
         #border {
         box-sizing:border-box;
         border-top:11px solid green;
-        display:none;
         margin:auto;
         width:100%;
         box-shadow: 10px 4px 5px gold;

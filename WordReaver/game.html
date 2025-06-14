@@ -9,16 +9,13 @@
 </head>
 <body>
     <h1 id="title">Word Reaver</h1>
-    <button type="button"  id="start" onclick="startGame()">Start Game</button>
+
     <div id="border">
         <div id="gameBoard">
         <div id="statusBoard">
 
-            <button type="button" id="getLetters" onclick="moreLetters()">Get more letters</button>
             <h5 id="haveLetters"></h5>
-            <p id="chill"></p>
-                <p id="intro">After years spent in preparation, <br>wandering the land in search of powerful glyphs, <br>you arrive at the mouth of the catacombs <br>with nothing in your inventory but these letters:</p>
-                <p id="indicator1">Available Letters:</p>
+
                 <p id="yourLetters"></p>
         </div>
         <div id="battleBoard">
@@ -38,6 +35,7 @@
         </div>
      
     </div>
-        <script src="script.js"></script>
+        <script type="module" src="script.js"></script>
+        <script type="module" src="banks.js"></script>
 </body>
 </html>
