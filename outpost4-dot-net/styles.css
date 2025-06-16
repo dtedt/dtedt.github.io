@@ -63,9 +63,8 @@ nav ul li a {
 
 .features-grid {
     align-content: center;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr) );
-    grid-auto-rows: auto;
+    display: flex;
+    flex-flow: row wrap;
     align-items: stretch;
     justify-items: center;
     gap: 20px;
