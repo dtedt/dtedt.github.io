@@ -16,6 +16,7 @@ body, html {
     overflow-x: hidden;
     color: var(--black);
     display: flex;
+    flex-flow: row wrap;
     height: 100%;
     width: 100%;
 }
