@@ -89,12 +89,9 @@ nav ul li a {
 }
 
 .hero {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto auto;
-    grid-template-areas:
-        "clutch clutch"
-        "image1 text1";
+     display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
     gap:1rem;
     justify-content: center;
 
