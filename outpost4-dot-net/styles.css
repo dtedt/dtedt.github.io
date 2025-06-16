@@ -103,12 +103,12 @@ nav ul li a {
 
 .clutch {
     grid-area: clutch;
-    border: solid 3px #000;
+    
 }
 
 .hero-text {
     grid-area: text1;
-    border: solid 3px #000;
+    
 }
 
 .feature-image {
