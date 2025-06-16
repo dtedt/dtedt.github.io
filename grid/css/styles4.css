@@ -21,4 +21,16 @@
     padding: 1rem 0.5rem;
     border: solid 12px black;
     background:#ffc700;
+    
+    }
+    
+.banner {
+    aspect-ratio:4 / 1;
+    padding: 1rem 0.5rem;
+    border: solid 12px black;
+    background:#ffc700;
+    }
+    
+.boiler {
+    font-size: 0.8rem
     }
