@@ -14,6 +14,7 @@ body, html {
     overflow-x: hidden;
     color: var(--black);
     display: flex;
+    margin:8px;
     
 }
 
