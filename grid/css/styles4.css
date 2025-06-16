@@ -1,12 +1,24 @@
 * {
-    font-size:2vw;
+    font-size:3vw;
+    margin: 2px;
+    background-color:black;
+    }
+    
+#wrapper {
+    display: flex;
+    flex-flow: row wrap;
     }
     
 #O4 {
-    aspect-ratio:1 / 1;
-    padding: 1rem 0.5rem;
+    font-size: 2rem;
     }
 #cornerCard {
+    font-size: 1.6rem;
+    }
+    
+.box {
     aspect-ratio:1 / 1;
     padding: 1rem 0.5rem;
+    border: solid 12px black;
+    background:#ffc700;
     }
