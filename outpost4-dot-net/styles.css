@@ -119,3 +119,6 @@ nav ul li a {
 .feature-text {
     grid-area: text;
 }
+
+.testimonial-grid {
+    margin:11px;
