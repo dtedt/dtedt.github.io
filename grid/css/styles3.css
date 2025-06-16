@@ -16,7 +16,6 @@ padding: 2vw 2px;
 }
 #O4 {
 box-sizing:border-box;
-  place-content: center;
   text-align:center;
   border: 22px solid white;
   border-radius: 44px;
@@ -30,7 +29,6 @@ box-shadow: 10px 10px 10px 30px;
 }
 #cornerCard {
 box-sizing:border-box;
-  place-content: center;
   text-align:center;
   border: 22px solid white;
   border-radius: 44px;
