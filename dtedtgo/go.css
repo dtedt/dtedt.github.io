@@ -1,5 +1,5 @@
 :root {
-    font-size: 6vw;
+    font-size: 9vh;
     font-family: "Gill Sans", sans-serif;
     
     --A: #000000;
@@ -8,7 +8,7 @@
 
     background-image: url("O4L.png");
     background-size: 190vh;
-
+    background-attachment: fixed;
 }
 
 #wrapper {
