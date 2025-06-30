@@ -1,14 +1,27 @@
 :root {
-    font-size: 9vh;
+    font-size: 6vh;
     font-family: "Gill Sans", sans-serif;
     
     --A: #000000;
     --B: #FFFFFF;
     --C: #ffc700;
 
+
+}
+
+html {
+
+    margin:0px;
+    padding:0px;
     background-image: url("O4L.png");
-    background-size: 190vh;
+    background-size:auto;
     background-attachment: fixed;
+    background-position-y:60px 10%;
+    background-position-x: center;
+}
+
+html::after {
+    backdrop-filter: blur(100vh);
 }
 
 #wrapper {
@@ -34,8 +47,8 @@
 #blur {
     height: 100vh;
     width: 100vw;
-    backdrop-filter: blur(12px);
 
+    
 }
 
 .title {
