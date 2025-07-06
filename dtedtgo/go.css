@@ -34,7 +34,7 @@ html::before {
 }
 
 #headwrap {
-        display: flex;
+    display: flex;
     flex-flow: row wrap;
 
 }
@@ -62,7 +62,7 @@ html::before {
 }
 
 .box {
-    font-size: 1qrem;
+    font-size: 1rem;
     box-sizing:content-box;
     background-color: var(--C);
     margin: 0.09em;
