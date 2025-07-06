@@ -13,15 +13,18 @@ html {
 
     margin:0px;
     padding:0px;
+    
+    overflow: auto;
+    position: relative;
+
+}
+
+html::before {
     background-image: url("O4L.png");
     background-size:auto;
     background-attachment: fixed;
-    background-position-y:60px 10%;
-    background-position-x: center;
-}
-
-html::after {
-    backdrop-filter: blur(100vh);
+    background-position-y:48%;
+    background-position-x:59%;
 }
 
 #wrapper {
@@ -45,9 +48,10 @@ html::after {
 }
 
 #blur {
-    height: 100vh;
+    height: auto;
     width: 100vw;
-
+    backdrop-filter: blur(100vh);
+    margin:0;
     
 }
 
