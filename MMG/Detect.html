@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="detect.css">
+</head>
+<body>
+    <div id="map">
+    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet">
+        <path id="mainDrag" d="M100,140 L500,140 z"/>
+        <path class="path" d="M300,140 L350,70"></path>
+        <path class="path" d="M400,140 L350,210"></path>
+        <path class="path" d="M200,140 L150,210"></path>
+        <circle class="node" cx="350" cy="70" r="9"/>
+        <circle class="node" cx="350" cy="210" r="9"/>
+        <circle class="node" cx="150" cy="210" r="9"/>
+        <circle id="player" cx="100" cy="140" r="33"/>
+    </svg>
+    </div>
+</body>
+<script src="detect.js"></script>
+</html>

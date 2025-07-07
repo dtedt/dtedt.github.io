@@ -1,0 +1,130 @@
+html, body {
+    height:100%
+}
+
+#map {
+    height:100vh;
+    width:100vw;
+    background-color: aqua;
+}
+
+#mainDrag {
+    stroke:transparent;
+    stroke-linecap: round;
+    stroke-width: 4;
+
+    stroke-dasharray: 900;
+    stroke-dashoffset: 0;
+
+}
+#mainDrag.animated {
+        animation: 3s linear 0s dash;
+        animation-fill-mode: forwards;
+}
+  @keyframes dash {
+    from {
+      stroke-dashoffset: 900;
+        stroke:antiquewhite;
+    }
+    to {
+      stroke-dashoffset: 0;
+        stroke: antiquewhite;
+    }
+  }
+
+svg {
+    display:block;
+    position:absolute;
+
+}
+
+.path {
+    stroke:transparent;
+    stroke-linecap: round;
+    stroke-width: 5;
+    stroke-dasharray: 800;
+    stroke-dashoffset: 0;
+
+}
+.path.animated {
+    animation: dash2 3s linear 0s;
+    animation-fill-mode: forwards;
+}
+
+  @keyframes dash2 {
+    from {
+      stroke-dashoffset: 800;
+      stroke: antiquewhite;
+    }
+    to {
+      stroke-dashoffset: 0;
+      stroke:antiquewhite;
+    }
+  }
+
+.path:nth-child(1) { animation-delay: 90s; animation-direction: reverse; }
+.path:nth-child(2) { animation-delay: .8s; }
+.path:nth-child(3) { animation-delay: 1s; }
+.path:nth-child(4) { animation-delay: 0.3s; }
+
+.node {
+    stroke: transparent;
+    stroke-width:5;
+    fill:transparent;
+    stroke-dasharray: 800;
+    stroke-dashoffset: 0;
+
+}
+.node.animated {
+    animation: dash3 3s linear 0s;
+    animation-fill-mode: forwards;
+}
+
+  @keyframes dash3 {
+    from {
+      stroke-dashoffset: 800;
+      stroke:antiquewhite;
+      fill:tomato;
+    }
+    to {
+        fill:tomato;
+      stroke-dashoffset: 0;
+      stroke:antiquewhite;
+    }
+  }
+
+.node:nth-child(0) { animation-delay: 3s; display:none; }
+.node:nth-child(2) { animation-delay: s8s; display:none; }
+.node:nth-child(3) { animation-delay: 12s; }
+.node:nth-child(4) { display:none;}
+
+#player {
+        stroke: antiquewhite;
+    stroke-width:12;
+    fill:cadetblue;
+}
+
+#player.animated {
+        animation: go 0.5s ease-in-out 0s;
+    animation-fill-mode: forwards;
+}
+
+  @keyframes go {
+0% {
+    r:33;
+    stroke-width:12;
+}
+20% {
+    r:44;
+    stroke-width:19;
+}
+100% {
+    r:9;
+    stroke-width:5;
+}
+  }
+
+#player
+
+
+
