@@ -21,7 +21,7 @@ html {
 
 html::before {
     background-image: url("O4L.png");
-    background-size:50%;
+    background-size:100%;
     background-attachment: fixed;
     background-position-y:48%;
     background-position-x:59%;
