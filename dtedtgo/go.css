@@ -63,7 +63,8 @@ html::before {
 .title {
     margin: 0.5rem;
     padding: 0.1em 0.1em;
-    color:teal;
+    background-color:teal;
+    color: #ffc700;
     line-height:0.9;
     font-size: 0.8rem;
 }
