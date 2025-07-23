@@ -68,7 +68,7 @@ body {
     box-sizing:content-box;
     background-color: var(--C);
     margin: -0.18em;
-    border: 0.38em white solid;
+    border: 1.38em white solid;
     padding: 0.01rem 0.2rem;
     font-weight:600;
     font-size: 0.8rem;
