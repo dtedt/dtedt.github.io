@@ -13,20 +13,20 @@ body {
 
     margin:0px;
     padding:0px;
-    
+    background-color: var(--A);
     overflow: auto;
     position: relative;
 
 }
 
-body::before {
+/* body::before {
     background-image: url("O4L.png");
     background-size:100%;
     background-attachment: fixed;
     background-position-y:48%;
     background-position-x:59%;
     content:"";
-}
+} */
 
 #wrapper {
     display: flex;
