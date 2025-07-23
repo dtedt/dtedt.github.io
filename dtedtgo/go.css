@@ -13,7 +13,7 @@ body {
 
     margin:0px;
     padding:0px;
-    background-color: var(--A);
+    background-color: var(--B);
     overflow: auto;
     position: relative;
 
@@ -66,7 +66,8 @@ body {
     font-size: 1rem;
     box-sizing:content-box;
     background-color: var(--C);
-    margin: 0.09em;
+    margin: -0.09em;
+    border: 0.09em white solid;
     padding: 0.01rem 0.2rem;
     font-weight:600;
     font-size: 0.8rem;
