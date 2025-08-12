@@ -1,0 +1,286 @@
+
+        /* cal.css content - extract this to cal.css */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+        color: white;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 300;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        background-color:blue;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .events-feed {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .event-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 24px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .event-card.expanded {
+        transform: none;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .event-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .event-main {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .event-date {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        min-width: 80px;
+        text-align: center;
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    }
+
+    .event-date .day {
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .event-date .month {
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.9;
+    }
+
+    .event-info {
+        flex: 1;
+    }
+
+    .event-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2d3748;
+        line-height: 1.3;
+    }
+
+    .event-details {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 0;
+    }
+
+    .event-card.expanded .event-details {
+        max-height: 300px;
+        margin-top: 16px;
+    }
+
+    .event-time {
+        color: #667eea;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .event-time::before {
+        content: '🕐';
+        font-size: 1rem;
+    }
+
+    .event-location {
+        color: #718096;
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .event-location::before {
+        content: '📍';
+        font-size: 1rem;
+    }
+
+    .event-description {
+        color: #4a5568;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .event-expanded {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 0;
+    }
+
+    .event-card.expanded .event-expanded {
+        max-height: 200px;
+        margin-top: 20px;
+    }
+
+    .event-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .event-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+    }
+
+    .event-link.google {
+        background: #4285f4;
+        color: white;
+    }
+
+    .event-link.google:hover {
+        background: #3367d6;
+        transform: translateY(-2px);
+    }
+
+    .event-link.meetup {
+        background: #e91e63;
+        color: white;
+    }
+
+    .event-link.meetup:hover {
+        background: #c2185b;
+        transform: translateY(-2px);
+    }
+
+    .event-link.newsletter {
+        background: #ff9800;
+        color: white;
+    }
+
+    .event-link.newsletter:hover {
+        background: #f57c00;
+        transform: translateY(-2px);
+    }
+
+    .expand-indicator {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(102, 126, 234, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .expand-indicator::after {
+        content: '▼';
+        color: #667eea;
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+    }
+
+    .event-card.expanded .expand-indicator::after {
+        transform: rotate(180deg);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 10px;
+        }
+
+        .event-main {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .event-date {
+            flex-direction: row;
+            justify-content: center;
+            min-width: auto;
+            padding: 12px 20px;
+        }
+
+        .event-date .day {
+            margin-right: 8px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+        }
+
+        .event-links {
+            justify-content: center;
+        }
+    }
