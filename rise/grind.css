@@ -1,0 +1,73 @@
+
+body {
+background:red;
+content-align:center;
+}    
+
+.item {
+    border: 0.2em black solid;
+    width: 600px;
+    height: 700px;
+    margin: 3em auto;  
+}
+
+.boilerplate {
+    border: 0.2em yellow dotted;
+    width: 600px;
+    height: 170px;
+    margin: 3em auto;
+    display: flex;  
+}
+
+#IG {
+    width:100px;
+    height:100px;
+    border: 0.2em yellow double;
+}
+
+#Facebook {
+    width:100px;
+    height:100px;
+    border: 0.2em yellow double;
+}
+
+
+#rise {
+    
+}
+
+#box {
+    
+    background-color:yellow;
+    color:red;
+    font-size:9vw;
+    text-align:center;
+    margin: 50px 0 0;
+    padding:0 0.2em;  
+    width: fit-content;
+    height: fit-content;
+    border: 0.04em solid yellow;
+    border-radius: 14px;
+    font-family: Georgia, Times, "Times New Roman", serif; 
+    font-style: oblique; 
+    font-variant: small-caps; font-weight: 700;
+    
+    
+    
+} 
+span {
+    color:yellow;
+    font-size: 4vw;
+    justify-self: start;
+    font-family: "Arial Rounded MT Bold";
+    
+}
+
+#container1 {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    
+    
+}

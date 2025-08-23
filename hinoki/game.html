@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hinoki Memory</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+
+```
+    #gameContainer {
+        position: relative;
+        width: 800px;
+        height: 600px;
+        background: #0f3460;
+        border: 4px solid #16213e;
+        box-shadow: 0 0 30px rgba(0, 100, 200, 0.3);
+    }
+    
+    canvas {
+        display: block;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+    }
+    
+    #titleScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #2d1b69, #11998e);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        z-index: 100;
+    }
+    
+    .title {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-shadow: 3px 3px 0px #000;
+        letter-spacing: 3px;
+    }
+    
+    .subtitle {
+        font-size: 16px;
+        margin-bottom: 40px;
+        opacity: 0.8;
+        text-align: center;
+    }
+    
+    .start-prompt {
+        font-size: 18px;
+        animation: pulse 2s infinite;
+        margin-top: 20px;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    #menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid #4a5568;
+        display: none;
+    }
+    
+    .menu-item {
+        padding: 5px 0;
+        cursor: pointer;
+    }
+    
+    .menu-item:hover {
+        color: #90cdf4;
+    }
+    
+    #dialogue {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        border: 2px solid #4a5568;
+        display: none;
+        font-size: 16px;
+        line-height: 1.4;
+    }
+    
+    .dialogue-name {
+        color: #90cdf4;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    
+    #controls {
+        position: absolute;
+        bottom: 10px;
+        left: 20px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+```
+    <div id="titleScreen">
+        <div class="title">HINOKI MEMORY</div>
+        <div class="subtitle">A journey through forgotten dreams<br>and sacred groves</div>
+        <div class="start-prompt">Press SPACE to begin your journey</div>
+    </div>
+    
+    <div id="menu">
+        <div class="menu-item">📜 Journal</div>
+        <div class="menu-item">🎒 Inventory</div>
+        <div class="menu-item">⚔️ Status</div>
+        <div class="menu-item">🔧 Settings</div>
+    </div>
+    
+    <div id="dialogue">
+        <div class="dialogue-name">Elder Sage</div>
+        <div class="dialogue-text">Welcome, young traveler. The Hinoki trees whisper of ancient memories... Press SPACE to continue.</div>
+    </div>
+    
+    <div id="controls">
+        WASD/Arrow Keys: Move | SPACE: Interact/Continue | M: Menu | ESC: Close
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const titleScreen = document.getElementById('titleScreen');
+    const menu = document.getElementById('menu');
+    const dialogue = document.getElementById('dialogue');
+    
+    // Game state
+    let gameState = 'title'; // title, playing, menu, dialogue
+    let currentDialogue = null;
+    
+    // Player object
+    const player = {
+        x: 400,
+        y: 300,
+        size: 20,
+        speed: 3,
+        color: '#4ade80',
+        direction: 'down'
+    };
+    
+    // NPCs
+    const npcs = [
+        { x: 200, y: 150, size: 20, color: '#a855f7', name: 'Elder Sage', 
+          dialogue: 'The Hinoki trees hold memories of countless generations. Listen carefully to their whispers.' },
+        { x: 600, y: 200, size: 20, color: '#f97316', name: 'Forest Guardian',
+          dialogue: 'I have watched over this sacred grove for centuries. The music you hear... it calls to something ancient.' },
+        { x: 150, y: 450, size: 20, color: '#06b6d4', name: 'Spirit Guide',
+          dialogue: 'Your journey has only just begun. The memories of Hinoki await those who dare to remember.' },
+        { x: 650, y: 480, size: 20, color: '#eab308', name: 'Wandering Minstrel',
+          dialogue: 'I collect melodies from the wind and songs from the earth. This forest sings the most beautiful tune.' }
+    ];
+    
+    // Trees (obstacles and decoration)
+    const trees = [
+        { x: 100, y: 100, size: 40 }, { x: 300, y: 80, size: 35 },
+        { x: 500, y: 120, size: 45 }, { x: 700, y: 100, size: 38 },
+        { x: 80, y: 250, size: 42 }, { x: 280, y: 280, size: 36 },
+        { x: 520, y: 300, size: 40 }, { x: 720, y: 280, size: 44 },
+        { x: 120, y: 380, size: 38 }, { x: 350, y: 420, size: 41 },
+        { x: 550, y: 400, size: 37 }, { x: 700, y: 420, size: 43 },
+        { x: 50, y: 520, size: 35 }, { x: 250, y: 550, size: 39 },
+        { x: 450, y: 530, size: 42 }, { x: 680, y: 520, size: 36 }
+    ];
+    
+    // Input handling
+    const keys = {};
+    
+    document.addEventListener('keydown', (e) => {
+        keys[e.key.toLowerCase()] = true;
+        
+        if (gameState === 'title' && e.key === ' ') {
+            gameState = 'playing';
+            titleScreen.style.display = 'none';
+        } else if (gameState === 'playing') {
+            if (e.key.toLowerCase() === 'm') {
+                gameState = 'menu';
+                menu.style.display = 'block';
+            } else if (e.key === ' ') {
+                checkNPCInteraction();
+            }
+        } else if (gameState === 'menu' && e.key === 'Escape') {
+            gameState = 'playing';
+            menu.style.display = 'none';
+        } else if (gameState === 'dialogue' && e.key === ' ') {
+            gameState = 'playing';
+            dialogue.style.display = 'none';
+            currentDialogue = null;
+        }
+    });
+    
+    document.addEventListener('keyup', (e) => {
+        keys[e.key.toLowerCase()] = false;
+    });
+    
+    // Collision detection
+    function checkCollision(x, y, size, obstacles) {
+        for (let obstacle of obstacles) {
+            const dx = x - obstacle.x;
+            const dy = y - obstacle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < (size + obstacle.size) / 2) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // NPC interaction
+    function checkNPCInteraction() {
+        for (let npc of npcs) {
+            const dx = player.x - npc.x;
+            const dy = player.y - npc.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 40) {
+                showDialogue(npc);
+                return;
+            }
+        }
+    }
+    
+    function showDialogue(npc) {
+        gameState = 'dialogue';
+        currentDialogue = npc;
+        dialogue.querySelector('.dialogue-name').textContent = npc.name;
+        dialogue.querySelector('.dialogue-text').textContent = npc.dialogue;
+        dialogue.style.display = 'block';
+    }
+    
+    // Update game state
+    function update() {
+        if (gameState !== 'playing') return;
+        
+        let newX = player.x;
+        let newY = player.y;
+        
+        if (keys['w'] || keys['arrowup']) {
+            newY -= player.speed;
+            player.direction = 'up';
+        }
+        if (keys['s'] || keys['arrowdown']) {
+            newY += player.speed;
+            player.direction = 'down';
+        }
+        if (keys['a'] || keys['arrowleft']) {
+            newX -= player.speed;
+            player.direction = 'left';
+        }
+        if (keys['d'] || keys['arrowright']) {
+            newX += player.speed;
+            player.direction = 'right';
+        }
+        
+        // Boundary checking
+        newX = Math.max(player.size/2, Math.min(canvas.width - player.size/2, newX));
+        newY = Math.max(player.size/2, Math.min(canvas.height - player.size/2, newY));
+        
+        // Tree collision
+        if (!checkCollision(newX, player.y, player.size, trees)) {
+            player.x = newX;
+        }
+        if (!checkCollision(player.x, newY, player.size, trees)) {
+            player.y = newY;
+        }
+    }
+    
+    // Render game
+    function render() {
+        // Clear canvas
+        ctx.fillStyle = '#1a4a1a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw grass texture
+        ctx.fillStyle = '#2d5a2d';
+        for (let i = 0; i < canvas.width; i += 20) {
+            for (let j = 0; j < canvas.height; j += 20) {
+                if ((i + j) % 40 === 0) {
+                    ctx.fillRect(i, j, 10, 10);
+                }
+            }
+        }
+        
+        // Draw trees
+        trees.forEach(tree => {
+            // Tree trunk
+            ctx.fillStyle = '#8b4513';
+            ctx.fillRect(tree.x - 5, tree.y - 5, 10, 15);
+            
+            // Tree canopy
+            ctx.fillStyle = '#0d5d0d';
+            ctx.beginPath();
+            ctx.arc(tree.x, tree.y - 10, tree.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Highlight
+            ctx.fillStyle = '#1a7a1a';
+            ctx.beginPath();
+            ctx.arc(tree.x - 5, tree.y - 15, tree.size / 4, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        // Draw NPCs
+        npcs.forEach(npc => {
+            // NPC body
+            ctx.fillStyle = npc.color;
+            ctx.beginPath();
+            ctx.arc(npc.x, npc.y, npc.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // NPC glow (to indicate interactable)
+            const dx = player.x - npc.x;
+            const dy = player.y - npc.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 40) {
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.arc(npc.x, npc.y, npc.size / 2 + 5, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            // NPC name
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px Courier New';
+            ctx.textAlign = 'center';
+            ctx.fillText(npc.name, npc.x, npc.y - 25);
+        });
+        
+        // Draw player
+        ctx.fillStyle = player.color;
+        ctx.beginPath();
+        ctx.arc(player.x, player.y, player.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Player direction indicator
+        ctx.fillStyle = '#ffffff';
+        let dirX = 0, dirY = 0;
+        switch (player.direction) {
+            case 'up': dirY = -8; break;
+            case 'down': dirY = 8; break;
+            case 'left': dirX = -8; break;
+            case 'right': dirX = 8; break;
+        }
+        ctx.fillRect(player.x + dirX - 2, player.y + dirY - 2, 4, 4);
+        
+        // Draw sparkles for ambiance
+        const time = Date.now() * 0.005;
+        for (let i = 0; i < 10; i++) {
+            const x = (Math.sin(time + i) * 100 + 400) + Math.sin(time * 2 + i) * 50;
+            const y = (Math.cos(time + i) * 80 + 300) + Math.cos(time * 1.5 + i) * 40;
+            const alpha = (Math.sin(time * 3 + i) + 1) / 4 + 0.1;
+            
+            ctx.fillStyle = `rgba(255, 255, 200, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    // Game loop
+    function gameLoop() {
+        update();
+        render();
+        requestAnimationFrame(gameLoop);
+    }
+    
+    // Start the game
+    gameLoop();
+</script>
+```
+
+</body>
+</html>
