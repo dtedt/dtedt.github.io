@@ -49,10 +49,10 @@ Long story longer, I'm now online and I will be posting here in order to documen
 I'm very new to all of this, so feel free to email me if anything in this post is inaccurate, I would love to hear from you. Hopefully if you're reading this my blog post was helpful to you!
 
 P.S. If you ever need to escape quote Liquid within a Jekyll page, you can do it like so:
-
+```
 ```
 {% raw %}
 {% liquid here %}
 {% endraw %}
 ```
-
+```
