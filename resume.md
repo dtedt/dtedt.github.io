@@ -4,12 +4,11 @@ title: Resume
 ---
 Ted Tarnovski is a professional IT generalist with core competencies in…
 
-## Cloud IT Support
-[[resume2.pdf]]
+## [Cloud IT Support](resume2.pdf)
 
-## Business Analysis
+## [Business Analysis](resume.pdf)
 [[resume.pdf]]
 
-## Project Management
+## [Project Management](resume.pdf)
 [[resume.pdf]]
 
