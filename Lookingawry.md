@@ -1,3 +1,7 @@
+---
+layout: default
+title: Looking Awry
+---
 # Looking Awry: 
 # An Introduction to Jacques Lacan through Popular Culture
 # _Slavoj Zizek_
