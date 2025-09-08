@@ -10,9 +10,9 @@ Here is my file directory, where I store all of my notes neatly:
 Here is what my daily note looks like tonight, after a fairly productive day of chores and personal projects:
 ![](images/IMG_0666.png)
 Each heading is a dropdown which reveals a sub-list. Let’s briefly tour my Daily Note starting with my Morning Intentions:
-![[IMG_0667.png]]
+![](images/IMG_0667.png)
 This is more or less the first thing I wrote down after I woke up today. Faced with the question of what I should focus on today, I decided I wanted more practice with the Godot engine. That set me with an aim to begin my day with. Of course, distractions are inevitable and during my morning routine I encountered a series of unordered thoughts, which I recorded in the next section:
-![[IMG_0654.png]]
+![](images/IMG_0654.png)
 *Begging micro-celebrities for money isn’t really my style, but when the rent is due, you become more open-minded (and slightly undignified).*
 
 I partly created this system to avoid wasting too much time ruminating and reflecting, which is how I naturally process my thoughts. With the system, I externalize my thoughts. This enables me to remain active in my pursuits while preserving those thoughts I have throughout the day.
