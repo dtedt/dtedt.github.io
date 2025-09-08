@@ -2,7 +2,7 @@ I would like to share what I have been working on recently. I am very proud of i
 
 I have created a new structure for approaching and tracking progress on daily tasks and long-term goals alike. I chose to start with three primary goals: writing blog content, developing game ideas and finding a job. In addition, I added some simple accountability features for e-learning and chores.
 
-My new structure is entirely contained in my Obsidian app. Obsidian is a plain text notes app with numerous built-in features and plug-ins. Obsidian is such a powerful and flexible tool for recording ideas that many refer to their Obsidian vault as their [[Second Brain]]. The main feature I rely upon is **Daily Notes**, which generates a new note each day based on a template I created.
+My new structure is entirely contained in my Obsidian app. Obsidian is a plain text notes app with numerous built-in features and plug-ins. Obsidian is such a powerful and flexible tool for recording ideas that many refer to their Obsidian vault as their "Second Brain". The main feature I rely upon is **Daily Notes**, which generates a new note each day based on a template I created.
 
 Here is my file directory, where I store all of my notes neatly:
 ![[/Images/IMG_0665.png]]
