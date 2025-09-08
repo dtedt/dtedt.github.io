@@ -26,8 +26,7 @@ Next: my Reading
 I didn’t get around to cracking open a book, but I did read an essay on a topic I’ve been thinking about and some documentation on the new software I’m using.
 
 Next: Game Ideas
-![](/images/IMG_0657.png)
-*This section utilizes [Obsidian Bases](https://help.obsidian.md/bases) to embed dynamic tables.*
+![](/images/IMG_0657.png "This section utilizes [Obsidian Bases](https://help.obsidian.md/bases) to embed dynamic tables.")
 
 Right now my primary goal (aside from getting a job) is to prototype a game on my own. I have several unfinished game prototypes floating around [my GitHub](https://github.com/dtedt), but what I need now is to accumulate _finished_ projects. Finishing what I start has always been a difficulty for me. Nonetheless, I must finish this blog post.
 
