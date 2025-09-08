@@ -36,15 +36,15 @@ Learning:
 Just a simple checklist, but this is really helpful for me. I don’t have to do all of these things everyday, but I should do a few.
 
 Job Search:
-![[IMG_0659.png]]
+![](/images/IMG_0659.png)
 Just some notes on my job search. These might be useful to review at some point in the future, but I mostly just write these down to get me thinking.
 
 Evening Review:
-![[IMG_0661.png]]
+![](/images/IMG_0661.png)
 Finally, time to reflect! Here I can observe the discrepency between my morning intentions and what I ended up doing. It’s only natural to deviate from the plan somewhat, but if I begin to stray too far from my goals I can keep myself accountable here.
 
 The last section is a table of notes I either created or modified on this day:
-![[IMG_0662.png]]
+![](/images/IMG_0662.png)
 
 This is nice because I can see my work and progress in a quantifiable way. I might feel like I didn’t do enough, but then I can look at this and say “Well, I did write 16 notes, that’s something.”
 
