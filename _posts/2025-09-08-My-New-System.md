@@ -5,7 +5,7 @@ I have created a new structure for approaching and tracking progress on daily ta
 My new structure is entirely contained in my Obsidian app. Obsidian is a plain text notes app with numerous built-in features and plug-ins. Obsidian is such a powerful and flexible tool for recording ideas that many refer to their Obsidian vault as their "Second Brain". The main feature I rely upon is **Daily Notes**, which generates a new note each day based on a template I created.
 
 Here is my file directory, where I store all of my notes neatly:
-![[/Images/IMG_0665.png]]
+![](/Images/IMG_0665.png)
 
 Here is what my daily note looks like tonight, after a fairly productive day of chores and personal projects:
 ![[Images/IMG_0666.png]]
