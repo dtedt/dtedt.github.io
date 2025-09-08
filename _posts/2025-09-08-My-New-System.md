@@ -8,31 +8,31 @@ Here is my file directory, where I store all of my notes neatly:
 ![](/images/IMG_0665.png)
 
 Here is what my daily note looks like tonight, after a fairly productive day of chores and personal projects:
-![](images/IMG_0666.png)
+![](/images/IMG_0666.png)
 Each heading is a dropdown which reveals a sub-list. Let’s briefly tour my Daily Note starting with my Morning Intentions:
-![](images/IMG_0667.png)
+![](/images/IMG_0667.png)
 This is more or less the first thing I wrote down after I woke up today. Faced with the question of what I should focus on today, I decided I wanted more practice with the Godot engine. That set me with an aim to begin my day with. Of course, distractions are inevitable and during my morning routine I encountered a series of unordered thoughts, which I recorded in the next section:
-![](images/IMG_0654.png)
+![](/images/IMG_0654.png)
 *Begging micro-celebrities for money isn’t really my style, but when the rent is due, you become more open-minded (and slightly undignified).*
 
 I partly created this system to avoid wasting too much time ruminating and reflecting, which is how I naturally process my thoughts. With the system, I externalize my thoughts. This enables me to remain active in my pursuits while preserving those thoughts I have throughout the day.
 
 Next is my blog drafts:
-![[IMG_0655.png]]
+ ![](/images/IMG_0655.png)
 This table is a dynamic list created using Obsidian’s **Bases** core plug-in. It displays only blog drafts I have created (or modified) today. I’m working on a summary of a good zoom lecture I watched this afternoon, by [The Narrative Department](thenarrativedepartment.com).
 
 Next: my Reading
-![[IMG_0656.png]]
+![](/images/IMG_0656.png)
 I didn’t get around to cracking open a book, but I did read an essay on a topic I’ve been thinking about and some documentation on the new software I’m using.
 
 Next: Game Ideas
-![[IMG_0657.png]]
+![](/images/IMG_0657.png)
 *This section utilizes [Obsidian Bases](https://help.obsidian.md/bases) to embed dynamic tables.*
 
 Right now my primary goal (aside from getting a job) is to prototype a game on my own. I have several unfinished game prototypes floating around [my GitHub](https://github.com/dtedt), but what I need now is to accumulate _finished_ projects. Finishing what I start has always been a difficulty for me. Nonetheless, I must finish this blog post.
 
 Learning:
-![[IMG_0658.png]]
+![](/images/IMG_0658.png)
 Just a simple checklist, but this is really helpful for me. I don’t have to do all of these things everyday, but I should do a few.
 
 Job Search:
