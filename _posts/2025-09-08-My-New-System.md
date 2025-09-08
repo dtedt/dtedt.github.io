@@ -5,11 +5,11 @@ I have created a new structure for approaching and tracking progress on daily ta
 My new structure is entirely contained in my Obsidian app. Obsidian is a plain text notes app with numerous built-in features and plug-ins. Obsidian is such a powerful and flexible tool for recording ideas that many refer to their Obsidian vault as their "Second Brain". The main feature I rely upon is **Daily Notes**, which generates a new note each day based on a template I created.
 
 Here is my file directory, where I store all of my notes neatly:
-![](Images/IMG_0665.png)
+![](/images/IMG_0665.png)
 
 Here is what my daily note looks like tonight, after a fairly productive day of chores and personal projects:
-![[Images/IMG_0666.png]]
-Each heading is a dropdown which reveals  sub-list. Let’s briefly tour my Daily Note starting with my Morning Intentions:
+![](images/IMG_0666.png)
+Each heading is a dropdown which reveals a sub-list. Let’s briefly tour my Daily Note starting with my Morning Intentions:
 ![[IMG_0667.png]]
 This is more or less the first thing I wrote down after I woke up today. Faced with the question of what I should focus on today, I decided I wanted more practice with the Godot engine. That set me with an aim to begin my day with. Of course, distractions are inevitable and during my morning routine I encountered a series of unordered thoughts, which I recorded in the next section:
 ![[IMG_0654.png]]
