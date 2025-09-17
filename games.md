@@ -6,15 +6,15 @@ layout: page
 ### Interactive Fiction 
 These are complete, playable text-based narrative games I have written and created myself.
 
-- [You Cannot Speak (2025)](/ycs/index.html)<sup>Inkle</sup>
+- [You Cannot Speak (2025)](/ycs/index.html)<sup>Ink</sup>
     - My [IFComp 2025](https://ifcomp.org) entry. Based on a Science-Fiction premise developed for Outpost4.
 
-- [Bartley's World (2024)](/Bartley/index.html)<sup>Inkle<sup>
+- [Bartley's World (2024)](/Bartley/index.html)<sup>Ink<sup>
     - A melodrama about a marriage in crisis. One of the characters is a frog.
 
 
 ### Inkle Prototypes
-These are prototypes of text-based narrative games created using [Inkle, the narrative scripting language](https://www.inklestudios.com/ink/).
+These are prototypes of text-based narrative games created using [Ink, the narrative scripting language](https://www.inklestudios.com/ink/).
 
 - [Persistence (2024)](/se/index.html)<sup>v.0.5</sup>
     - A stealth game prototype. Developed for Outpost4.
