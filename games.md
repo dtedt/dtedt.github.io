@@ -18,10 +18,5 @@ My first game demos were created in the [Bitsy Engine](https://bitsy.org/). I re
 - [Marina (2023)](/mars.html) <sup>v.2</sup>
 - [The Silent Engines (2023)](/silent.html) <sup>v.1</sup>
 
-### AI-Assisted Prototypes
-These are prototypes which I created with the assistance of an LLM such as Claude or Deepseek. I cannot take credit for any of the code, though troubleshooting it was an interesting learning experience. These are mainly created using Javascript.
-
-- [BSGO (2025)](/bsgo0/index.html)<sup>v.0.1</sup>
-
 
 For commercially-available games, such as [Nocturne, the VR musicmaker](https://www.outpost4.net/page-05), see [Outpost4](http://www.outpost4.net).
