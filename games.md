@@ -6,10 +6,14 @@ layout: page
 ### Inkle Prototypes
 These are prototypes of text-based narrative games created using [Inky](), the desktop application for [Inkle, the narrative scripting language](). I am a big believer in Interactive Fiction as a means of expressing what the word written on paper cannot. It's also just fun.
 
+- [You Cannot Speak (2025)](/ycs/index.html)<sup>v0.5</sup>
+
 - [Bartley's World (2024)](/Bartley/index.html)<sup>v.1<sup>
 - [Persistence (2024)](/se/index.html)<sup>v.0.5</sup>
 - [Pluck! (2024)](/Pluck/index.html)<sup>v0.5</sup>
-- [Free Will: A Primer (2025)](#)<sup>In Development</sup>
+
+
+
 
 
 ### Bitsy Prototypes
