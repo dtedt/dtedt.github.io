@@ -1,0 +1,25 @@
+<audio id="myAudioPlayer" controls>
+  <source src="/audio.mp3" type "audio/mpeg">
+  <source src="/audio2.mp3" type="audio/mpeg">
+  not working
+</audio>
+<button id="playPauseButton">Play/Pause</button>
+
+<script>
+      const audioPlayer = document.getElementById('myAudioPlayer');
+    const playPauseButton = document.getElementById('playPauseButton');
+
+    playPauseButton.addEventListener('click', () => {
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+        playPauseButton.textContent = 'Pause';
+      } else {
+        audioPlayer.pause();
+        playPauseButton.textContent = 'Play';
+      }
+    });
+
+    // You can also control volume, seek, and other properties
+    // audioPlayer.volume = 0.5; // Set volume to 50%
+    // audioPlayer.currentTime = 30; // Seek to 30 seconds
+</script>
