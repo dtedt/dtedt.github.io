@@ -50,9 +50,6 @@ I'm very new to all of this, so feel free to email me if anything in this post i
 
 P.S. If you ever need to escape quote Liquid within a Jekyll page, you can do it like so:
 
-```
 {% raw %}
 {% liquid here %}
 {% endraw %}
-```
-
