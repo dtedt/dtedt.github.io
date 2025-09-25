@@ -64,7 +64,7 @@ A goat escapes just as the prophesy ritual is about to begin. Plutarch commands 
 **Scenario C**:
 Now that the prophesy has been granted and King Croesus is departing, Plutarch reprimands you. He insists that a goat has never escaped the prophesy ritual, and blames you. He insists that to rid yourself of bad luck, Apollo must be supplicated. Go perform a libation ritual under the proper star signs: 1 beast, 1 man, 1 woman and 1 bird.
 
-*In order to perform the ritual, You will need to fill the sacred Phiale with honey and oil from the farm. Then, go forth and find an area of the sky with the appropriate combination of constellations. Perform the libation ritual.
+*In order to perform the ritual, You will need to fill the sacred Phiale with honey and oil from the farm. Then, go forth and find the highest mountaintop. Obey the stars and perform the libation ritual for Apollo.*
 
 ## Actions
 *Interact*:
