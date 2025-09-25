@@ -8,15 +8,19 @@ tags:
 # Characters
 
 *Themistoclea*
+
 The Pythia, high priestess and acting Oracle of Delphi whose prophesy and advice is much sought after. Bathes in the sacred Castalian Spring and chews laurel leaves to remain pure. Inhales fumes from the Earth in order to enter a trance state and deliver prophesy during the Prophesy Ritual.
 
 *Plutarch*
+
 Head priest of the Oracular Temple and a noted philosopher. Direct report of Temple custodians.
 
 *Dennis*
+
 Janitor of the Oracular Temple responsible for cleaning the latrines and preparing goats for sacrifice. Occasionally runs errands for Plutarch.
 
 *Eunice*
+
 A goat.
 
 # Scenarios
