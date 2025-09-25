@@ -98,7 +98,7 @@ Press R to gaze up at the stars and see the local Constellation
 | [Cliff](#Cliff)      |                 |                             |                         |                                       |                 |                 | [River](#River)   | X                    |
 | [Cliff](#Cliff)      |                 |                             |                         |                                       |                 |                 | [River](#River)   | X                    |
 | [Cliff](#Cliff)      | X               |                             | X                       |                                       |                 |                 | [River](#River)   | X                    |
-| [Cliff](#Cliff)      | X               | [Mountaintop](#Mountaintop) | X                       |                                       |                 |                 | [River](#River)   | X                    |
+| [Cliff](#cliff)      | X               | [Mountaintop](#Mountaintop) | X                       |                                       |                 |                 | [River](#River)   | X                    |
 |                      | [Cliff](#Cliff) | [Cliff](#Cliff)             | [Cliff](#Cliff)         | [Cliff](#Cliff)                       | X               | X               | X                 | X                    |
 
 ### Home
