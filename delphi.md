@@ -3,6 +3,36 @@ tags:
   - prototype
   - game
 ---
+<style>
+  <style>
+:root {
+  --table-column-min-width: 50px;
+  --table-cell-padding-x: 0.5px;
+  --table-cell-padding-y: 0.5px;
+  --table-header-padding-x: 2px;
+  --table-header-padding-y: 2px;
+  --table-line-height: 1.0em;
+}
+
+table th,
+table td {
+  min-width: var(--table-column-min-width);
+  padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+  line-height: var(--table-line-height);
+}
+
+table th {
+  padding: var(--table-header-padding-y) var(--table-header-padding-x);
+  text-align: left;
+}
+</style>
+
+# My Page with a Table
+
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+</style>
 # Dennis Of Delphi (working title)
 
 # Characters
