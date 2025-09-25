@@ -54,7 +54,7 @@ A goat.
 **Scenario A**: 
 The Pythia must be prepared for the arrival of King Croesus, who is arriving on short notice. While she bathes in the Castallan River, Plutarch sends you to gather laurel leaves.
 
-*Laurel leaves grow under the sign of The Spider. Find the constellation and pick leaves at the tree beneath it.*
+*Laurel leaves grow under the sign of Dionysius. Find the constellation and pick leaves at the tree beneath it.*
 
 **Scenario B**: 
 A goat escapes just as the prophesy ritual is about to begin. Plutarch commands you to track it down. The Pythia, already in her trance state, prophesies that the goat will be found between the sign of The Horse and the sign of The Whale. 
