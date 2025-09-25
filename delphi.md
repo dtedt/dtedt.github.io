@@ -28,12 +28,12 @@ table th {
 }
 </style>
 # Quick Links
-### [Main Questline](#main%20questline)
-### [Map](#map)
-### [Characters](#characters)
-### [Scenarios](#scenarios)
-### [Actions](#actions)
-### [Rituals](#rituals)
+- [Main Questline](#main%20questline)
+- [Map](#map)
+- [Characters](#characters)
+- [Scenarios](#scenarios)
+- [Actions](#actions)
+- [Rituals](#rituals)
 
 ## Characters
 
