@@ -27,19 +27,26 @@ table th {
   text-align: left;
 }
 </style>
+# Quick Links
+### [Main Questline](#main%20questline)
+### [Map](#map)
+### [Characters](#characters)
+### [Scenarios](#scenarios)
+### [Actions](#actions)
+### [Rituals](#rituals)
 
 ## Characters
 
-*Themistoclea*: 
+#### Themistoclea
 The Pythia, high priestess and acting Oracle of Delphi whose prophesy and advice is much sought after. Bathes in the sacred Castalian Spring and chews laurel leaves to remain pure. Inhales fumes from the Earth in order to enter a trance state and deliver prophesy during the Prophesy Ritual.
 
-*Plutarch*: 
+#### Plutarch 
 Head priest of the Oracular Temple and a noted philosopher. Direct report of Temple custodians.
 
-*Dennis*: 
+#### Dennis 
 Janitor of the Oracular Temple responsible for cleaning the latrines and preparing goats for sacrifice. Occasionally runs errands for Plutarch.
 
-*Eunice*: 
+#### Eunice
 A goat.
 
 ## Scenarios
@@ -84,22 +91,22 @@ Press R to gaze up at the stars and see the local Constellation
 [[Oracle Map]]
 
 
-| X                    | X               | [Cliff](#Cliff)             | [Cliff](#Cliff)         | X                                     | [Cliff](#Cliff) | X               | X                 | X                    |
+| X                    | X               | [Cliff](#cliff)             | [Cliff](#cliff)         | X                                     | [Cliff](#cliff) | X               | X                 | X                    |
 | -------------------- | --------------- | --------------------------- | ----------------------- | ------------------------------------- | --------------- | --------------- | ----------------- | -------------------- |
-| X                    | [Wall](#Wall)   | [Home](#Home)               | [Wall](#Wall)           | [Cliff](#Cliff)                       | [Wall](#Wall)   | [Cliff](#Cliff) | [River](#River)   | X                    |
-| X                    | [Wall](#Wall)   |                             | [Courtyard](#Courtyard) | [Oracular Shrine](#Oracular%20Shrine) | [Wall](#Wall)   |                 | [River](#River)   | X                    |
-| X                    | [Wall](#Wall)   | [Temple](#Temple)           | [Courtyard](#Courtyard) | [Oracular Shrine](#Oracular%20Shrine) | [Wall](#Wall)   |                 | [River](#River)   | X                    |
-| X                    | [Wall](#Wall)   | [Temple](#Temple)           | [Courtyard](#Courtyard) |                                       | [Wall](#Wall)   |                 | [River](#River)   | X                    |
-| X                    | [Wall](#Wall)   |                             |                         |                                       | [Wall](#Wall)   |                 | [River](#River)   | X                    |
-| [Cliff](#Cliff)      |                 |                             |                         |                                       |                 |                 | [River](#River)   | X                    |
-| [Cliff](#Cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#Bridge) | [Gate #2](#Gate%202) |
-| [Cliff](#Cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#Bridge) | [Gate #2](#Gate%202) |
-| [Gate #1](#Gate%201) |                 |                             |                         |                                       |                 |                 | [River](#River)   | X                    |
-| [Cliff](#Cliff)      |                 |                             |                         |                                       |                 |                 | [River](#River)   | X                    |
-| [Cliff](#Cliff)      |                 |                             |                         |                                       |                 |                 | [River](#River)   | X                    |
-| [Cliff](#Cliff)      | X               |                             | X                       |                                       |                 |                 | [River](#River)   | X                    |
-| [Cliff](#cliff)      | X               | [Mountaintop](#Mountaintop) | X                       |                                       |                 |                 | [River](#River)   | X                    |
-|                      | [Cliff](#Cliff) | [Cliff](#Cliff)             | [Cliff](#Cliff)         | [Cliff](#Cliff)                       | X               | X               | X                 | X                    |
+| X                    | [Wall](#wall)   | [Home](#home)               | [Wall](#wall)           | [Cliff](#cliff)                       | [Wall](#wall)   | [Cliff](#cliff) | [River](#river)   | X                    |
+| X                    | [Wall](#wall)   |                             | [Courtyard](#courtyard) | [Oracular Shrine](#oracular%20shrine) | [Wall](#wall)   |                 | [River](#river)   | X                    |
+| X                    | [Wall](#wall)   | [Temple](#Temple)           | [Courtyard](#courtyard) | [Oracular Shrine](#oracular%20shrine) | [Wall](#wall)   |                 | [River](#river)   | X                    |
+| X                    | [Wall](#wall)   | [Temple](#Temple)           | [Courtyard](#courtyard) |                                       | [Wall](#wall)   |                 | [River](#river)   | X                    |
+| X                    | [Wall](#wall)   |                             |                         |                                       | [Wall](#wall)   |                 | [River](#river)   | X                    |
+| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
+| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#bridge) | [Gate #2](#gate%202) |
+| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#bridge) | [Gate #2](#gate%202) |
+| [Gate #1](#gate%201) |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
+| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
+| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
+| [Cliff](#cliff)      | X               |                             | X                       |                                       |                 |                 | [River](#river)   | X                    |
+| [Cliff](#cliff)      | X               | [Mountaintop](#mountaintop) | X                       |                                       |                 |                 | [River](#river)   | X                    |
+|                      | [Cliff](#cliff) | [Cliff](#cliff)             | [Cliff](#cliff)         | [Cliff](#cliff)                       | X               | X               | X                 | X                    |
 
 ### Home
 _Location, 1x1_
@@ -127,19 +134,19 @@ A garden between the Temple and the Oracular Shrine.
 A plateau at the peak of Mt Parnassus where the stars are very bright.
 
 ### Gate 1
-Entrance to [Tholos](#Tholos)
+Entrance to [Tholos](#tholos)
 Gate leading to the sacred Tholos, where the Phiale can be obtained.
 
 ### Gate 2
-Entrance to [Corycian Woods](#Corycian%20Woods)
+Entrance to [Corycian Woods](#corycian%20woods)
 Gate leading to the forest across the river
 
 
 ## Tholos
 
-| [Altar](#Altar)           |                      |
+| [Altar](#altar)           |                      |
 | ------------------------- | -------------------- |
-| [Sculptures](#Sculptures) | [Gate #1](#Gate%201) |
+| [Sculptures](#sculptures) | [Gate #1](#gate%201) |
 
 ### Altar
 1x1
@@ -150,11 +157,11 @@ A circle of stone pillars.
 
 ## Corycian Woods
 
-|          |                     | [Pegasus](#Pegasus) | [Siren](#Siren)     | [Pegasus](#Pegasus) | [Dionysius](#Dionysius) | [Gate 3](#Gate%203) |
+|          |                     | [Pegasus](#pegasus) | [Siren](#siren)     | [Pegasus](#pegasus) | [Dionysius](#dionysius) | [Gate 3](#gate%203) |
 | -------- | ------------------- | ------------------- | ------------------- | ------------------- | ----------------------- | ------------------- |
-| Entrance | [Pegasus](#Pegasus) | [Phoenix](#Phoenix) | [Siren](#Siren)     | [Phoenix](#Phoenix) | [Hermes](#Hermes)       | [Hermes](#Hermes)   |
-|          |                     | [Siren](#Siren)     | [Hermes](#Hermes)   | [Pegasus](#Pegasus) | [Siren](#Siren)         | [Phoenix](#Phoenix) |
-|          |                     | [Pegasus](#Pegasus) | [Pegasus](#Pegasus) | [Phoenix](#Phoenix) | [Pegasus](#Pegasus)     | [Phoenix](#Phoenix) |
+| Entrance | [Pegasus](#pegasus) | [Phoenix](#phoenix) | [Siren](#siren)     | [Phoenix](#phoenix) | [Hermes](#hermes)       | [Hermes](#hermes)   |
+|          |                     | [Siren](#siren)     | [Hermes](#hermes)   | [Pegasus](#pegasus) | [Siren](#siren)         | [Phoenix](#phoenix) |
+|          |                     | [Pegasus](#pegasus) | [Pegasus](#pegasus) | [Phoenix](#phoenix) | [Pegasus](#pegasus)     | [Phoenix](#phoenix) |
 |          |                     |                     |                     |                     |                         |                     |
 |          |                     |                     |                     |                     |                         |                     |
 
@@ -176,20 +183,20 @@ Depicts the messenger god Hermes flying West.
 
 ### Dionysius
 _Constellation_
-Depicts the god of feasting, Dionysius. [Laurel leaves](#Laurel%20Leaves) can be picked from trees here.
+Depicts the god of feasting, Dionysius. [Laurel leaves](#laurel%20leaves) can be picked from trees here.
 
 ### Gate 3
-_Entrance to [Corycian Caves](#Corycian%20Caves)_
+_Entrance to [Corycian Caves](#corycian%20caves)_
 
 ## Corycian Caves
 
 |     |                                         |     |     |                                 |     |
 | --- | --------------------------------------- | --- | --- | ------------------------------- | --- |
-|     | [Dionysian Shrine](#Dionysian%20Shrine) |     |     |                                 |     |
-|     |                                         |     |     |                                 |     |
-|     |                                         |     |     |                                 |     |
-|     |                                         |     |     | [Torch Puzzle](#Torch%20Puzzle) |     |
-|     |                                         |     |     | Entrance                        |     |
+|   ?  | [Dionysian Shrine](#dionysian%20shrine) |   ?  |  ?   |         ?                        |   ?  |
+|   ?  |     ?                                    |   ?  |   ?  |         ?                        |  ?   |
+|   ?  |     ?                                    |  ?   |   ?  |         ?                        |  ?   |
+|   ?  |      ?                                   |   ?  |   ?  | [Torch Puzzle](#torch%20puzzle) |     |
+|   ?  |        ?                                 |   ?  |  ?   | Entrance                        |     |
 ### Torch Puzzle
 TBD
 
@@ -197,16 +204,16 @@ TBD
 An altar for making offerings to the god Dionysius. Doing a libation ritual here will have varying effects depending on whether you pour wine, honey, oil or water.
 
 ## Main Questline
-- Visit the [Tholos](#Gate%202) Altar to obtain the [Phiale](#Phiale)
-- Traverse the [Corycian Woods](Gate%201)
-- Pick [Laurel Leaves](#Dionysius) and bring them to [The Pythia]
-- Bring [Eunice](#The%20Goat) to the Oracular Shrine
-- Perform the [Dousing Ritual](#Dousing) to begin the ceremony
+- Visit the [Tholos](#gate%202) Altar to obtain the [Phiale](#phiale)
+- Traverse the [Corycian Woods](gate%201)
+- Pick [Laurel Leaves](#dionysius) and bring them to [The Pythia](#themistoclea)
+- Bring [Eunice](#eunice) to the Oracular Shrine
+- Perform the [Dousing Ritual](#rituals) to begin the ceremony
 - The goat has escaped! Find Eunice in the wilderness
-- Go to the [mountaintop](#Mountaintop) to perform the libation ritual for Apollo
+- Go to the [Mountaintop](#mountaintop) to perform the libation ritual for Apollo
 
 ## Side Quests
-- Perform the libation ritual at the [Dionysian Shrine](Gate%203) 
+- Perform the libation ritual at the [Dionysian Shrine](gate%203) 
 
 
 
