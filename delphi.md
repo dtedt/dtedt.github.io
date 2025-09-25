@@ -1,4 +1,5 @@
 ---
+title: "Dennis Of Delphi (working title)"
 tags:
   - prototype
   - game
@@ -33,7 +34,7 @@ table th {
 |----------|----------|
 | Cell 1   | Cell 2   |
 </style>
-# Dennis Of Delphi (working title)
+
 
 # Characters
 
