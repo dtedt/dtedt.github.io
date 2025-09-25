@@ -28,14 +28,6 @@ table th {
 }
 </style>
 
-# My Page with a Table
-
-| Header 1 | Header 2 |
-|----------|----------|
-| Cell 1   | Cell 2   |
-</style>
-
-
 # Characters
 
 *Themistoclea*
