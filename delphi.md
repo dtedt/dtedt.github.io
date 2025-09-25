@@ -28,7 +28,7 @@ table th {
 }
 </style>
 # Quick Links
-- [Main Questline](#main%20questline)
+- [Main Questline](#main-questline)
 - [Map](#map)
 - [Characters](#characters)
 - [Scenarios](#scenarios)
@@ -94,14 +94,14 @@ Press R to gaze up at the stars and see the local Constellation
 | X                    | X               | [Cliff](#cliff)             | [Cliff](#cliff)         | X                                     | [Cliff](#cliff) | X               | X                 | X                    |
 | -------------------- | --------------- | --------------------------- | ----------------------- | ------------------------------------- | --------------- | --------------- | ----------------- | -------------------- |
 | X                    | [Wall](#wall)   | [Home](#home)               | [Wall](#wall)           | [Cliff](#cliff)                       | [Wall](#wall)   | [Cliff](#cliff) | [River](#river)   | X                    |
-| X                    | [Wall](#wall)   |                             | [Courtyard](#courtyard) | [Oracular Shrine](#oracular%20shrine) | [Wall](#wall)   |                 | [River](#river)   | X                    |
-| X                    | [Wall](#wall)   | [Temple](#Temple)           | [Courtyard](#courtyard) | [Oracular Shrine](#oracular%20shrine) | [Wall](#wall)   |                 | [River](#river)   | X                    |
-| X                    | [Wall](#wall)   | [Temple](#Temple)           | [Courtyard](#courtyard) |                                       | [Wall](#wall)   |                 | [River](#river)   | X                    |
+| X                    | [Wall](#wall)   |                             | [Courtyard](#courtyard) | [Oracular Shrine](#oracular-shrine) | [Wall](#wall)   |                 | [River](#river)   | X                    |
+| X                    | [Wall](#wall)   | [Temple](#temple)           | [Courtyard](#courtyard) | [Oracular Shrine](#oracular-shrine) | [Wall](#wall)   |                 | [River](#river)   | X                    |
+| X                    | [Wall](#wall)   | [Temple](#temple)           | [Courtyard](#courtyard) |                                       | [Wall](#wall)   |                 | [River](#river)   | X                    |
 | X                    | [Wall](#wall)   |                             |                         |                                       | [Wall](#wall)   |                 | [River](#river)   | X                    |
 | [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
-| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#bridge) | [Gate #2](#gate%202) |
-| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#bridge) | [Gate #2](#gate%202) |
-| [Gate #1](#gate%201) |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
+| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#bridge) | [Gate #2](#gate-2) |
+| [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [Bridge](#bridge) | [Gate #2](#gate-2) |
+| [Gate #1](#gate-1) |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
 | [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
 | [Cliff](#cliff)      |                 |                             |                         |                                       |                 |                 | [River](#river)   | X                    |
 | [Cliff](#cliff)      | X               |                             | X                       |                                       |                 |                 | [River](#river)   | X                    |
@@ -138,7 +138,7 @@ Entrance to [Tholos](#tholos)
 Gate leading to the sacred Tholos, where the Phiale can be obtained.
 
 ### Gate 2
-Entrance to [Corycian Woods](#corycian%20woods)
+Entrance to [Corycian Woods](#corycian-woods)
 Gate leading to the forest across the river
 
 
@@ -146,7 +146,7 @@ Gate leading to the forest across the river
 
 | [Altar](#altar)           |                      |
 | ------------------------- | -------------------- |
-| [Sculptures](#sculptures) | [Gate #1](#gate%201) |
+| [Sculptures](#sculptures) | [Gate #1](#gate-1) |
 
 ### Altar
 1x1
@@ -157,7 +157,7 @@ A circle of stone pillars.
 
 ## Corycian Woods
 
-|          |                     | [Pegasus](#pegasus) | [Siren](#siren)     | [Pegasus](#pegasus) | [Dionysius](#dionysius) | [Gate 3](#gate%203) |
+|          |                     | [Pegasus](#pegasus) | [Siren](#siren)     | [Pegasus](#pegasus) | [Dionysius](#dionysius) | [Gate 3](#gate-3) |
 | -------- | ------------------- | ------------------- | ------------------- | ------------------- | ----------------------- | ------------------- |
 | Entrance | [Pegasus](#pegasus) | [Phoenix](#phoenix) | [Siren](#siren)     | [Phoenix](#phoenix) | [Hermes](#hermes)       | [Hermes](#hermes)   |
 |          |                     | [Siren](#siren)     | [Hermes](#hermes)   | [Pegasus](#pegasus) | [Siren](#siren)         | [Phoenix](#phoenix) |
@@ -190,12 +190,12 @@ _Entrance to [Corycian Caves](#corycian%20caves)_
 
 ## Corycian Caves
 
-|     |                                         |     |     |                                 |     |
+|  ?   |      ?                                   |   ?  |  ?   |           ?                      |  ?   |
 | --- | --------------------------------------- | --- | --- | ------------------------------- | --- |
-|   ?  | [Dionysian Shrine](#dionysian%20shrine) |   ?  |  ?   |         ?                        |   ?  |
+|   ?  | [Dionysian Shrine](#dionysian-shrine) |   ?  |  ?   |         ?                        |   ?  |
 |   ?  |     ?                                    |   ?  |   ?  |         ?                        |  ?   |
 |   ?  |     ?                                    |  ?   |   ?  |         ?                        |  ?   |
-|   ?  |      ?                                   |   ?  |   ?  | [Torch Puzzle](#torch%20puzzle) |     |
+|   ?  |      ?                                   |   ?  |   ?  | [Torch Puzzle](#torch-puzzle) |     |
 |   ?  |        ?                                 |   ?  |  ?   | Entrance                        |     |
 ### Torch Puzzle
 TBD
@@ -204,8 +204,8 @@ TBD
 An altar for making offerings to the god Dionysius. Doing a libation ritual here will have varying effects depending on whether you pour wine, honey, oil or water.
 
 ## Main Questline
-- Visit the [Tholos](#gate%202) Altar to obtain the [Phiale](#phiale)
-- Traverse the [Corycian Woods](gate%201)
+- Visit the [Tholos](#gate-2) Altar to obtain the [Phiale](#phiale)
+- Traverse the [Corycian Woods](gate-1)
 - Pick [Laurel Leaves](#dionysius) and bring them to [The Pythia](#themistoclea)
 - Bring [Eunice](#eunice) to the Oracular Shrine
 - Perform the [Dousing Ritual](#rituals) to begin the ceremony
@@ -213,7 +213,7 @@ An altar for making offerings to the god Dionysius. Doing a libation ritual here
 - Go to the [Mountaintop](#mountaintop) to perform the libation ritual for Apollo
 
 ## Side Quests
-- Perform the libation ritual at the [Dionysian Shrine](gate%203) 
+- Perform the libation ritual at the [Dionysian Shrine](gate-3) 
 
 
 
