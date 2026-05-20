@@ -13,3 +13,10 @@ const cube = new THREE.Mesh( geometry, material );
 scene.add( cube );
 
 camera.position.z = 5;
+
+function animate( time ) {
+  cube.rotation.x = time / 2000;
+  cube.rotation.y = time / 1000;
+  renderer.render( scene, camera );
+}
+renderer.setAnimationLoop( animate );
