@@ -189,20 +189,74 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-// Update player position based on device tilt
-function updatePlayerPosition() {
-    // Smooth movement with easing
-    const targetX = THREE.MathUtils.clamp(gamma * 0.05, -boundaries, boundaries);
-    const targetY = THREE.MathUtils.clamp(beta * -0.05, -boundaries, boundaries);
+// Request permission for iOS and set up orientation
+function setupOrientationControls() {
+    const debug = document.getElementById('debug');
     
-    player.position.x += (targetX - player.position.x) * 0.1;
-    player.position.y += (targetY - player.position.y) * 0.1;
+    if (window.DeviceOrientationEvent) {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            // iOS
+            document.getElementById('instructions').innerHTML = 
+                'Tap screen to enable motion controls';
+            
+            const tapHandler = () => {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                            document.getElementById('instructions').textContent = 
+                                'Tilt your device to navigate the dream';
+                            if (debug) debug.textContent = 'Orientation: Active';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Permission error:', error);
+                        if (debug) debug.textContent = 'Permission denied';
+                    });
+                document.body.removeEventListener('click', tapHandler);
+            };
+            
+            document.body.addEventListener('click', tapHandler);
+        } else {
+            // Android and other devices
+            window.addEventListener('deviceorientation', handleOrientation);
+            document.getElementById('instructions').textContent = 
+                'Tilt your device to navigate the dream';
+            if (debug) debug.textContent = 'Orientation: Active';
+        }
+    } else {
+        // Fallback for desktop
+        document.addEventListener('mousemove', handleMouseMove);
+        document.getElementById('instructions').textContent = 
+            'Move your mouse to navigate the dream';
+        if (debug) debug.textContent = 'Using mouse fallback';
+    }
 }
 
-// Handle device orientation
 function handleOrientation(event) {
-    beta = event.beta;  // -180 to 180 (front/back tilt)
-    gamma = event.gamma; // -90 to 90 (left/right tilt)
+    beta = event.beta || 0;
+    gamma = event.gamma || 0;
+    
+    // Debug logging
+    const debug = document.getElementById('debug');
+    if (debug) {
+        debug.innerHTML = `Tilt: X=${Math.round(gamma)}°, Y=${Math.round(beta)}°<br>
+                          Position: X=${Math.round(player.position.x * 10)/10}, 
+                          Y=${Math.round(player.position.y * 10)/10}`;
+    }
+}
+
+function updatePlayerPosition() {
+    // Increased sensitivity for better response
+    const sensitivity = 0.12;
+    const targetX = THREE.MathUtils.clamp(gamma * sensitivity, -boundaries + 1, boundaries - 1);
+    const targetY = THREE.MathUtils.clamp(beta * -sensitivity, -boundaries + 1, boundaries - 1);
+    
+    // Faster response
+    const followSpeed = 0.15;
+    
+    player.position.x += (targetX - player.position.x) * followSpeed;
+    player.position.y += (targetY - player.position.y) * followSpeed;
 }
 
 // Fallback for desktop testing
