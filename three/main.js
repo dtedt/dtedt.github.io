@@ -20,3 +20,20 @@ function animate( time ) {
   renderer.render( scene, camera );
 }
 renderer.setAnimationLoop( animate );
+
+// Basic orientation listener
+window.addEventListener('deviceorientation', function(event) {
+    // These are the raw values from your device
+    const alpha = event.alpha;  // Compass direction (0-360)
+    const beta = event.beta;    // Front/back tilt (-180 to 180)
+    const gamma = event.gamma;  // Left/right tilt (-90 to 90)
+    
+    // See what's happening in real-time
+    console.log(`Tilt: ${gamma.toFixed(1)}° left/right, ${beta.toFixed(1)}° front/back`);
+    
+    // Update something on screen
+    document.getElementById('debug').innerHTML = `
+        Left/Right: ${gamma.toFixed(1)}°<br>
+        Front/Back: ${beta.toFixed(1)}°<br>
+    `;
+});
