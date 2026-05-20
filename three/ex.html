@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #dot {
+            width: 50px;
+            height: 50px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div id="dot"></div>
+    <div id="info">Waiting for orientation...</div>
+    
+    <script>
+        const dot = document.getElementById('dot');
+        const info = document.getElementById('info');
+        
+        // Variables to store tilt values
+        let gamma = 0;  // Left/Right
+        let beta = 0;   // Front/Back
+        
+        // iOS requires permission
+        function initOrientation() {
+            if (typeof DeviceOrientationEvent !== 'undefined' && 
+                typeof DeviceOrientationEvent.requestPermission === 'function') {
+                
+                info.innerHTML = 'Tap screen to enable motion controls';
+                
+                document.body.addEventListener('click', () => {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(permission => {
+                            if (permission === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation);
+                                info.innerHTML = 'Device orientation active! Tilt your phone';
+                            }
+                        })
+                        .catch(console.error);
+                }, { once: true });
+            } else {
+                // Android and others work automatically
+                window.addEventListener('deviceorientation', handleOrientation);
+                info.innerHTML = 'Tilt your phone to move the dot';
+            }
+        }
+        
+        function handleOrientation(event) {
+            // Get raw values
+            gamma = event.gamma || 0;  // Left/Right: -90 to 90
+            beta = event.beta || 0;     // Front/Back: -180 to 180
+            
+            // Display raw values
+            info.innerHTML = `
+                Raw values:<br>
+                Left/Right (Gamma): ${gamma.toFixed(1)}°<br>
+                Front/Back (Beta): ${beta.toFixed(1)}°<br><br>
+                Movement speed: ${(Math.abs(gamma) + Math.abs(beta)).toFixed(1)}
+            `;
+            
+            // Convert tilt to screen position
+            // Map gamma (-90 to 90) to screen width (0 to window.innerWidth)
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            
+            // Clamp values to prevent going too far
+            let xPos = (gamma / 90) * (screenWidth / 2);
+            let yPos = (beta / 90) * (screenHeight / 2);
+            
+            // Keep dot on screen
+            xPos = Math.max(20, Math.min(screenWidth - 20, screenWidth/2 + xPos));
+            yPos = Math.max(20, Math.min(screenHeight - 20, screenHeight/2 + yPos));
+            
+            // Move the dot
+            dot.style.left = xPos + 'px';
+            dot.style.top = yPos + 'px';
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            handleOrientation({ gamma, beta }); // Recalculate position
+        });
+        
+        // Start the app
+        initOrientation();
+    </script>
+</body>
+</html>
