@@ -31,14 +31,14 @@ const contacts = [
 
 
 const games = [
-  { id: 1,
-   img: 
+  { gid: 1,
+   img: /img/1a.jpg
    title: "Oswego: Quest For The Golden Pin",
    engine: "GBStudio",
    platforms: "Itch.io", "Steam"
    genre: "Top-down", "Adventure",
    link: https://store.steampowered.com/app/4211310/Oswego_Quest_for_the_Golden_Pin/,
    
-  }
+  },
 
-  ]
+  ];
