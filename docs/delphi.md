@@ -3,6 +3,7 @@ title: "Dennis Of Delphi (working title)"
 tags:
   - prototype
   - game
+layout: "not-page"
 ---
 <style>
   <style>
