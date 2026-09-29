@@ -98,7 +98,7 @@ There are four primary endings to the game, two involve staying on Mars and two 
 | Leave | Stay |
 | :----: | :----: |
 | Freebird | Long Dark Blues |
-| Powerful Love | A Better Tomorrow |
+| Powerful Love | A Spoonful Weighs A Ton |
 
 Ending Descriptions:
 ---
