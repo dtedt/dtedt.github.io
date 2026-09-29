@@ -1,7 +1,7 @@
 
 Helping the people of Ares-622 by completing quests will improve Marina's standing in the community and enable a special Ending.
 
-Main Quest:
+# Main Quest
 ## Love Me or Leave Me (Gene)
 
 'Love Me Or Leave Me' is the Main Quest line of Marina On Mars, because it is the only quest players are required to complete in order to beat the game. In order to complete this quest, the player must either Leave Mars or elect to Stay. The player's ultimate decision results in one of several possible endings being triggered.
@@ -13,7 +13,7 @@ Then, Marina advances up the stairs to the Greenhouse on Level02. In the Greenho
 The quest timer is also a countdown until the end of the game. At the moment the timer elapses, the game ends and an ending occurs. An ending is selected based on an evaluation of the player's activities on Mars up to this point. Unbeknownst to the player, each Optional Quest rewards a point (or negative point) towards each of the game's possible endings. Endings are divided into two categories: Leave or Stay. If Marina has not boarded Gene's rocket by this time, an ending from the Stay category will occur. If Marina has boarded Gene's rocket before the timer ends, the game will end at that moment and an ending from the Leave category will occur. 
 
   
-Optional Quests:
+# Optional Quests
 ## Letter In A Bottle (Rhea)
 
 'Letter In A Bottle' is an optional quest, but completing it will impact the game's ending. In order to complete Letter In A Bottle, the player must find evidence of Rhea's absence on Ares-622, acquire the Executive Key and enter the Executive Lounge to hear a transmission from Rhea on the Executive Radio Transponder. If the player chooses to save the message to their Torus (personal data device) and leaves Mars, an ending will occur in which Marina is reunited with Rhea on Earth (If Marina Leaves). If the player chooses to delete the message, this quest does not impact the player's ending.
@@ -79,6 +79,15 @@ If the player completes this quest, Dr Yin and Dr Su will appear at the Launchpa
 Ending points
 
 +2 towards 'A Spoonful Weighs A Ton' ending
+
+---
+## Simulacra (Arnold)
+
+'Simulacra' is an optional quest, but completing it will impact the game's ending. To complete Simulacra, visit [Arnold](Arnold.md) and speak to him about Ares-622. He will inform you of his theory that the Mars base is not really on Mars. He suspects that he is experiencing a simulated experience created by the US Government to compel him to reveal his secrets. Sensing Marina's doubt, he challenges her top bring him an item that will disprove his hypothesis. There are many items you can bring him that seem to prove that the base is a real live space station, but he has an explanation for everything. There is only one item which can complete this quest: an encrypted love letter addressed to "Aria", confirming Arnold's closeted queer identity and proof that the gaze of surveillance is not the only thing that sees him. Unfortunately, if you fail to deliver the encrypted letter to Arnold, he will be involved in a fatal accident (opening the airlock in an act equally attributable to skepticism and suicidal tendency). If you do liberate him from his paranoid fantasy by delivering the encrypted letter to him, he will appear on the launchpad later to ask Marina to stay.
+
+Ending points
+
++1 towards 'A Spoonful Weighs A Ton' ending
 
 ---
 
